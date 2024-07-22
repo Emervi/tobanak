@@ -16,13 +16,16 @@ class CreateTransaksisTable extends Migration
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id('id_transaksi');
             $table->date('tanggal');
-            $table->foreignId('id_user')->constrained('users');
-            $table->foreignId('id_barang')->constrained('barangs');
+            $table->unsignedBigInteger('id_user'); // Kolom untuk foreign key
+            $table->unsignedBigInteger('id_barang'); // Kolom untuk foreign key
             $table->integer('kuantitas');
             $table->double('total_harga');
             $table->double('uang_pembayaran');
             $table->double('kembalian');
             $table->timestamps();
+
+            // $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
+            // $table->foreign('id_barang')->references('id_barang')->on('barangs')->onDelete('cascade');
         });
     }
 
