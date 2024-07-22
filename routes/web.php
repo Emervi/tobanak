@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// REGISTER
+Route::get('/register', [RegisterController::class, 'halamanRegister'])->name('auth.register');
+Route::post('/register', [RegisterController::class, 'storeRegister']);
+// \REGISTER
 
 Route::get('/', function () {
     return view('welcome');
