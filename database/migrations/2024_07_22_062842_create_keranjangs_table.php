@@ -15,8 +15,8 @@ class CreateKeranjangsTable extends Migration
     {
         Schema::create('keranjangs', function (Blueprint $table) {
             $table->id('id_keranjang');
-            $table->foreignId('id_user')->constrained('users');
-            $table->foreignId('id_barang')->constrained('barangs');
+            $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('id_barang');
             $table->integer('kuantitas');
             $table->timestamps();
         });

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/login', [LoginController::class, 'tampilLogin'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
