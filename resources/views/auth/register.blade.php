@@ -42,20 +42,13 @@
             <div class="mb-4">
                 <label for="password2" class="text-gray-500">Konfirmasi Password</label>
                 <input type="password" name="password2" id="password2" class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300">
-                @if (session('error'))
-                <p class="text-red-500 text-sm">{{ session('error') }}</p>
-                @endif
+                @error('password2')
+                <p class="text-red-500 text-sm">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="mb-4">
-                <input type="radio" name="status" id="admin" value="admin">
-                <label for="admin">admin</label>
-                <input type="radio" name="status" id="user" value="user">
-                <label for="user">user</label>
-            </div>
-
-            <div class="mb-4">
-                <p>Sudah punya akun? <a href="" class="text-blue-800 font-medium">Login disini!</a></p>
+                <p>Sudah punya akun? <a href="{{ route('auth.login') }}" class="text-blue-800 font-medium">Login disini!</a></p>
             </div>
 
             <div class="flex justify-end">
