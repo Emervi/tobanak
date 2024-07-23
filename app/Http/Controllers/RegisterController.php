@@ -16,10 +16,6 @@ class RegisterController extends Controller
 
     public function storeRegister(RegisterRequest $request)
     {
-        if($request->password2 != $request->password){
-            return redirect()->back()->with('error', 'Konfirmasi password tidak cocok!');
-        }
-
         User::create([
             'name' => $request->name,
             'status' => 'user',
@@ -27,6 +23,7 @@ class RegisterController extends Controller
             'password' => Hash::make( $request->password ),
         ]);
 
-        return redirect()->route('auth.register')->with('success', 'Akun berhasil dibuat!');
+        return redirect()->route('auth.login')->with('success', 'Akun berhasil dibuat!');
     }
+
 }

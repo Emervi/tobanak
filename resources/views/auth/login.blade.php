@@ -8,10 +8,16 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
+
     <div class="w-full max-w-sm p-8 bg-white rounded-lg shadow-md">
+        @if ( session('success') )
+        <div class="w-full bg-green-400 mx-auto mb-2 text-center font-medium p-0.5">
+            <p>{{ session('success') }}</p>
+        </div>
+        @endif
         <h1 class="text-2xl font-semibold mb-6 text-center">Login</h1>
 
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="{{ route('auth.login') }}">
             @csrf
             
             <div class="mb-4">
@@ -27,7 +33,7 @@
             </div>
 
             <div class="flex items-center justify-between">
-                <p> Belum punya akun? <a href="#" class=" text-blue-600 hover:text-blue-900">Register</a> </p>
+                <p> Belum punya akun? <a href="{{ route('auth.register') }}" class=" text-blue-600 hover:text-blue-900">Register</a> </p>
                 <button type="submit" class="px-4 py-2 bg-pink-400 text-white rounded-md shadow-sm hover:bg-pink-700">
                     Login
                 </button>

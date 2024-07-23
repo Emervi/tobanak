@@ -1,18 +1,19 @@
-<x-app-layout title="Register">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
 
-    @slot('header', 'Register')
-
-    @slot('body')
-    @if ( session('success') )
-        <div class="w-1/3 bg-green-400 mx-auto mb-2 text-center font-medium p-2">
-            <p>{{ session('success') }}</p>
-        </div>
-    @endif
-    <div class="w-1/3 bg-white mx-auto p-5 rounded-md shadow-xl">
+    <div class="w-1/3 bg-white mx-auto p-5 rounded-md shadow-xl mt-12">
 
         <h2 class="font-bold text-center text-2xl mb-4">Register</h2>
 
-        <form action="{{ route('auth.register') }}" method="POST">
+        <form action="{{ url('/register') }}" method="POST">
             @csrf
 
             <div class="mb-4">
@@ -48,15 +49,15 @@
             </div>
 
             <div class="mb-4">
-                <p>Sudah punya akun? <a href="{{ route('auth.login') }}" class="text-blue-800 font-medium">Login disini!</a></p>
+                <p>Sudah punya akun? <a href="{{ route('auth.login') }}" class="text-blue-600 font-medium hover:text-blue-900">Login disini!</a></p>
             </div>
 
             <div class="flex justify-end">
-                <button type="submit" class="bg-pink-400 p-2 rounded-md font-medium text-white">Register</button>
+                <button type="submit" class="bg-pink-400 p-2 rounded-md font-medium text-white hover:bg-pink-700">Register</button>
             </div>
         </form>
 
     </div>
-    @endslot
-
-</x-app-layout>
+    
+</body>
+</html>
