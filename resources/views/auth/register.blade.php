@@ -17,7 +17,7 @@
             @csrf
 
             <div class="mb-4">
-                <label for="name" class="text-gray-500">Name</label>
+                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                 <input type="text" name="name" id="name" value="{{ old('name') }}" class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300">
                 @error('name')
                 <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -25,7 +25,7 @@
             </div>
 
             <div class="mb-4">
-                <label for="email" class="text-gray-500">Email</label>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                 <input type="email" name="email" id="email" value="{{ old('email') }}" class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300">
                 @error('email')
                 <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -33,7 +33,7 @@
             </div>
 
             <div class="mb-4">
-                <label for="password" class="text-gray-500">Password</label>
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                 <input type="password" name="password" id="password" class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300">
                 @error('password')
                 <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -41,7 +41,7 @@
             </div>
 
             <div class="mb-4">
-                <label for="password2" class="text-gray-500">Konfirmasi Password</label>
+                <label for="password2" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
                 <input type="password" name="password2" id="password2" class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300">
                 @error('password2')
                 <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -49,11 +49,11 @@
             </div>
 
             <div class="mb-4">
-                <p>Sudah punya akun? <a href="{{ route('auth.login') }}" class="text-blue-600 font-medium hover:text-blue-900">Login disini!</a></p>
+                <p class="block text-sm font-medium text-gray-700">Sudah punya akun? <a href="{{ route('auth.login') }}" class="text-blue-600 font-medium hover:text-blue-900">Login disini!</a></p>
             </div>
 
             <div class="flex justify-end">
-                <button type="submit" class="bg-pink-400 p-2 rounded-md font-medium text-white hover:bg-pink-700">Register</button>
+                <button type="submit" class="px-4 py-2 bg-pink-400 text-white rounded-md shadow-sm hover:bg-pink-700">Register</button>
             </div>
         </form>
 
