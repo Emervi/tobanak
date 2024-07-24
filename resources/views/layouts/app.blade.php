@@ -9,20 +9,20 @@
 </head>
 <body class="bg-gray-100">
 
-    <nav class="w-full p-5 flex justify-between bg-pink-400">
-        <div class="flex justify-between gap-10">
-        <div class="font-bold text-2xl">
+    <nav class="w-full p-3 flex justify-between bg-pink-300 items-center">
+        <div class="flex justify-between gap-10 items-center">
+        <div class="font-bold text-2xl ml-5">
             <p>LOGO</p>
         </div>
         <ul class="flex justify-between gap-7">
-            <li><a href="" class="text-white p-2 hover:bg-pink-900">Home</a></li>
-            <li><a href="" class="text-white p-2 hover:bg-pink-900">About</a></li>
-            <li><a href="" class="text-white p-2 hover:bg-pink-900">Contact</a></li>
+            <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Home</a></li>
+            <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">About</a></li>
+            <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Contact</a></li>
         </ul>
         </div>
 
         <div>
-            <a href="" class="p-2 bg-gray-500 rounded-md text-white">Logout</a>
+            <a href="" class="p-1 hover:text-pink-600 rounded-md text-white mr-5">Logout</a>
         </div>
     </nav>
 

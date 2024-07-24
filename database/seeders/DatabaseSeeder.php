@@ -27,5 +27,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@user.com',
             'status' => 'user',
         ]);
+
+        $this->call(BarangSeeder::class);
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,3 +29,10 @@ Route::post('/register', [RegisterController::class, 'storeRegister']);
 Route::get('/', function () {
     return view('home');
 });
+
+// Halaman User
+
+Route::get('/home', [UserController::class, 'homeUser'])->name('homeUser');
+Route::get('/keranjang', [UserController::class, 'keranjang'])->name('keranjang');
+
+// Penutup Halaman User
