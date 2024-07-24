@@ -6,11 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title', 'Tobanak')</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Chrome, Safari, Edge, Opera */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
 
-    <nav class="w-full p-5 flex justify-between bg-pink-400">
-        <div class="flex justify-between gap-10">
+    <nav class="w-full p-5 flex justify-between items-center bg-pink-400">
+        <div class="flex justify-between gap-10 items-center">
         <div class="font-bold text-2xl">
             <p>LOGO</p>
         </div>
