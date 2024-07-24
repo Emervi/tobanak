@@ -58,7 +58,7 @@
             <th>Kategori</th>
             <th>Bahan</th>
             <th>Harga</th>
-            <th>Deskripsi barang</th>
+            <th class="w-2/6">Deskripsi barang</th>
             <th class="text-center">Aksi</th>
         </thead>
         <tbody>

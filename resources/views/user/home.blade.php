@@ -21,14 +21,14 @@
     <div class="flex flex-col items-center">
         <div class="bg-white shadow-lg rounded-lg overflow-hidden">
             <a href="{{ route('detailProduk', ['id_barang' => $barang->id_barang]) }}">
-                <img src="{{ $barang->foto_barang }}" alt="Foto Barang" class="w-64 h-48 object-cover">
+                <img src="{{ asset('images/' . $barang->foto_barang) }}" alt="Foto Barang" class="w-64 h-48 object-cover">
             </a>
         </div>
         <div class="w-64 p-4 flex flex-col items-start">
             <h2 class="text-xl font-bold">{{ $barang->nama_barang }}</h2>
-            <p class="text-gray-600 mt-2">Sisa : {{ $barang->stok_barang }}</p>
+            <p class="text-gray-600 mt-2">Stok : {{ $barang->stok_barang }}</p>
             <div class="mt-2 flex justify-between w-full">
-                <span class="text-gray-600 font-bold"> harga : Rp. {{ number_format($barang->harga, 0, ',', '.') }}</span>
+                <span class="text-gray-600 font-bold"> harga : Rp. {{ $barang->harga }}</span>
                 <a href="#" class="bg-blue-400 text-white px-4 -mt-3 py-2 rounded-full hover:bg-blue-700">+</a>
             </div>
         </div>

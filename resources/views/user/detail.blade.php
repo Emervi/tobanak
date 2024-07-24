@@ -7,8 +7,8 @@
     <div class="flex items-center mb-4">
         <a href="{{ route('homeUser') }}" class="border border-pink-500 text-pink-500 hover:text-white hover:bg-pink-500 px-4 py-2 rounded">Kembali</a>
     </div>
-    <div class="flex flex-col md:flex-row items-start md:items-center bg-white p-8 rounded-lg shadow-md max-w-3xl mx-auto">
-        <img src="{{ $barang->foto_barang }}" alt="Foto Barang" class="w-48 h-32 object-cover rounded mr-4">
+    <div class="flex flex-col md:flex-row items-start md:items-center bg-white p-8 rounded-lg shadow-lg max-w-sm md:max-w-3xl mx-auto">
+        <img src="{{ asset('images/' . $barang->foto_barang) }}" alt="Foto Barang" class="w-48 h-48 object-cover rounded mr-4">
         <div class="flex-1">
             <h2 class="text-xl font-bold">{{ $barang->nama_barang }}</h2>
             <p class="text-gray-600 mt-10">Bahan: {{ $barang->bahan }}</p>
