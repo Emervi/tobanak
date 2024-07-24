@@ -20,7 +20,7 @@
     @foreach($barangs as $barang)
     <div class="flex flex-col items-center">
         <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-            <a href="#">
+            <a href="{{ route('detailProduk', ['id_barang' => $barang->id_barang]) }}">
                 <img src="{{ $barang->foto_barang }}" alt="Foto Barang" class="w-64 h-48 object-cover">
             </a>
         </div>

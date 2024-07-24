@@ -35,4 +35,6 @@ Route::get('/', function () {
 Route::get('/home', [UserController::class, 'homeUser'])->name('homeUser');
 Route::get('/keranjang', [UserController::class, 'keranjang'])->name('keranjang');
 
+Route::get('/detail-produk/{id_barang}', [UserController::class, 'show'])->name('detailProduk');
+
 // Penutup Halaman User

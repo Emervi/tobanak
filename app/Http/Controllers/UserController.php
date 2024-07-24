@@ -32,6 +32,13 @@ class UserController extends Controller
     {
         return view('user.keranjang');
     }
+
+    public function show($id_barang)
+    {
+        $barang = Barang::where('id_barang', $id_barang)->firstOrFail();
+        return view('user.detail', compact('barang'));
+    }
+
     // Penutup Halaman User
 
 }

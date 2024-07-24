@@ -12,7 +12,7 @@
     <nav class="w-full p-3 flex justify-between bg-pink-300 items-center">
         <div class="flex justify-between gap-10 items-center">
         <div class="font-bold text-2xl ml-5">
-            <p>LOGO</p>
+            <img src="{{ asset('images/logo_tobanak.png') }}" class="w-10 h-10">
         </div>
         <ul class="flex justify-between gap-7">
             <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Home</a></li>

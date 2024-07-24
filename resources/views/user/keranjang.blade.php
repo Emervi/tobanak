@@ -7,7 +7,9 @@
     <!-- Kembali Button dan Header -->
     <div class="md:w-7/12 p-4 ml-10">
         <div class="flex justify-between items-center mb-4">
-            <button class="border border-pink-500 text-pink-500 hover:text-white hover:bg-pink-500 px-4 py-2 rounded">Kembali</button>
+            <form action="{{ route('homeUser') }}" method="GET">
+                <button class="border border-pink-500 text-pink-500 hover:text-white hover:bg-pink-500 px-4 py-2 rounded">Kembali</button>
+            </form>
             <h2 class="text-2xl font-bold">Keranjang</h2>
         </div>
         
