@@ -31,7 +31,10 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
 
-            return redirect()->intended('/');
+            if (Auth::user()->status === 'admin') {
+                return redirect()->intended('/');
+            }
+            return redirect()->intended(route('homeUser'));
         }
 
         return Redirect::back()->withErrors([
