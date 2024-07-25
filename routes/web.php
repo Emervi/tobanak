@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,7 +77,12 @@ Route::get('/', function () {
 // Halaman User
 
 Route::get('/home', [UserController::class, 'homeUser'])->name('homeUser');
-Route::get('/keranjang', [UserController::class, 'keranjang'])->name('keranjang');
+// Route::get('/keranjang', [UserController::class, 'keranjang'])->name('keranjang');
+
+Route::get('/keranjang', [KeranjangController::class, 'index'])->name('keranjang');
+Route::post('/keranjang/tambah', [KeranjangController::class, 'tambah'])->name('keranjang.tambah');
+Route::post('/keranjang/hapus', [KeranjangController::class, 'hapus'])->name('keranjang.hapus');
+
 
 Route::get('/detail-produk/{id_barang}', [UserController::class, 'show'])->name('detailProduk');
 
