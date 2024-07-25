@@ -41,4 +41,11 @@ class UserController extends Controller
 
     // Penutup Halaman User
 
+    // notifikasi pesanan berhasil
+    public function notifikasiBerhasil()
+    {
+        return view('user.notifikasiPesananBerhasil');
+    }
+    // \notifikasi pesanan berhasil
+
 }
