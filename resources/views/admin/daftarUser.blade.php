@@ -5,7 +5,7 @@
 @section('body')
 
 {{-- tombol kembali --}}
-<div class="w-11/12 mx-auto mt-10">
+<div class="w-11/12 mx-auto mt-10 mb-12">
 
     <div class="flex justify-start">
         <a href="{{ route('admin.dashboard') }}" class="text-pink-400 p-2 bg-white border border-pink-400 rounded-md hover:text-white hover:bg-pink-400">
@@ -68,7 +68,7 @@
                     <form action="{{ route('admin.hapusUser', [$user->id_user]) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <button class="text-red-600 w-20 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600" onclick="confirm('Apakah anda yakin ingin menghapus barang tersebut?')">
+                        <button class="text-red-600 w-20 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600" onclick="confirm('Apakah anda yakin ingin menghapus user tersebut?')">
                             <i class="fas fa-trash mr-1"></i>
                             Hapus
                         </button>
@@ -76,22 +76,6 @@
                 </td>
             </tr>    
             @endforeach
-            {{-- <tr class="hover:bg-gray-300">
-                <td class="p-3">1</td>
-                <td>
-                    <img src="https://i.pinimg.com/564x/48/49/ba/4849ba2ea6517f805785071120cccc08.jpg" alt="foto barang" class="w-16 h-16 flex-shrink-0 rounded-md p-1 ml-5">
-                </td>
-                <td>Dress Anak</td>
-                <td>200</td>
-                <td>Atasan</td>
-                <td>Tebal</td>
-                <td>Rp. 200.000</td>
-                <td>Bahan bagus banget WOY</td>
-                <td class="flex justify-evenly my-2">
-                    <button class="text-blue-600 w-16 py-1 bg-white border border-blue-600 rounded-md hover:text-white hover:bg-blue-600">Edit</button>
-                    <button class="text-red-600 w-16 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600">Hapus</button>
-                </td>
-            </tr> --}}
         </tbody>
     </table>
     </div>

@@ -5,6 +5,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\KeranjangController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,10 +52,19 @@ Route::post('/admin/dashboard/user', [AdminController::class, 'cariUser']);
 Route::get('/admin/dashboard/user/{id_user}/editUser', [AdminController::class, 'editUser'])->name('admin.editUser');
 // update user
 Route::put('/admin/dashboard/user/{id_user}', [AdminController::class, 'updateUser'])->name('admin.updateUser');
-// hapus barang
+// hapus user
 Route::delete('/admin/dashboard/user/{id_user}', [AdminController::class, 'destroyUser'])->name('admin.hapusUser');
-
 // \ADMIN.USER
+
+// ADMIN.TRANSAKSI
+// halaman daftar transaksi
+Route::get('/admin/dashboard/transaksi', [TransaksiController::class, 'daftarTransaksi'])->name('admin.daftarTransaksi');
+// cari transaksi
+Route::post('/admin/dashboard/transaksi', [TransaksiController::class, 'cariTransaksi']);
+
+// hapus transaksi
+Route::delete('/admin/dashboard/transaksi/{id_transaksi}', [TransaksiController::class, 'destroyTransaksi'])->name('admin.hapusTransaksi');
+// \ADMIN.TRANSAKSI
 
 
 
