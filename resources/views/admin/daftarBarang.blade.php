@@ -5,7 +5,7 @@
 @section('body')
 
 {{-- tombol kembali dan tambah --}}
-<div class="w-11/12 mx-auto mt-10">
+<div class="w-11/12 mx-auto mt-10 mb-12">
 
     <div class="flex justify-between">
         <a href="{{ route('admin.dashboard') }}" class="text-pink-400 p-2 bg-white border border-pink-400 rounded-md hover:text-white hover:bg-pink-400">
