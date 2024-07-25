@@ -61,7 +61,9 @@
             <span class="text-xl font-bold">Total:</span>
             <span class="text-xl font-bold">Rp {{ number_format($totalHarga, 0, ',', '.') }}</span> <!-- Menggunakan number_format -->
         </div>
-        <button class="bg-pink-400 text-white hover:bg-pink-600 px-4 py-2 rounded w-full">Checkout</button>
+        <div class="flex justify-end text-center">
+        <a href="{{ route('user.pesananBerhasil') }}" class="bg-pink-400 w-full text-white hover:bg-pink-600 px-4 py-2 rounded">Checkout</a>
+        </div>
     </div>
 </div>
 @endsection
