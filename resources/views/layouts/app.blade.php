@@ -7,12 +7,37 @@
     <title>@yield('title', 'Tobanak')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="shortcut icon" href="{{ asset('bat.ico') }}" type="image/x-icon">
     <style>
         /* Chrome, Safari, Edge, Opera */
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .fade-in {
+          animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes check-anim {
+            from { transform: rotateY(0deg) }
+            to { transform: rotateY(360deg) }
+        }
+        .check-anim {
+            animation: check-anim 1300ms linear 1;
+        }
+
+        @keyframes pop-up {
+            from { transform: translateY(110px) }
+            to { transform: translateY(0) }
+        }
+        .pop-up {
+            animation: pop-up 1300ms linear;
         }
     </style>
 </head>

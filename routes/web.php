@@ -96,4 +96,6 @@ Route::post('/keranjang/hapus', [KeranjangController::class, 'hapus'])->name('ke
 
 Route::get('/detail-produk/{id_barang}', [UserController::class, 'show'])->name('detailProduk');
 
+Route::get('/user/pesananBerhasil', [UserController::class, 'notifikasiBerhasil'])->name('user.pesananBerhasil');
+
 // Penutup Halaman User
