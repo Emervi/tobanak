@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Barang;
+use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -12,7 +14,18 @@ class AdminController extends Controller
     // dashboard
     public function dashboardAdmin()
     {
-        return view('admin.dashboard');
+        $jumlahBarang = Barang::count();
+
+        $jumlahUser = User::count();
+
+        $jumlahTransaksi = Transaksi::where('tanggal', today())
+        ->count();
+
+        return view('admin.dashboard', [
+            'jumlahBarang' => $jumlahBarang,
+            'jumlahUser' => $jumlahUser,
+            'jumlahTransaksi' => $jumlahTransaksi,
+        ]);
     }
 
     // halaman daftar user
