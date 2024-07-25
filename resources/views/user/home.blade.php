@@ -29,14 +29,26 @@
             <p class="text-gray-600 mt-2">Stok : {{ $barang->stok_barang }}</p>
             <div class="mt-2 flex justify-between w-full">
                 <span class="text-gray-600 font-bold"> harga : Rp. {{ $barang->harga }}</span>
-                <a href="#" class="bg-blue-400 text-white px-4 -mt-3 py-2 rounded-full hover:bg-blue-700">+</a>
+                <form action="{{ route('keranjang.tambah') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="id_barang" value="{{ $barang->id_barang }}">
+                    <button type="submit" class="bg-blue-400 text-white px-4 py-2 rounded-full hover:bg-blue-700">+</button>
+                </form>
             </div>
         </div>
     </div>
     @endforeach
 
+    @php
+        $keranjang = Session::get('keranjang', []);
+        $totalJumlah = array_sum(array_column($keranjang, 'kuantitas'));
+    @endphp
+
     <a href="{{ route('keranjang') }}" class="m-5 fixed bottom-4 right-4 border border-green-500 text-green-500 p-4 rounded-full shadow-lg hover:bg-green-500 hover:text-white">
         Keranjang
+        @if($totalJumlah > 0)
+            <span class="absolute top-0 right-0 bg-red-500 text-white rounded-full px-2 py-1 text-xs font-bold">{{ $totalJumlah }}</span>
+        @endif
     </a>
 
 </div>
