@@ -50,7 +50,7 @@ class KeranjangController extends Controller
         }
 
         Session::put('keranjang', $keranjang);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Berhasil ditambahkan ke keranjang');
     }
 
     public function hapus(Request $request)
@@ -66,6 +66,6 @@ class KeranjangController extends Controller
         }
 
         Session::put('keranjang', $keranjang);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Berhasil membatalkan pesanan');
     }
 }

@@ -57,7 +57,12 @@
         </div>
 
         <div>
-            <a href="" class="p-1 hover:text-pink-600 rounded-md text-white mr-5">Logout</a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="p-1 hover:text-pink-600 rounded-md text-white mr-5">
+                    Logout
+                </button>
+            </form>
         </div>
     </nav>
 
@@ -65,5 +70,18 @@
         @yield('body')
     </main>
 
+
+
+
+    <script>
+        function closeAlert() {
+            document.getElementById('alert-notification').style.display = 'none';
+        }
+    
+        // Auto-hide alert after 5 seconds
+        setTimeout(() => {
+            closeAlert();
+        }, 5000);
+    </script>
 </body>
 </html>

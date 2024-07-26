@@ -10,11 +10,23 @@
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
 
     <div class="w-full max-w-sm p-8 bg-white rounded-lg shadow-md">
-        @if ( session('success') )
-        <div class="w-full bg-green-400 mx-auto mb-2 text-center font-medium p-0.5">
-            <p>{{ session('success') }}</p>
-        </div>
+        @if(session('success'))
+            <div id="alert-notification" class="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center justify-between w-full max-w-xs">
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 18h.01M3 8l7.89 2.6c.21.07.43.07.64 0L19 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    <span id="alert-message">{{ session('success') }}</span>
+                </div>
+                <button onclick="closeAlert()" class="text-white ml-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
         @endif
+
+
         <h1 class="text-2xl font-semibold mb-6 text-center">Login</h1>
 
         <form method="POST" action="{{ route('auth.login') }}">

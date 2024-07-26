@@ -66,14 +66,19 @@ Route::post('/admin/dashboard/transaksi', [TransaksiController::class, 'cariTran
 Route::delete('/admin/dashboard/transaksi/{id_transaksi}', [TransaksiController::class, 'destroyTransaksi'])->name('admin.hapusTransaksi');
 // \ADMIN.TRANSAKSI
 
-
-
 // \ADMIN
+
+
+
 
 // LOGIN
 Route::get('/login', [LoginController::class, 'tampilLogin'])->name('auth.login');
 Route::post('/login', [LoginController::class, 'login']);
 // \LOGIN
+
+// Logout
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 
 // REGISTER
 Route::get('/register', [RegisterController::class, 'halamanRegister'])->name('auth.register');
