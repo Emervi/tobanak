@@ -18,7 +18,7 @@ class LoginController extends Controller
     {
         // Validasi data input
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
+            'username' => 'required',
             'password' => 'required',
         ]);
 
@@ -27,7 +27,7 @@ class LoginController extends Controller
         }
 
         // Autentikasi pengguna
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
 
@@ -38,7 +38,7 @@ class LoginController extends Controller
         }
 
         return Redirect::back()->withErrors([
-            'email' => 'These credentials do not match our records.',
+            'username' => 'These credentials do not match our records.',
         ])->withInput();
     }
 }
