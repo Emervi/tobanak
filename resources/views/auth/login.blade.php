@@ -15,6 +15,13 @@
             <p>{{ session('success') }}</p>
         </div>
         @endif
+
+        @if ( session('error') )
+        <div class="w-full bg-green-400 mx-auto mb-2 text-center font-medium p-0.5">
+            <p>{{ session('error') }}</p>
+        </div>
+        @endif
+
         <h1 class="text-2xl font-semibold mb-6 text-center">Login</h1>
 
         <form method="POST" action="{{ route('auth.login') }}">

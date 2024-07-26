@@ -32,13 +32,23 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
 
             if (Auth::user()->status === 'admin') {
-                return redirect()->intended('/');
+                return redirect()->intended(route('admin.dashboard'));
             }
             return redirect()->intended(route('homeUser'));
         }
 
         return Redirect::back()->withErrors([
-            'username' => 'These credentials do not match our records.',
+            'error' => 'These credentials do not match our records.',
         ])->withInput();
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('auth.login')->with('success', 'Anda berhasil logout sampai jumpa kembali');
     }
 }
