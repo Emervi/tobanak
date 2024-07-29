@@ -16,17 +16,19 @@ class DatabaseSeeder extends Seeder
     {
 
         // Membuat satu admin dan satu user
-        // User::factory()->create([
-        //     'name' => 'Admin User',
-        //     'email' => 'admin@admin.com',
-        //     'status' => 'admin',
-        // ]);
+        User::factory()->create([
+            'username' => 'admin',
+            'name' => 'Admin User',
+            'email' => 'admin@admin.com',
+            'status' => 'admin',
+        ]);
 
-        // User::factory()->create([
-        //     'name' => 'Regular User',
-        //     'email' => 'user@user.com',
-        //     'status' => 'user',
-        // ]);
+        User::factory()->create([
+            'username' => 'user',
+            'name' => 'Regular User',
+            'email' => 'user@user.com',
+            'status' => 'user',
+        ]);
 
         $this->call(BarangSeeder::class);
 
