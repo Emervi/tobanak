@@ -36,10 +36,17 @@
 
         </form>
 
-        @if ( session('success') )
-        <div class="bg-green-300 w-1/3 p-1 rounded font-medium">
-            <p class="ml-2">{{ session('success') }}</p>
-        </div>
+        @if(session('success'))
+            <div class="fixed top-4 right-4 bg-green-700 border border-green-800 text-white px-4 py-3 rounded shadow-lg transition-transform transform-gpu duration-300 ease-in-out" role="alert">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm">{{ session('success') }}</span>
+                    <button onclick="this.parentElement.parentElement.style.transform='translateX(100%)'; setTimeout(() => this.parentElement.parentElement.remove(), 300);" class="ml-4 text-green-500 hover:text-green-700">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
         @endif
         
     </div>
