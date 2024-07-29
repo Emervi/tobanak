@@ -39,6 +39,14 @@
         .pop-up {
             animation: pop-up 1300ms linear;
         }
+
+        @keyframes landing-page {
+            from { transform: translateY(60px)}
+            to { transform: translateY(0px) }
+        }
+        .landing-page {
+            animation: landing-page 1s linear;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
