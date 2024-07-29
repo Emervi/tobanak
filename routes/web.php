@@ -20,65 +20,73 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 // ADMIN
-// dashboard
-Route::get('/admin/dashboard', [AdminController::class, 'dashboardAdmin'])->name('admin.dashboard');
+Route::group(['middleware' => 'admin'], function () {
+    // dashboard
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboardAdmin'])->name('admin.dashboard');
 
-// ADMIN.BARANG
-// halaman daftar barang
-Route::get('/admin/dashboard/barang', [BarangController::class, 'daftarBarang'])->name('admin.daftarBarang');
-// cari barang
-Route::post('/admin/dashboard/barang', [BarangController::class, 'cariBarang']);
+    // ADMIN.BARANG
+    // halaman daftar barang
+    Route::get('/admin/dashboard/barang', [BarangController::class, 'daftarBarang'])->name('admin.daftarBarang');
+    // cari barang
+    Route::post('/admin/dashboard/barang', [BarangController::class, 'cariBarang']);
 
-// halaman tambah barang
-Route::get('/admin/dashboard/barang/tambahBarang', [BarangController::class, 'tambahBarang'])->name('admin.tambahBarang');
-// halaman update barang
-Route::get('/admin/dashboard/barang/tambahBarang/{id_barang}/edit', [BarangController::class, 'editBarang'])->name('admin.editBarang');
-// store barang
-Route::post('/admin/dashboard/barang/tambahBarang', [BarangController::class, 'storeBarang']);
-// update barang
-Route::put('/admin/dashboard/barang/tambahBarang/{id_barang}', [BarangController::class, 'updateBarang'])->name('admin.updateBarang');
-// hapus barang
-Route::delete('/admin/dashboard/barang/{id_barang}', [BarangController::class, 'destroyBarang'])->name('admin.hapusBarang');
-// \ADMIN.BARANG
+    // halaman tambah barang
+    Route::get('/admin/dashboard/barang/tambahBarang', [BarangController::class, 'tambahBarang'])->name('admin.tambahBarang');
+    // halaman update barang
+    Route::get('/admin/dashboard/barang/tambahBarang/{id_barang}/edit', [BarangController::class, 'editBarang'])->name('admin.editBarang');
+    // store barang
+    Route::post('/admin/dashboard/barang/tambahBarang', [BarangController::class, 'storeBarang']);
+    // update barang
+    Route::put('/admin/dashboard/barang/tambahBarang/{id_barang}', [BarangController::class, 'updateBarang'])->name('admin.updateBarang');
+    // hapus barang
+    Route::delete('/admin/dashboard/barang/{id_barang}', [BarangController::class, 'destroyBarang'])->name('admin.hapusBarang');
+    // \ADMIN.BARANG
 
-// ADMIN.USER
-// halaman daftar user
-Route::get('/admin/dashboard/user', [AdminController::class, 'daftarUser'])->name('admin.daftarUser');
-// cari user
-Route::post('/admin/dashboard/user', [AdminController::class, 'cariUser']);
+    // ADMIN.USER
+    // halaman daftar user
+    Route::get('/admin/dashboard/user', [AdminController::class, 'daftarUser'])->name('admin.daftarUser');
+    // cari user
+    Route::post('/admin/dashboard/user', [AdminController::class, 'cariUser']);
 
-// halaman update user
-Route::get('/admin/dashboard/user/{id_user}/editUser', [AdminController::class, 'editUser'])->name('admin.editUser');
-// update user
-Route::put('/admin/dashboard/user/{id_user}', [AdminController::class, 'updateUser'])->name('admin.updateUser');
-// hapus user
-Route::delete('/admin/dashboard/user/{id_user}', [AdminController::class, 'destroyUser'])->name('admin.hapusUser');
-// \ADMIN.USER
+    // halaman update user
+    Route::get('/admin/dashboard/user/{id_user}/editUser', [AdminController::class, 'editUser'])->name('admin.editUser');
+    // update user
+    Route::put('/admin/dashboard/user/{id_user}', [AdminController::class, 'updateUser'])->name('admin.updateUser');
+    // hapus user
+    Route::delete('/admin/dashboard/user/{id_user}', [AdminController::class, 'destroyUser'])->name('admin.hapusUser');
+    // \ADMIN.USER
 
-// ADMIN.TRANSAKSI
-// halaman daftar transaksi
-Route::get('/admin/dashboard/transaksi', [TransaksiController::class, 'daftarTransaksi'])->name('admin.daftarTransaksi');
-// cari transaksi
-Route::post('/admin/dashboard/transaksi', [TransaksiController::class, 'cariTransaksi']);
+    // ADMIN.TRANSAKSI
+    // halaman daftar transaksi
+    Route::get('/admin/dashboard/transaksi', [TransaksiController::class, 'daftarTransaksi'])->name('admin.daftarTransaksi');
+    // cari transaksi
+    Route::post('/admin/dashboard/transaksi', [TransaksiController::class, 'cariTransaksi']);
 
-// hapus transaksi
-Route::delete('/admin/dashboard/transaksi/{id_transaksi}', [TransaksiController::class, 'destroyTransaksi'])->name('admin.hapusTransaksi');
-// \ADMIN.TRANSAKSI
+    // hapus transaksi
+    Route::delete('/admin/dashboard/transaksi/{id_transaksi}', [TransaksiController::class, 'destroyTransaksi'])->name('admin.hapusTransaksi');
+    // \ADMIN.TRANSAKSI
 
-
+});
 
 // \ADMIN
 
-// LOGIN
-Route::get('/login', [LoginController::class, 'tampilLogin'])->name('auth.login');
-Route::post('/login', [LoginController::class, 'login']);
-// \LOGIN
+Route::group(['middleware' => 'guest'], function () {
+    // LOGIN
+    Route::get('/login', [LoginController::class, 'tampilLogin'])->name('auth.login');
+    Route::post('/login', [LoginController::class, 'login']);
+    // \LOGIN
 
-// REGISTER
-Route::get('/register', [RegisterController::class, 'halamanRegister'])->name('auth.register');
-Route::post('/register', [RegisterController::class, 'storeRegister']);
-// \REGISTER
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+    // REGISTER
+    Route::get('/register', [RegisterController::class, 'halamanRegister'])->name('auth.register');
+    Route::post('/register', [RegisterController::class, 'storeRegister']);
+    // \REGISTER
+
+});
+
 
 Route::get('/', function () {
     return view('home');
@@ -86,16 +94,17 @@ Route::get('/', function () {
 
 // Halaman User
 
-Route::get('/home', [UserController::class, 'homeUser'])->name('homeUser');
-// Route::get('/keranjang', [UserController::class, 'keranjang'])->name('keranjang');
+Route::group(['middleware' => 'admin'], function () {
+    Route::get('/home', [UserController::class, 'homeUser'])->name('homeUser');
+    // Route::get('/keranjang', [UserController::class, 'keranjang'])->name('keranjang');
 
-Route::get('/keranjang', [KeranjangController::class, 'index'])->name('keranjang');
-Route::post('/keranjang/tambah', [KeranjangController::class, 'tambah'])->name('keranjang.tambah');
-Route::post('/keranjang/hapus', [KeranjangController::class, 'hapus'])->name('keranjang.hapus');
+    Route::get('/keranjang', [KeranjangController::class, 'index'])->name('keranjang');
+    Route::post('/keranjang/tambah', [KeranjangController::class, 'tambah'])->name('keranjang.tambah');
+    Route::post('/keranjang/hapus', [KeranjangController::class, 'hapus'])->name('keranjang.hapus');
 
 
-Route::get('/detail-produk/{id_barang}', [UserController::class, 'show'])->name('detailProduk');
+    Route::get('/detail-produk/{id_barang}', [UserController::class, 'show'])->name('detailProduk');
 
-Route::get('/user/pesananBerhasil', [UserController::class, 'notifikasiBerhasil'])->name('user.pesananBerhasil');
-
+    Route::get('/user/pesananBerhasil', [UserController::class, 'notifikasiBerhasil'])->name('user.pesananBerhasil');
+});
 // Penutup Halaman User

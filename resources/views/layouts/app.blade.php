@@ -65,7 +65,19 @@
         </div>
 
         <div>
-            <a href="" class="p-1 hover:text-pink-600 rounded-md text-white mr-5">Logout</a>
+
+            @if (Auth::check())
+            <form action="{{ route('logout') }}" method="POST" class="inline">
+                @csrf
+                <button type="submit" class="p-1 hover:text-pink-600 rounded-md text-white mr-5">
+                    Logout
+                </button>
+            </form> 
+            @else
+            <a href="{{ route('auth.login') }}" class="p-1 hover:text-pink-600 rounded-md text-white mr-5">Login</a>
+            @endif
+
+                       
         </div>
     </nav>
 

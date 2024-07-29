@@ -17,13 +17,13 @@ class RegisterController extends Controller
     public function storeRegister(RegisterRequest $request)
     {
         User::create([
+            'username' => $request->username,
             'name' => $request->name,
             'status' => 'user',
             'email' => $request->email,
-            'password' => Hash::make( $request->password ),
+            'password' => Hash::make($request->password),
         ]);
 
         return redirect()->route('auth.login')->with('success', 'Akun berhasil dibuat!');
     }
-
 }

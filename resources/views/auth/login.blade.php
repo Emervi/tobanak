@@ -15,14 +15,21 @@
             <p>{{ session('success') }}</p>
         </div>
         @endif
+
+        @if ( session('error') )
+        <div class="w-full bg-green-400 mx-auto mb-2 text-center font-medium p-0.5">
+            <p>{{ session('error') }}</p>
+        </div>
+        @endif
+
         <h1 class="text-2xl font-semibold mb-6 text-center">Login</h1>
 
         <form method="POST" action="{{ route('auth.login') }}">
             @csrf
             
             <div class="mb-4">
-                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                <input id="email" name="email" type="text" autofocus
+                <label for="username" class="block text-sm font-medium text-gray-700">username</label>
+                <input id="username" name="username" type="text" autofocus
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 sm:text-sm">
             </div>
 
