@@ -17,7 +17,7 @@
             @csrf
 
             <div class="mb-4">
-                <label for="username" class="text-gray-500">username</label>
+                <label for="username" class="text-gray-500">Username</label>
                 <input type="text" name="username" id="username" value="{{ old('username') }}" class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300">
                 @error('username')
                 <p class="text-red-500 text-sm">{{ $message }}</p>
