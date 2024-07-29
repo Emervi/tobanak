@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class CheckAdmin
+class CekSessionNull
 {
     /**
      * Handle an incoming request.
@@ -17,14 +16,12 @@ class CheckAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        $admin = session('admin');
-
-        if ( !session()->has('admin') ){
-            return redirect()->route('auth.login');
+        if ( session()->has('admin') ){
+            return redirect()->route('admin.dashboard')->with('gagal', 'Anda masih login!');
         }
 
-        if ($admin->status !== 'admin'){
-            return redirect()->route('homeUser')->with('gagal', 'Anda bukan admin!');
+        if ( session()->has('user') ){
+            return redirect()->route('homeUser')->with('gagal', 'Anda masih login!');
         }
 
         return $next($request);

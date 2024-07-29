@@ -20,9 +20,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 // ADMIN
-Route::group(['middleware' => 'admin'], function () {
+Route::middleware('admin')->group(function(){
+
     // dashboard
     Route::get('/admin/dashboard', [AdminController::class, 'dashboardAdmin'])->name('admin.dashboard');
 
@@ -72,13 +72,18 @@ Route::group(['middleware' => 'admin'], function () {
 
 // \ADMIN
 
-Route::group(['middleware' => 'guest'], function () {
+Route::middleware('cek_session_null')->group(function(){
+
+    // landing page
+    Route::get('/', function () {
+        return view('home');
+    });
+    // \landing page
+
     // LOGIN
     Route::get('/login', [LoginController::class, 'tampilLogin'])->name('auth.login');
     Route::post('/login', [LoginController::class, 'login']);
     // \LOGIN
-
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     // REGISTER
     Route::get('/register', [RegisterController::class, 'halamanRegister'])->name('auth.register');
@@ -87,14 +92,8 @@ Route::group(['middleware' => 'guest'], function () {
 
 });
 
-
-Route::get('/', function () {
-    return view('home');
-});
-
 // Halaman User
-
-Route::group(['middleware' => 'admin'], function () {
+Route::middleware('user')->group(function(){
     Route::get('/home', [UserController::class, 'homeUser'])->name('homeUser');
     // Route::get('/keranjang', [UserController::class, 'keranjang'])->name('keranjang');
 
@@ -106,5 +105,9 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/detail-produk/{id_barang}', [UserController::class, 'show'])->name('detailProduk');
 
     Route::get('/user/pesananBerhasil', [UserController::class, 'notifikasiBerhasil'])->name('user.pesananBerhasil');
-});
 // Penutup Halaman User
+});
+
+// LOGOUT
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+// \LOGOUT

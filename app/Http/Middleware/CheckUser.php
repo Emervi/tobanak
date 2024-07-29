@@ -17,12 +17,14 @@ class CheckUser
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check()) {
+        $user = session('user');
+
+        if ( !session()->has('user') ){
             return redirect()->route('auth.login');
         }
 
-        if (Auth::user()->status !== 'user') {
-            return redirect()->route('dashboard.admin')->with('failed', 'Anda tidak bisa mengakses halaman admin');
+        if ($user->status !== 'user'){
+            return redirect()->route('admin.dashboard')->with('gagal', 'Anda bukan user!');
         }
 
         return $next($request);

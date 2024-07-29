@@ -31,12 +31,18 @@
                 <label for="username" class="block text-sm font-medium text-gray-700">username</label>
                 <input id="username" name="username" type="text" autofocus
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 sm:text-sm">
+                    @error('username')
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                    @enderror
             </div>
 
             <div class="mb-6">
                 <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                 <input id="password" name="password" type="password"
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 sm:text-sm">
+                    @error('password')
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                    @enderror
             </div>
 
             <div class="flex items-center justify-between">

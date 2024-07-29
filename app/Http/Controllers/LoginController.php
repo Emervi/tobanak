@@ -31,9 +31,16 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
 
-            if (Auth::user()->status === 'admin') {
+            $user = Auth::user();
+
+            if ($user->status === 'admin') {
+
+                session(['admin' => $user]);
                 return redirect()->intended(route('admin.dashboard'));
+
             }
+
+            session(['user' => $user]);
             return redirect()->intended(route('homeUser'));
         }
 
@@ -46,6 +53,8 @@ class LoginController extends Controller
     {
         Auth::logout();
 
+        session()->flush();
+        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
