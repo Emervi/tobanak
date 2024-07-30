@@ -107,7 +107,7 @@
 
                     <div class="mb-2.5">
                         <label for="diskon" class="block">Diskon(%)</label>
-                        <input type="number" name="diskon" id="diskon" value="{{ old('harga') }}" placeholder="Masukan diskon barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        <input type="number" name="diskon" id="diskon" value="{{ $atribut->diskon }}" placeholder="Masukan diskon barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                         @error( 'diskon' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror
@@ -115,7 +115,7 @@
 
                     <div>
                         <label for="potongan" class="block">Potongan(Rp.)</label>
-                        <input type="number" name="potongan" id="potongan" step="0.001" value="{{ old('harga') }}" placeholder="Masukan potongan barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        <input type="number" name="potongan" id="potongan" step="0.001" value="{{ $atribut->potongan }}" placeholder="Masukan potongan barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                         @error( 'potongan' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror
@@ -234,7 +234,7 @@
 
                     <div class="mb-2">
                         <label for="diskon" class="block">Diskon(%)</label>
-                        <input type="number" name="diskon" id="diskon" value="{{ old('harga') }}" placeholder="Masukan diskon barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        <input type="number" name="diskon" id="diskon" value="{{ old('diskon') }}" placeholder="Masukan diskon barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                         @error( 'diskon' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror
@@ -242,7 +242,7 @@
 
                     <div>
                         <label for="potongan" class="block">Potongan(Rp.)</label>
-                        <input type="number" name="potongan" id="potongan" step="0.001" value="{{ old('harga') }}" placeholder="Masukan potongan barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        <input type="number" name="potongan" id="potongan" step="0.001" value="{{ old('potongan') }}" placeholder="Masukan potongan barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                         @error( 'potongan' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror

@@ -53,15 +53,17 @@ class BarangController extends Controller
         $keuntungan = (25 / 100) * $modal;
         $hargaJual = $modal + $keuntungan + $bebanProduksi;
 
+        $diskon = $request->diskon;
+        $potongan = $request->potongan;
+
         // Perhitungan harga jika ada diskon
         if( $request->has('diskon') ){
-            $diskon = ($request->diskon / 100) * $hargaJual;
-            $hargaJual -= $diskon;
+            $hargaDiskon = ($diskon / 100) * $hargaJual;
+            $hargaJual -= $hargaDiskon;
         }
 
         // Perhitungan harga jika ada potongan
         if( $request->has('potongan') ){
-            $potongan = $request->potongan;
             $hargaJual -= $potongan;
         }
 
@@ -72,7 +74,7 @@ class BarangController extends Controller
         }else{
             $imageName = 'noPhoto.jpg';
         }
-        
+
         Barang::create([
             'foto_barang' => $imageName,
             'nama_barang' => $request->nama_barang,
@@ -81,6 +83,8 @@ class BarangController extends Controller
             'stok_barang' => $request->stok_barang,
             'bahan' => $request->bahan,
             'harga' => $hargaJual,
+            'diskon' => $diskon,
+            'potongan' => $potongan,
         ]);
 
         return redirect()->route('admin.daftarBarang')->with('success', 'Barang berhasil ditambahkan!');
@@ -106,22 +110,41 @@ class BarangController extends Controller
             'bahan' => ['required'],
             'harga' => ['required', 'numeric'],
             'foto_barang' => ['image', 'mimes:jpeg,png,jpg'],
-            'diskon' => ['numeric', 'nullable'],
-            'potongan' => ['numeric', 'nullable'],
         ]);
 
         $hargaJual = $request->harga;
+        $diskon = $request->diskon;
+        $potongan = $request->potongan;
 
         // Perhitungan harga jika ada diskon
         if( $request->has('diskon') ){
-            $diskon = ($request->diskon / 100) * $hargaJual;
-            $hargaJual -= $diskon;
+            $hargaDiskon = ($diskon / 100) * $hargaJual;
+            $hargaJual -= $hargaDiskon;
         }
 
         // Perhitungan harga jika ada potongan
         if( $request->has('potongan') ){
-            $potongan = $request->potongan;
             $hargaJual -= $potongan;
+        }
+
+        // jika diskon dan potongan bernilai 0
+        if( empty($diskon) && empty($potongan) ){
+            // Harga modal dengan patokan bahan
+            $bahan = $request->bahan;
+            if ( $bahan == 'tebal' ) {
+                $modal = 20000 * 10;
+            }else if ( $bahan == 'street' ) {
+                $modal = 19000 * 10;
+            }else if ( $bahan == 'sedang' ) {
+                $modal = 18000 * 10;
+            }else {
+                $modal = 17000 * 10;
+            }
+        
+            // Menemukan harga jual
+            $bebanProduksi = (2 / 100) * $modal;
+            $keuntungan = (25 / 100) * $modal;
+            $hargaJual = $modal + $keuntungan + $bebanProduksi;
         }
         
         if ($request->has('foto_barang')){
@@ -142,6 +165,8 @@ class BarangController extends Controller
             'stok_barang' => $request->stok_barang,
             'bahan' => $request->bahan,
             'harga' => $hargaJual,
+            'diskon' => $request->diskon,
+            'potongan' => $request->potongan,
         ]);
 
         return redirect()->route(('admin.daftarBarang'))->with('success', 'Barang berhasil diupdate!');

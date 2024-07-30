@@ -16,6 +16,8 @@ class Barang extends Model
         'deskripsi_barang',
         'stok_barang',
         'bahan',
-        'harga'
+        'harga',
+        'diskon',
+        'potongan',
     ];
 }

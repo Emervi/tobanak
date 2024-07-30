@@ -22,8 +22,8 @@ class CreateBarangsTable extends Migration
             $table->string('kategori_barang');
             $table->string('bahan');
             $table->double('harga');
-            $table->double('diskon')->nullable();
-            $table->double('potongan')->nullable();
+            $table->integer('diskon');
+            $table->integer('potongan');
             $table->timestamps();
         });
     }
