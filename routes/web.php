@@ -42,6 +42,9 @@ Route::middleware('admin')->group(function(){
     Route::put('/admin/dashboard/barang/tambahBarang/{id_barang}', [BarangController::class, 'updateBarang'])->name('admin.updateBarang');
     // hapus barang
     Route::delete('/admin/dashboard/barang/{id_barang}', [BarangController::class, 'destroyBarang'])->name('admin.hapusBarang');
+
+    // // reset harga
+    // Route::put('/resetHarga/{id_barang}', [BarangController::class, 'resetHarga'])->name('admin.resetHarga');
     // \ADMIN.BARANG
 
     // ADMIN.USER

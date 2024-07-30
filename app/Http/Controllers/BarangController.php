@@ -35,8 +35,37 @@ class BarangController extends Controller
     // store barang
     public function storeBarang(BarangRequest $request)
     {
-        // Barang::create($request->all());
 
+        // Harga modal dengan patokan bahan
+        $bahan = $request->bahan;
+        if ( $bahan == 'tebal' ) {
+            $modal = 20000 * 10;
+        }else if ( $bahan == 'street' ) {
+            $modal = 19000 * 10;
+        }else if ( $bahan == 'sedang' ) {
+            $modal = 18000 * 10;
+        }else {
+            $modal = 17000 * 10;
+        }
+        
+        // Menemukan harga jual
+        $bebanProduksi = (2 / 100) * $modal;
+        $keuntungan = (25 / 100) * $modal;
+        $hargaJual = $modal + $keuntungan + $bebanProduksi;
+
+        // Perhitungan harga jika ada diskon
+        if( $request->has('diskon') ){
+            $diskon = ($request->diskon / 100) * $hargaJual;
+            $hargaJual -= $diskon;
+        }
+
+        // Perhitungan harga jika ada potongan
+        if( $request->has('potongan') ){
+            $potongan = $request->potongan;
+            $hargaJual -= $potongan;
+        }
+
+        // Logic untuk memasukan foto
         if ($request->has('foto_barang')){
             $imageName = time().'.'.$request->foto_barang->extension();  
             $request->foto_barang->move(public_path('images'), $imageName);
@@ -51,7 +80,7 @@ class BarangController extends Controller
             'deskripsi_barang' => $request->deskripsi_barang,
             'stok_barang' => $request->stok_barang,
             'bahan' => $request->bahan,
-            'harga' => $request->harga,
+            'harga' => $hargaJual,
         ]);
 
         return redirect()->route('admin.daftarBarang')->with('success', 'Barang berhasil ditambahkan!');
@@ -77,7 +106,23 @@ class BarangController extends Controller
             'bahan' => ['required'],
             'harga' => ['required', 'numeric'],
             'foto_barang' => ['image', 'mimes:jpeg,png,jpg'],
+            'diskon' => ['numeric', 'nullable'],
+            'potongan' => ['numeric', 'nullable'],
         ]);
+
+        $hargaJual = $request->harga;
+
+        // Perhitungan harga jika ada diskon
+        if( $request->has('diskon') ){
+            $diskon = ($request->diskon / 100) * $hargaJual;
+            $hargaJual -= $diskon;
+        }
+
+        // Perhitungan harga jika ada potongan
+        if( $request->has('potongan') ){
+            $potongan = $request->potongan;
+            $hargaJual -= $potongan;
+        }
         
         if ($request->has('foto_barang')){
         $imageName = time().'.'.$request->foto_barang->extension();  
@@ -96,7 +141,7 @@ class BarangController extends Controller
             'deskripsi_barang' => $request->deskripsi_barang,
             'stok_barang' => $request->stok_barang,
             'bahan' => $request->bahan,
-            'harga' => $request->harga,
+            'harga' => $hargaJual,
         ]);
 
         return redirect()->route(('admin.daftarBarang'))->with('success', 'Barang berhasil diupdate!');

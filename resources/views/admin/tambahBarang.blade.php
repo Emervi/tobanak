@@ -1,18 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Barang')
+@section('title', (isset($barang) ? 'Update Barang' : 'Tambah Barang'))
 
 @section('body')
 
 {{-- tombol kembali dan tambah --}}
 <div class="w-1/2 mx-auto mt-10">
 
+    @isset($barang)
     <div class="bg-white shadow-2xl font-medium p-2 mb-10">
 
-        <h2 class="text-center font-bold text-xl">Tambah Barang</h2>
+        <h2 class="text-center font-bold text-xl">Update Barang</h2>
 
         {{-- pengecekan apakah tombol edit dipencet / isset($barang) --}}
-        @isset($barang)
+        
         
         @foreach ( $barang as $atribut )
             
@@ -65,6 +66,19 @@
                     </div>
 
                     <div class="mb-3">
+                        <label class="block">Bahan</label>
+                        <select name="bahan" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                            <option value="tebal" {{ ($atribut->bahan == 'tebal' ? 'selected' : '') }}>Tebal</option>
+                            <option value="street" {{ ($atribut->bahan == 'street' ? 'selected' : '') }}>Street</option>
+                            <option value="sedang" {{ ($atribut->bahan == 'sedang' ? 'selected' : '') }}>Sedang</option>
+                            <option value="tipis" {{ ($atribut->bahan == 'tipis' ? 'selected' : '') }}>Tipis</option>
+                        </select>
+                        @error( 'bahan' )
+                            <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
                         <label for="deskripsi_barang" class="block">Deskripsi barang</label>
                         <textarea name="deskripsi_barang" id="deskripsi_barang" placeholder="Masukan deskripsi barang" class="bg-gray-300 p-1 shadow rounded-sm w-full resize-none h-24 focus:outline-none">{{ $atribut->deskripsi_barang }}</textarea>
                         @error( 'deskripsi_barang' )
@@ -84,22 +98,25 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="block">Bahan</label>
-                        <select name="bahan" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
-                            <option value="tebal" {{ ($atribut->bahan == 'tebal' ? 'selected' : '') }}>Tebal</option>
-                            <option value="street" {{ ($atribut->bahan == 'street' ? 'selected' : '') }}>Street</option>
-                            <option value="sedang" {{ ($atribut->bahan == 'sedang' ? 'selected' : '') }}>Sedang</option>
-                            <option value="tipis" {{ ($atribut->bahan == 'tipis' ? 'selected' : '') }}>Tipis</option>
-                        </select>
-                        @error( 'bahan' )
+                        <label for="harga" class="block">Harga</label>
+                        <input type="number" name="harga" id="harga" step="0.001" value="{{ $atribut->harga }}" placeholder="Masukan harga barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        @error( 'harga' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <div class="mb-3">
-                        <label for="harga" class="block">Harga</label>
-                        <input type="number" name="harga" id="harga" step="0.001" value="{{ $atribut->harga }}" placeholder="Masukan harga barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
-                        @error( 'harga' )
+                    <div class="mb-2.5">
+                        <label for="diskon" class="block">Diskon(%)</label>
+                        <input type="number" name="diskon" id="diskon" value="{{ old('harga') }}" placeholder="Masukan diskon barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        @error( 'diskon' )
+                            <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="potongan" class="block">Potongan(Rp.)</label>
+                        <input type="number" name="potongan" id="potongan" step="0.001" value="{{ old('harga') }}" placeholder="Masukan potongan barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        @error( 'potongan' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror
                     </div>
@@ -112,18 +129,30 @@
                     <i class="fas fa-arrow-left mr-1"></i>
                     Kembali
                 </a>
+
+                <div>
+                {{-- <a href="{{ route('admin.resetHarga', [$atribut->id_barang]) }}" class="text-blue-600 p-2 bg-white border border-blue-600 rounded-md hover:text-white hover:bg-blue-600">
+                    <i class="fas fa-sync mr-1"></i>
+                    Reset Harga
+                </a> --}}
                 <button type="submit" class="text-green-600 p-2 bg-white border border-green-600 rounded-md hover:text-white hover:bg-green-600">
                     <i class="fas fa-upload mr-1"></i>
                     Update Barang
                 </button>
+                </div>
+
             </div>
         </form>
 
         @endforeach
         
+    </div>
         {{-- jika tidak isset($barang) = false, maka akan ditampilkan form untuk input --}}
         @else
 
+    <div class="bg-white shadow-2xl font-medium p-2 mb-10">
+
+        <h2 class="text-center font-bold text-xl">Tambah Barang</h2>
         {{-- form untuk pengisian input barang --}}
         <form action="{{ route('admin.tambahBarang') }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -203,10 +232,18 @@
                         @enderror
                     </div>
 
-                    <div class="mb-3">
-                        <label for="harga" class="block">Harga</label>
-                        <input type="number" name="harga" id="harga" step="0.001" value="{{ old('harga') }}" placeholder="Masukan harga barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
-                        @error( 'harga' )
+                    <div class="mb-2">
+                        <label for="diskon" class="block">Diskon(%)</label>
+                        <input type="number" name="diskon" id="diskon" value="{{ old('harga') }}" placeholder="Masukan diskon barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        @error( 'diskon' )
+                            <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="potongan" class="block">Potongan(Rp.)</label>
+                        <input type="number" name="potongan" id="potongan" step="0.001" value="{{ old('harga') }}" placeholder="Masukan potongan barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        @error( 'potongan' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror
                     </div>
