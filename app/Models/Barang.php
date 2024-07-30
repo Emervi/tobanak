@@ -20,4 +20,9 @@ class Barang extends Model
         'diskon',
         'potongan',
     ];
+
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class, 'id_barang', 'id_barang');
+    }
 }

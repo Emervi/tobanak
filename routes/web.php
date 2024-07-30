@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // ADMIN
-Route::middleware('admin')->group(function(){
+Route::middleware('admin')->group(function () {
 
     // dashboard
     Route::get('/admin/dashboard', [AdminController::class, 'dashboardAdmin'])->name('admin.dashboard');
@@ -75,7 +75,7 @@ Route::middleware('admin')->group(function(){
 
 // \ADMIN
 
-Route::middleware('cek_session_null')->group(function(){
+Route::middleware('cek_session_null')->group(function () {
 
     // landing page
     Route::get('/', function () {
@@ -96,19 +96,22 @@ Route::middleware('cek_session_null')->group(function(){
 });
 
 // Halaman User
-Route::middleware('user')->group(function(){
+Route::middleware('user')->group(function () {
     Route::get('/home', [UserController::class, 'homeUser'])->name('homeUser');
-    // Route::get('/keranjang', [UserController::class, 'keranjang'])->name('keranjang');
+
 
     Route::get('/keranjang', [KeranjangController::class, 'index'])->name('keranjang');
     Route::post('/keranjang/tambah', [KeranjangController::class, 'tambah'])->name('keranjang.tambah');
+    Route::post('/keranjang/update', [KeranjangController::class, 'update'])->name('keranjang.update');
     Route::post('/keranjang/hapus', [KeranjangController::class, 'hapus'])->name('keranjang.hapus');
 
+    Route::get('/checkout', [TransaksiController::class, 'checkout'])->name('transaksi.checkout');
+    Route::post('/proses-checkout', [TransaksiController::class, 'prosesCheckout'])->name('transaksi.prosesCheckout');
 
     Route::get('/detail-produk/{id_barang}', [UserController::class, 'show'])->name('detailProduk');
 
     Route::get('/user/pesananBerhasil', [UserController::class, 'notifikasiBerhasil'])->name('user.pesananBerhasil');
-// Penutup Halaman User
+    // Penutup Halaman User
 });
 
 // LOGOUT

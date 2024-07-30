@@ -20,8 +20,8 @@ class CreateKeranjangsTable extends Migration
             $table->integer('kuantitas');
             $table->timestamps();
 
-            // $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
-            // $table->foreign('id_barang')->references('id_barang')->on('barangs')->onDelete('cascade');
+            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
+            $table->foreign('id_barang')->references('id_barang')->on('barangs')->onDelete('cascade');
         });
     }
 

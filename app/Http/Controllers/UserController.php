@@ -26,8 +26,6 @@ class UserController extends Controller
         return view('user.home', compact('barangs', 'kategori'));
     }
 
-
-
     public function keranjang()
     {
         return view('user.keranjang');
@@ -38,6 +36,7 @@ class UserController extends Controller
         $barang = Barang::where('id_barang', $id_barang)->firstOrFail();
         return view('user.detail', compact('barang'));
     }
+
 
     // Penutup Halaman User
 

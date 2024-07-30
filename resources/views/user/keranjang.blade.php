@@ -3,9 +3,9 @@
 @section('title', 'Keranjang')
 
 @section('body')
-<div class="flex flex-col md:flex-row mt-8">
-    <!-- Kembali Button dan Header -->
-    <div class="md:w-7/12 p-4 ml-10">
+<div class="flex flex-col md:flex-row mt-8 mx-4 md:mx-10">
+    <!-- Daftar Produk di Keranjang -->
+    <div class="md:w-7/12 p-4">
         <div class="flex justify-between items-center mb-4">
             <form action="{{ route('homeUser') }}" method="GET">
                 <button class="border border-pink-500 text-pink-500 hover:text-white hover:bg-pink-500 px-4 py-2 rounded">Kembali</button>
@@ -13,57 +13,63 @@
             <h2 class="text-2xl font-bold">Keranjang</h2>
         </div>
         
-        <!-- Daftar Produk -->
-        <div class="space-y-1 ml-10">
-            @foreach($keranjang as $item)
-                @if($item['barang'])
-                    <div class="flex items-center bg-white px-2 py-1 rounded-lg shadow">
-                        <img class="w-14 h-14 object-cover rounded mr-4" src="{{ asset('images/' . $item['barang']->foto_barang) }}" alt="Foto Barang">
-                        <div class="flex-1">
-                            <h3 class="text-lg font-bold">{{ $item['barang']->nama_barang }}</h3>
-                            <p class="text-gray-500">Bahan: {{ $item['barang']->bahan_barang }}</p>
+        <div class="space-y-4">
+            <form action="{{ route('keranjang.update') }}" method="POST">
+                @csrf
+                @foreach($keranjang as $item)
+                    @if($item->barang)
+                        <div class="bg-white p-4 rounded-lg shadow-md flex items-center">
+                            <img class="w-16 h-16 object-cover rounded mr-4" src="{{ asset('images/' . $item->barang->foto_barang) }}" alt="Foto Barang">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold">{{ $item->barang->nama_barang }}</h3>
+                                <p class="text-gray-600">Bahan: {{ $item->barang->bahan_barang }}</p>
+                            </div>
+                            <div class="text-right mr-4">
+                                <span class="block text-lg">Jumlah: 
+                                    <input type="number" name="kuantitas[{{ $item->id_keranjang }}]" value="{{ $item->kuantitas }}" min="1" class="w-16 text-center border border-gray-300 rounded-md">
+                                </span>
+                                <span class="block text-lg font-semibold">Rp {{ number_format($item->barang->harga * $item->kuantitas, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button type="submit" name="action" value="update" class="bg-yellow-400 text-white hover:bg-yellow-500 px-3 py-1 rounded-lg">Update</button>
+                                <form action="{{ route('keranjang.hapus') }}" method="POST" class="inline">
+                                    @csrf
+                                    <input type="hidden" name="id_keranjang" value="{{ $item->id_keranjang }}">
+                                    <button type="submit" class="bg-red-500 text-white hover:bg-red-600 px-3 py-1 rounded-lg">Hapus</button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="flex flex-col items-center">
-                            <span class="text-lg">Jumlah : {{ $item['kuantitas'] }}</span>
-                            <span class="text-lg font-bold">Rp {{ number_format($item['barang']->harga, 0, ',', '.') }}</span> <!-- Menggunakan number_format -->
-                        </div>
-                        <form method="POST" action="{{ route('keranjang.hapus') }}" class="ml-10">
-                            @csrf
-                            <input type="hidden" name="id_barang" value="{{ $item['barang']->id_barang }}">
-                            <button type="submit" class="bg-red-500 text-white hover:bg-red-700 px-2 py-1 rounded-full">X</button>
-                        </form>
-                    </div>
-                @else
-                    <div class="flex items-center bg-white px-2 py-1 rounded-lg shadow">
-                        <div class="flex-1">
-                            <h3 class="text-lg font-bold text-red-500">Barang tidak ditemukan</h3>
-                        </div>
-                    </div>
-                @endif
-            @endforeach
+                    @endif
+                @endforeach
+            </form>
         </div>
     </div>
-    
+
     <!-- Ringkasan Pesanan -->
-    <div class="md:w-5/12 lg:w-4/12 bg-white p-4 rounded-lg shadow-md sticky top-0 md:ml-auto">
-        <h2 class="text-2xl font-bold mb-4">Ringkasan Pesanan</h2>
-        <ul class="mb-4">
+    <div class="md:w-5/12 lg:w-4/12 bg-white p-6 rounded-lg shadow-md md:ml-auto mt-8 md:mt-0">
+        <h2 class="text-2xl font-bold mb-6">Ringkasan Pesanan</h2>
+        <ul class="space-y-2 mb-6">
             @foreach($keranjang as $item)
-                @if($item['barang'])
-                    <li class="flex justify-between border-b border-opacity-5 mb-1">
-                        <span>{{ $item['barang']->nama_barang }} x {{ $item['kuantitas'] }}</span>
-                        <span>Rp {{ number_format($item['barang']->harga * $item['kuantitas'], 0, ',', '.') }}</span> <!-- Menggunakan number_format -->
+                @if($item->barang)
+                    <li class="flex justify-between border-b border-gray-200 pb-2">
+                        <span>{{ $item->barang->nama_barang }} x {{ $item->kuantitas }}</span>
+                        <span>Rp {{ number_format($item->barang->harga * $item->kuantitas, 0, ',', '.') }}</span>
                     </li>
                 @endif
             @endforeach
         </ul>
-        <div class="flex justify-between items-center mt-20 mb-10 border-t border-t-black">
-            <span class="text-xl font-bold">Total:</span>
-            <span class="text-xl font-bold">Rp {{ number_format($totalHarga, 0, ',', '.') }}</span> <!-- Menggunakan number_format -->
+        <div class="flex justify-between items-center border-t border-gray-200 pt-4 mb-6">
+            <span class="text-xl font-semibold">Total:</span>
+            <span class="text-xl font-semibold">Rp {{ number_format($totalHarga, 0, ',', '.') }}</span>
         </div>
-        <div class="flex justify-end text-center">
-        <a href="{{ route('user.pesananBerhasil') }}" class="bg-pink-400 w-full text-white hover:bg-pink-600 px-4 py-2 rounded">Checkout</a>
-        </div>
+        <form method="POST" action="{{ route('transaksi.prosesCheckout') }}">
+            @csrf
+            <div class="flex items-center mb-4">
+                <label for="uang_pembayaran" class="block text-sm font-medium text-gray-700 w-1/3">Uang Pembayaran</label>
+                <input type="number" id="uang_pembayaran" name="uang_pembayaran" class="ml-4 mt-1 block w-2/3 border border-gray-300 rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500 sm:text-lg py-3 px-4" required>
+            </div>
+            <button type="submit" class="bg-pink-500 text-white hover:bg-pink-600 px-4 py-2 rounded-lg w-full">Checkout</button>
+        </form>
     </div>
 </div>
 @endsection
