@@ -3,6 +3,21 @@
 @section('title', 'Keranjang')
 
 @section('body')
+
+@if(session('success'))
+    <div class="fixed top-4 right-4 bg-green-700 border border-green-800 text-white px-4 py-3 rounded shadow-lg transition-transform transform-gpu duration-300 ease-in-out" role="alert">
+        <div class="flex items-center justify-between">
+            <span class="text-sm">{{ session('success') }}</span>
+            <button onclick="this.parentElement.parentElement.style.transform='translateX(100%)'; setTimeout(() => this.parentElement.parentElement.remove(), 300);" class="ml-4 text-green-500 hover:text-green-700">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+@endif
+
+
 <div class="flex flex-col md:flex-row mt-8">
     <!-- Kembali Button dan Header -->
     <div class="md:w-7/12 p-4 ml-10">

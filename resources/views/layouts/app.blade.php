@@ -47,6 +47,20 @@
         .landing-page {
             animation: landing-page 1s linear;
         }
+
+
+        .alert {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            min-width: 250px;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
