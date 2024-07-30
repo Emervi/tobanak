@@ -22,6 +22,8 @@ class BarangSeeder extends Seeder
             'kategori_barang' => 'Baju',
             'bahan' => 'Katun',
             'harga' => 100000,
+            'diskon' => 10,
+            'potongan' => 10000,
         ]);
 
         Barang::create([
@@ -32,6 +34,8 @@ class BarangSeeder extends Seeder
             'kategori_barang' => 'Celana',
             'bahan' => 'Poliester',
             'harga' => 120000,
+            'diskon' => 10,
+            'potongan' => 10000,
         ]);
 
         Barang::create([
@@ -42,6 +46,8 @@ class BarangSeeder extends Seeder
             'kategori_barang' => 'Baju Panjang',
             'bahan' => 'Denim',
             'harga' => 90000,
+            'diskon' => 10,
+            'potongan' => 10000,
         ]);
 
         // Tambahkan lebih banyak data barang sesuai kebutuhan

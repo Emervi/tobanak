@@ -30,8 +30,6 @@ class BarangRequest extends FormRequest
             'stok_barang' => ['required', 'integer'],
             'bahan' => ['required'],
             'foto_barang' => ['image', 'mimes:jpeg,png,jpg'],
-            'diskon' => ['numeric', 'nullable'],
-            'potongan' => ['numeric', 'nullable'],
         ];
     }
 
