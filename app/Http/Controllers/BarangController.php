@@ -81,7 +81,7 @@ class BarangController extends Controller
             'kategori_barang' => $request->kategori_barang,
             'deskripsi_barang' => $request->deskripsi_barang,
             'stok_barang' => $request->stok_barang,
-            'bahan' => $request->bahan,
+            'bahan' => $bahan,
             'harga' => $hargaJual,
             'diskon' => $diskon,
             'potongan' => $potongan,
@@ -112,7 +112,22 @@ class BarangController extends Controller
             'foto_barang' => ['image', 'mimes:jpeg,png,jpg'],
         ]);
 
-        $hargaJual = $request->harga;
+        $bahan = $request->bahan;
+        if ( $bahan == 'tebal' ) {
+            $modal = 20000 * 10;
+        }else if ( $bahan == 'street' ) {
+            $modal = 19000 * 10;
+        }else if ( $bahan == 'sedang' ) {
+            $modal = 18000 * 10;
+        }else {
+            $modal = 17000 * 10;
+        }
+        
+        // Menemukan harga jual
+        $bebanProduksi = (2 / 100) * $modal;
+        $keuntungan = (25 / 100) * $modal;
+        $hargaJual = $modal + $keuntungan + $bebanProduksi;
+
         $diskon = $request->diskon;
         $potongan = $request->potongan;
 
@@ -126,27 +141,8 @@ class BarangController extends Controller
         if( $request->has('potongan') ){
             $hargaJual -= $potongan;
         }
-
-        // jika diskon dan potongan bernilai 0
-        if( empty($diskon) && empty($potongan) ){
-            // Harga modal dengan patokan bahan
-            $bahan = $request->bahan;
-            if ( $bahan == 'tebal' ) {
-                $modal = 20000 * 10;
-            }else if ( $bahan == 'street' ) {
-                $modal = 19000 * 10;
-            }else if ( $bahan == 'sedang' ) {
-                $modal = 18000 * 10;
-            }else {
-                $modal = 17000 * 10;
-            }
         
-            // Menemukan harga jual
-            $bebanProduksi = (2 / 100) * $modal;
-            $keuntungan = (25 / 100) * $modal;
-            $hargaJual = $modal + $keuntungan + $bebanProduksi;
-        }
-        
+        // logic untuk memasukan foto
         if ($request->has('foto_barang')){
         $imageName = time().'.'.$request->foto_barang->extension();  
         $request->foto_barang->move(public_path('images'), $imageName);
@@ -163,7 +159,7 @@ class BarangController extends Controller
             'kategori_barang' => $request->kategori_barang,
             'deskripsi_barang' => $request->deskripsi_barang,
             'stok_barang' => $request->stok_barang,
-            'bahan' => $request->bahan,
+            'bahan' => $bahan,
             'harga' => $hargaJual,
             'diskon' => $request->diskon,
             'potongan' => $request->potongan,
