@@ -30,6 +30,8 @@ class BarangRequest extends FormRequest
             'stok_barang' => ['required', 'integer'],
             'bahan' => ['required'],
             'foto_barang' => ['image', 'mimes:jpeg,png,jpg'],
+            'diskon' => ['required'],
+            'potongan' => ['required'],
         ];
     }
 
@@ -49,8 +51,8 @@ class BarangRequest extends FormRequest
             'stok_barang.required' => 'Stok barang wajib diisi',
             'stok_barang.integer' => 'Stok barang wajib bernilai bilangan bulat',
             'bahan.required' => 'Bahan wajib diisi',
-            'diskon.numeric' => 'Masukan diskon yang valid',
-            'potongan.numeric' => 'Masukan potongan yang valid',
+            'diskon.required' => 'Diskon wajid diisi, minimal 0',
+            'potongan.required' => 'Potongan wajid diisi, minimal 0',
             'foto_barang.image' => 'File yang dimasukan harus berupa image',
             'foto_barang.mimes' => 'File yang dimasukan harus berformat berikut : jpeg, png, jpg',
         ];

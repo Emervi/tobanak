@@ -110,6 +110,8 @@ class BarangController extends Controller
             'bahan' => ['required'],
             'harga' => ['required', 'numeric'],
             'foto_barang' => ['image', 'mimes:jpeg,png,jpg'],
+            'diskon' => ['required'],
+            'potongan' => ['required'],
         ]);
 
         $bahan = $request->bahan;
