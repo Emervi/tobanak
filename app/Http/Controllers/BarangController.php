@@ -11,19 +11,29 @@ class BarangController extends Controller
     // halaman barang
     public function daftarBarang()
     {
-        $barangs = Barang::latest()->get();
+        $perPage = 5;
 
-        return view('admin.daftarBarang', compact('barangs'));
+        $barangs = Barang::latest()->paginate($perPage);
+
+        $currentPage = $barangs->currentPage();
+        $offset = ($currentPage - 1) * $perPage;
+
+        return view('admin.daftarBarang', compact('barangs', 'offset'));
     }
 
     // cari barang
     public function cariBarang(Request $request)
     {
+        $perPage = 5;
+
         $query = $request->keyword_barang;
         $barangs = Barang::where('nama_barang', 'LIKE', "%$query%")
-        ->get();
+        ->paginate($perPage);
 
-        return view('admin.daftarBarang', compact('barangs'));
+        $currentPage = $barangs->currentPage();
+        $offset = ($currentPage - 1) * $perPage;
+
+        return view('admin.daftarBarang', compact('barangs', 'offset'));
     }
 
     // halaman tambah barang
@@ -110,6 +120,8 @@ class BarangController extends Controller
             'bahan' => ['required'],
             'harga' => ['required', 'numeric'],
             'foto_barang' => ['image', 'mimes:jpeg,png,jpg'],
+            'diskon' => ['required'],
+            'potongan' => ['required'],
         ]);
 
         $bahan = $request->bahan;

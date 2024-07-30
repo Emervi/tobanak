@@ -10,10 +10,13 @@
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
 
     <div class="w-full max-w-sm p-8 bg-white rounded-lg shadow-md">
-        @if ( session('success') )
-        <div class="w-full bg-green-400 mx-auto mb-2 text-center font-medium p-0.5">
-            <p>{{ session('success') }}</p>
-        </div>
+        @if(session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative transition duration-300 ease-in-out transform animate-slide-in" role="alert">
+                <span class="block sm:inline">{{ session('success') }}</span>
+                <span class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer" onclick="this.parentElement.style.display='none';">
+                    <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 5.652a.5.5 0 00-.706 0L10 9.293 6.354 5.646a.5.5 0 10-.708.708L9.293 10l-3.647 3.646a.5.5 0 10.708.708L10 10.707l3.646 3.647a.5.5 0 10.708-.708L10.707 10l3.647-3.646a.5.5 0 000-.702z"/></svg>
+                </span>
+            </div>
         @endif
 
         @if ( session('error') )

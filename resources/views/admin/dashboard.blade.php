@@ -5,7 +5,7 @@
 @section('body')
 
 <div class="mb-4">
-    <h1 class="text-2xl font-bold m-3">Selamat Datang Admin!</h1>
+    <h1 class="text-2xl font-bold m-3">Selamat Datang {{ $name }}!</h1>
 </div>
 
 <div class="min-w-full flex flex-col justify-evenly sm:flex-row md:flex-row">
@@ -16,7 +16,7 @@
 
         <div class="font-medium text-5xl flex flex-col md:flex-row justify-evenly items-center mt-3">
             <i class="fas fa-exchange"></i>
-            <p>{{ $jumlahTransaksi }}</p>
+            <p>{{ $jumlahTransaksiToday }}/{{ $jumlahTransaksi }}</p>
         </div>
 
     </a>

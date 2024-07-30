@@ -14,10 +14,10 @@ class TransaksiFactory extends Factory
     public function definition()
     {
         return [
-            'tanggal' => $this->faker->date('Y-m-d'),
-            'id_user' => rand(1,3),
-            'id_barang' => rand(6,9),
-            'kuantitas' => rand(0,11),
+            'tanggal' => now(),
+            'id_user' => 1,
+            'id_barang' => 1,
+            'kuantitas' => rand(1,7),
             'total_harga' => rand(100000, 1000000),
             'uang_pembayaran' => rand(300000, 800000),
             'kembalian' => rand(1, 100000),

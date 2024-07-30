@@ -36,10 +36,17 @@
 
         </form>
 
-        @if ( session('success') )
-        <div class="bg-green-300 w-1/3 p-1 rounded font-medium">
-            <p class="ml-2">{{ session('success') }}</p>
-        </div>
+        @if(session('success'))
+            <div class="fixed top-4 right-4 bg-green-700 border border-green-800 text-white px-4 py-3 rounded shadow-lg transition-transform transform-gpu duration-300 ease-in-out" role="alert">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm">{{ session('success') }}</span>
+                    <button onclick="this.parentElement.parentElement.style.transform='translateX(100%)'; setTimeout(() => this.parentElement.parentElement.remove(), 300);" class="ml-4 text-green-500 hover:text-green-700">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
         @endif
         
     </div>
@@ -56,7 +63,7 @@
         <tbody>
             @foreach ( $users as $index => $user )
             <tr class="hover:bg-gray-300">
-                <td class="p-3">{{ ++$index }}</td>
+                <td class="p-3">{{ $offset + $index + 1 }}</td>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->status }}</td>
@@ -68,7 +75,7 @@
                     <form action="{{ route('admin.hapusUser', [$user->id_user]) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <button class="text-red-600 w-20 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600" onclick="confirm('Apakah anda yakin ingin menghapus user tersebut?')">
+                        <button class="text-red-600 w-20 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600" onclick="confirmDelete(event)">
                             <i class="fas fa-trash mr-1"></i>
                             Hapus
                         </button>
@@ -76,6 +83,10 @@
                 </td>
             </tr>    
             @endforeach
+
+            {{-- pagination --}}
+            {{ $users->links() }}
+
         </tbody>
     </table>
     </div>

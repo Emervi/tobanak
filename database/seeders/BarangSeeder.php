@@ -50,6 +50,30 @@ class BarangSeeder extends Seeder
             'potongan' => 10000,
         ]);
 
+        Barang::create([
+            'nama_barang' => 'Celana Bapak',
+            'stok_barang' => 20,
+            'deskripsi_barang' => 'Celana anak yang nyaman untuk aktivitas sehari-hari.',
+            'foto_barang' => 'path/to/image3.jpg',
+            'kategori_barang' => 'Baju Panjang',
+            'bahan' => 'Denim',
+            'harga' => 90000,
+            'diskon' => 10,
+            'potongan' => 10000,
+        ]);
+        
+        Barang::create([
+            'nama_barang' => 'Celana Renang',
+            'stok_barang' => 20,
+            'deskripsi_barang' => 'Celana anak yang nyaman untuk aktivitas sehari-hari.',
+            'foto_barang' => 'path/to/image3.jpg',
+            'kategori_barang' => 'Baju Panjang',
+            'bahan' => 'Denim',
+            'harga' => 90000,
+            'diskon' => 10,
+            'potongan' => 10000,
+        ]);
+
         // Tambahkan lebih banyak data barang sesuai kebutuhan
     }
 }

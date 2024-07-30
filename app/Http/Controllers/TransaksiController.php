@@ -80,25 +80,36 @@ class TransaksiController extends Controller
     // Daftar transaksi
     public function daftarTransaksi()
     {
-        $transaksis = Transaksi::join('users', 'transaksis.id_user', '=', 'users.id_user')
-            ->join('barangs', 'transaksis.id_barang', '=', 'barangs.id_barang')
-            ->select('transaksis.*', 'users.name', 'barangs.nama_barang')
-            ->get();
+        $perPage = 5;
 
-        return view('admin.daftarTransaksi', compact('transaksis'));
+        $transaksis = Transaksi::join('users', 'transaksis.id_user', '=', 'users.id_user')
+        ->join('barangs', 'transaksis.id_barang', '=', 'barangs.id_barang')
+        ->select('transaksis.*', 'users.name', 'barangs.nama_barang')
+        ->latest()
+        ->paginate($perPage);
+
+        $currentPage = $transaksis->currentPage();
+        $offset = ($currentPage - 1) * $perPage;
+
+        return view('admin.daftarTransaksi', compact('transaksis', 'offset'));
     }
 
     // Cari transaksi
     public function cariTransaksi(Request $request)
     {
+        $perPage = 5;
+
         $query = $request->keyword_transaksi;
         $transaksis = Transaksi::join('users', 'transaksis.id_user', '=', 'users.id_user')
-            ->join('barangs', 'transaksis.id_barang', '=', 'barangs.id_barang')
-            ->select('transaksis.*', 'users.name', 'barangs.nama_barang')
-            ->whereDate('tanggal', $query)
-            ->get();
+        ->join('barangs', 'transaksis.id_barang', '=', 'barangs.id_barang')
+        ->select('transaksis.*', 'users.name', 'barangs.nama_barang')
+        ->where('tanggal', $query)
+        ->paginate($perPage);
 
-        return view('admin.daftarTransaksi', compact('transaksis'));
+        $currentPage = $transaksis->currentPage();
+        $offset = ($currentPage - 1) * $perPage;
+
+        return view('admin.daftarTransaksi', compact('transaksis', 'offset'));
     }
 
     // Hapus transaksi
