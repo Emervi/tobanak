@@ -18,32 +18,48 @@ class AdminController extends Controller
 
         $jumlahUser = User::count();
 
-        $jumlahTransaksi = Transaksi::where('tanggal', today())
+        $jumlahTransaksiToday = Transaksi::where('tanggal', today())
         ->count();
+
+        $jumlahTransaksi = Transaksi::count();
+
+        $name = session('admin')->name;
 
         return view('admin.dashboard', [
             'jumlahBarang' => $jumlahBarang,
             'jumlahUser' => $jumlahUser,
+            'jumlahTransaksiToday' => $jumlahTransaksiToday,
             'jumlahTransaksi' => $jumlahTransaksi,
+            'name' => $name,
         ]);
     }
 
     // halaman daftar user
     public function daftarUser()
     {
-        $users = User::get();
+        $perPage = 5;
 
-        return view('admin.daftarUser', compact('users'));
+        $users = User::latest()->paginate($perPage);
+
+        $currentPage = $users->currentPage();
+        $offset = ($currentPage - 1) * $perPage;
+
+        return view('admin.daftarUser', compact('users', 'offset'));
     }
 
     // cari barang
     public function cariUser(Request $request)
     {
+        $perPage = 5;
+
         $query = $request->keyword_user;
         $users = User::where('name', 'LIKE', "%$query%")
-        ->get();
+        ->paginate($perPage);
 
-        return view('admin.daftarUser', compact('users'));
+        $currentPage = $users->currentPage();
+        $offset = ($currentPage - 1) * $perPage;
+
+        return view('admin.daftarUser', compact('users', 'offset'));
     }
 
     // edit user

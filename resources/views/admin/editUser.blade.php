@@ -25,7 +25,7 @@
                 <div>
 
                     <div class="mb-3">
-                        <label for="name" class="block">Nama barang</label>
+                        <label for="name" class="block">Nama User</label>
                         <input type="text" name="name" id="name" value="{{ $atribut->name }}" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                         @error( 'name' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
