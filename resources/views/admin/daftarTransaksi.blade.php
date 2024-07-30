@@ -60,8 +60,8 @@
         <tbody>
             @foreach ( $transaksis as $index => $transaksi )
             <tr class="hover:bg-gray-300">
-                <td class="p-3">{{ ++$index }}</td>
-                <td>{{ $transaksi->tanggal }}</td>
+                <td class="p-3">{{ $offset + $index + 1 }}</td>
+                <td>{{ Carbon\Carbon::parse($transaksi->tanggal)->format('m-d-Y') }}</td>
                 <td>{{ $transaksi->name }}</td>
                 <td>{{ $transaksi->nama_barang }}</td>
                 <td>{{ $transaksi->kuantitas }}</td>
@@ -76,7 +76,7 @@
                     <form action="{{ route('admin.hapusTransaksi', [$transaksi->id_transaksi]) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <button class="text-red-600 w-20 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600" onclick="confirm('Apakah anda yakin ingin menghapus transaksi tersebut?')">
+                        <button class="text-red-600 w-20 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600" onclick="confirmDelete(event)">
                             <i class="fas fa-trash mr-1"></i>
                             Hapus
                         </button>
@@ -84,6 +84,10 @@
                 </td>
             </tr>    
             @endforeach
+
+            {{-- pagination --}}
+            {{ $transaksis->links() }}
+
             @if ( empty($transaksi->tanggal) )
             <tr>
                 <td colspan="9" class="text-center font-bold text-xl p-3">Transaksi tidak ditemukan</td>

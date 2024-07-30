@@ -48,6 +48,14 @@
             animation: landing-page 1s linear;
         }
     </style>
+    <script>
+        function confirmDelete(event) {
+            event.preventDefault();
+            if (confirm('Are you sure you want to delete this post?')) {
+                event.target.closest('form').submit();
+            }
+        }
+    </script>
 </head>
 <body class="bg-gray-100">
 

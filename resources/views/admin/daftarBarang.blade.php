@@ -64,7 +64,7 @@
         <tbody>
             @foreach ( $barangs as $index => $barang )
             <tr class="hover:bg-gray-300">
-                <td class="p-3">{{ ++$index }}</td>
+                <td class="p-3">{{ $offset + $index + 1 }}</td>
                 <td>
                     {{-- untuk dihosting gunakan yang ini meureun {{ asset('public/images/' . $barang->foto_barang) }} --}}
                     <img src="{{ asset('images/' . $barang->foto_barang) }}" alt="foto barang" class="w-16 h-16 flex-shrink-0 rounded-md p-1 ml-5">
@@ -83,7 +83,7 @@
                     <form action="{{ route('admin.hapusBarang', [$barang->id_barang]) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <button class="text-red-600 w-20 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600" onclick="confirm('Apakah anda yakin ingin menghapus barang tersebut?')">
+                        <button class="text-red-600 w-20 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600" onclick="confirmDelete(event)">
                             <i class="fas fa-trash mr-1"></i>
                             Hapus
                         </button>
@@ -91,6 +91,10 @@
                 </td>
             </tr>    
             @endforeach
+
+            {{-- pagination --}}
+            {{ $barangs->links() }}
+            
             {{-- <tr class="hover:bg-gray-300">
                 <td class="p-3">1</td>
                 <td>

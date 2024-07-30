@@ -56,7 +56,7 @@
         <tbody>
             @foreach ( $users as $index => $user )
             <tr class="hover:bg-gray-300">
-                <td class="p-3">{{ ++$index }}</td>
+                <td class="p-3">{{ $offset + $index + 1 }}</td>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->status }}</td>
@@ -68,7 +68,7 @@
                     <form action="{{ route('admin.hapusUser', [$user->id_user]) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <button class="text-red-600 w-20 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600" onclick="confirm('Apakah anda yakin ingin menghapus user tersebut?')">
+                        <button class="text-red-600 w-20 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600" onclick="confirmDelete(event)">
                             <i class="fas fa-trash mr-1"></i>
                             Hapus
                         </button>
@@ -76,6 +76,10 @@
                 </td>
             </tr>    
             @endforeach
+
+            {{-- pagination --}}
+            {{ $users->links() }}
+
         </tbody>
     </table>
     </div>
