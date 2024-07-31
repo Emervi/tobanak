@@ -9,6 +9,7 @@ use App\Models\Barang;
 use App\Models\BarangTransaksi;
 use App\Models\Transaksi;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class TransaksiController extends Controller
 {
@@ -42,40 +43,43 @@ class TransaksiController extends Controller
             return redirect()->back()->with('error', 'Uang pembayaran tidak cukup!');
         }
 
-        $latestTransaksi = null;
-
-        foreach ($keranjang as $item) {
-            $latestTransaksi = Transaksi::create([
+        DB::transaction(function () use ($request, $keranjang, $totalHarga, $uangPembayaran, $kembalian) {
+            // Membuat transaksi baru
+            $transaksi = Transaksi::create([
                 'tanggal' => Carbon::now()->toDateString(),
                 'id_user' => session('user')->id_user,
-                'id_barang' => $item->id_barang,
-                'kuantitas' => $item->kuantitas,
-                'total_harga' => $item->kuantitas * $item->barang->harga,
+                'total_harga' => $totalHarga,
                 'uang_pembayaran' => $uangPembayaran,
                 'kembalian' => $kembalian,
             ]);
 
-            // Kurangi stok barang
-            $barang = Barang::where('id_barang', $item->id_barang)->first();
+            // Menambahkan barang_transaksis
+            foreach ($keranjang as $item) {
+                BarangTransaksi::create([
+                    'id_transaksi' => $transaksi->id_transaksi,
+                    'id_barang' => $item->id_barang,
+                    'kuantitas' => $item->kuantitas,
+                    'total_harga_barang' => $item->kuantitas * $item->barang->harga,
+                ]);
 
-            if ($barang) {
-                $stok_baru = $barang->stok_barang -= $item->kuantitas;
-                Barang::where('id_barang', $item->id_barang)
+                // Kurangi stok barang
+                $barang = Barang::where('id_barang', $item->id_barang)->first();
+                if ($barang) {
+                    $stok_baru = $barang->stok_barang - $item->kuantitas;
+                    Barang::where('id_barang', $item->id_barang)
                     ->update([
-                        'stok_barang' => $stok_baru,
+                        'stok_barang' => $stok_baru
                     ]);
+                }
             }
 
+            // Hapus keranjang setelah checkout
             Keranjang::where('id_user', session('user')->id_user)->delete();
-
-            return redirect()->route('user.pesananBerhasil');
-        }
-
-        // Hapus keranjang setelah checkout
-        Keranjang::where('id_user', session('user')->id_user)->delete();
+        });
 
         return redirect()->route('user.pesananBerhasil');
     }
+
 
 
     // Daftar transaksi
@@ -84,10 +88,9 @@ class TransaksiController extends Controller
         $perPage = 5;
 
         $transaksis = Transaksi::join('users', 'transaksis.id_user', '=', 'users.id_user')
-        ->join('barangs', 'transaksis.id_barang', '=', 'barangs.id_barang')
-        ->select('transaksis.*', 'users.name', 'barangs.nama_barang')
-        ->latest()
-        ->paginate($perPage);
+            ->select('transaksis.*', 'users.name')
+            ->latest()
+            ->paginate($perPage);
 
         $currentPage = $transaksis->currentPage();
         $offset = ($currentPage - 1) * $perPage;
@@ -102,10 +105,10 @@ class TransaksiController extends Controller
 
         $query = $request->keyword_transaksi;
         $transaksis = Transaksi::join('users', 'transaksis.id_user', '=', 'users.id_user')
-        ->join('barangs', 'transaksis.id_barang', '=', 'barangs.id_barang')
-        ->select('transaksis.*', 'users.name', 'barangs.nama_barang')
-        ->where('tanggal', $query)
-        ->paginate($perPage);
+            ->join('barangs', 'transaksis.id_barang', '=', 'barangs.id_barang')
+            ->select('transaksis.*', 'users.name', 'barangs.nama_barang')
+            ->where('tanggal', $query)
+            ->paginate($perPage);
 
         $currentPage = $transaksis->currentPage();
         $offset = ($currentPage - 1) * $perPage;
@@ -126,15 +129,15 @@ class TransaksiController extends Controller
     public function detailTransaksi($id_transaksi)
     {
         $detailTransaksi = BarangTransaksi::join('barangs', 'barang_transaksis.id_barang', '=', 'barangs.id_barang')
-        ->join('transaksis', 'barang_transaksis.id_transaksi', '=', 'transaksis.id_transaksi')
-        ->select('barang_transaksis.*', 'barangs.nama_barang')
-        ->where('barang_transaksis.id_transaksi', $id_transaksi)
-        ->get();
+            ->join('transaksis', 'barang_transaksis.id_transaksi', '=', 'transaksis.id_transaksi')
+            ->select('barang_transaksis.*', 'barangs.nama_barang')
+            ->where('barang_transaksis.id_transaksi', $id_transaksi)
+            ->get();
 
         $totalHarga = Transaksi::where('id_transaksi', $id_transaksi)
-        ->select('total_harga')
-        ->first()
-        ->total_harga;
+            ->select('total_harga')
+            ->first()
+            ->total_harga;
 
         return view('admin.detailTransaksi', compact('detailTransaksi', 'totalHarga'));
     }
