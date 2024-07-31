@@ -80,7 +80,7 @@
                 <td>{{ $barang->stok_barang }}</td>
                 <td>{{ $barang->kategori_barang }}</td>
                 <td>{{ $barang->bahan }}</td>
-                <td>Rp. {{ $barang->harga }}</td>
+                <td>Rp. {{ number_format($barang->harga, 0) }}</td>
                 <td>{{ $barang->deskripsi_barang }}</td>
                 <td class="flex justify-evenly items-center mt-4">
                     <a href="{{ route('admin.editBarang', [$barang->id_barang]) }}" class="text-blue-600 w-20 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600">

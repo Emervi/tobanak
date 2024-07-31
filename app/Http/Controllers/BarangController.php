@@ -28,7 +28,7 @@ class BarangController extends Controller
 
         $query = $request->keyword_barang;
         $barangs = Barang::where('nama_barang', 'LIKE', "%$query%")
-        ->paginate($perPage);
+            ->paginate($perPage);
 
         $currentPage = $barangs->currentPage();
         $offset = ($currentPage - 1) * $perPage;
@@ -48,40 +48,42 @@ class BarangController extends Controller
 
         // Harga modal dengan patokan bahan
         $bahan = $request->bahan;
-        if ( $bahan == 'tebal' ) {
+        if ($bahan == 'tebal') {
             $modal = 20000 * 10;
-        }else if ( $bahan == 'street' ) {
+        } else if ($bahan == 'street') {
             $modal = 19000 * 10;
-        }else if ( $bahan == 'sedang' ) {
+        } else if ($bahan == 'sedang') {
             $modal = 18000 * 10;
-        }else {
+        } else {
             $modal = 17000 * 10;
         }
-        
+
         // Menemukan harga jual
         $bebanProduksi = (2 / 100) * $modal;
         $keuntungan = (25 / 100) * $modal;
         $hargaJual = $modal + $keuntungan + $bebanProduksi;
 
+        session()->put('hargaAsli', $hargaJual);
+
         $diskon = $request->diskon;
         $potongan = $request->potongan;
 
         // Perhitungan harga jika ada diskon
-        if( $request->has('diskon') ){
+        if ($request->has('diskon')) {
             $hargaDiskon = ($diskon / 100) * $hargaJual;
             $hargaJual -= $hargaDiskon;
         }
 
         // Perhitungan harga jika ada potongan
-        if( $request->has('potongan') ){
+        if ($request->has('potongan')) {
             $hargaJual -= $potongan;
         }
 
         // Logic untuk memasukan foto
-        if ($request->has('foto_barang')){
-            $imageName = time().'.'.$request->foto_barang->extension();  
+        if ($request->has('foto_barang')) {
+            $imageName = time() . '.' . $request->foto_barang->extension();
             $request->foto_barang->move(public_path('images'), $imageName);
-        }else{
+        } else {
             $imageName = 'noPhoto.jpg';
         }
 
@@ -104,7 +106,7 @@ class BarangController extends Controller
     public function editBarang($id_barang)
     {
         $barang = Barang::where('id_barang', $id_barang)
-        ->get();
+            ->get();
 
         return view('admin.tambahBarang', compact('barang'));
     }
@@ -125,57 +127,59 @@ class BarangController extends Controller
         ]);
 
         $bahan = $request->bahan;
-        if ( $bahan == 'tebal' ) {
+        if ($bahan == 'tebal') {
             $modal = 20000 * 10;
-        }else if ( $bahan == 'street' ) {
+        } else if ($bahan == 'street') {
             $modal = 19000 * 10;
-        }else if ( $bahan == 'sedang' ) {
+        } else if ($bahan == 'sedang') {
             $modal = 18000 * 10;
-        }else {
+        } else {
             $modal = 17000 * 10;
         }
-        
+
         // Menemukan harga jual
         $bebanProduksi = (2 / 100) * $modal;
         $keuntungan = (25 / 100) * $modal;
         $hargaJual = $modal + $keuntungan + $bebanProduksi;
 
+        session()->put('hargaAsli', $hargaJual);
+
         $diskon = $request->diskon;
         $potongan = $request->potongan;
 
         // Perhitungan harga jika ada diskon
-        if( $request->has('diskon') ){
+        if ($request->has('diskon')) {
             $hargaDiskon = ($diskon / 100) * $hargaJual;
             $hargaJual -= $hargaDiskon;
         }
 
         // Perhitungan harga jika ada potongan
-        if( $request->has('potongan') ){
+        if ($request->has('potongan')) {
             $hargaJual -= $potongan;
         }
-        
+
         // logic untuk memasukan foto
-        if ($request->has('foto_barang')){
-        $imageName = time().'.'.$request->foto_barang->extension();  
-        $request->foto_barang->move(public_path('images'), $imageName);
-        }else{
+        if ($request->has('foto_barang')) {
+            $imageName = time() . '.' . $request->foto_barang->extension();
+            $request->foto_barang->move(public_path('images'), $imageName);
+        } else {
             $imageName = Barang::where('id_barang', $id_barang)
-            ->pluck('foto_barang')
-            ->first();
+                ->pluck('foto_barang')
+                ->first();
         }
 
         Barang::where('id_barang', $id_barang)
-        ->update([
-            'foto_barang' => $imageName,
-            'nama_barang' => $request->nama_barang,
-            'kategori_barang' => $request->kategori_barang,
-            'deskripsi_barang' => $request->deskripsi_barang,
-            'stok_barang' => $request->stok_barang,
-            'bahan' => $bahan,
-            'harga' => $hargaJual,
-            'diskon' => $request->diskon,
-            'potongan' => $request->potongan,
-        ]);
+            ->update([
+                'foto_barang' => $imageName,
+                'nama_barang' => $request->nama_barang,
+                'kategori_barang' => $request->kategori_barang,
+                'deskripsi_barang' => $request->deskripsi_barang,
+                'stok_barang' => $request->stok_barang,
+                'bahan' => $bahan,
+                'harga' => $hargaJual,
+                'diskon' => $request->diskon,
+                'potongan' => $request->potongan,
+            ]);
 
         return redirect()->route(('admin.daftarBarang'))->with('success', 'Barang berhasil diupdate!');
     }
@@ -184,9 +188,8 @@ class BarangController extends Controller
     public function destroyBarang($id_barang)
     {
         Barang::where('id_barang', $id_barang)
-        ->delete();
+            ->delete();
 
         return redirect()->back()->with('success', 'Barang berhasil dihapus!');
     }
-
 }
