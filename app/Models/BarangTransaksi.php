@@ -12,6 +12,7 @@ class BarangTransaksi extends Model
     protected $table = 'barang_transaksis';
 
     protected $fillable = [
+        'id_transaksi',
         'id_barang',
         'kuantitas',
         'total_harga_barang',
