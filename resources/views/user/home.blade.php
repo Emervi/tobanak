@@ -55,8 +55,7 @@
     @endforeach
 
     @php
-        $keranjang = Session::get('keranjang', []);
-        $totalJumlah = array_sum(array_column($keranjang, 'kuantitas'));
+        $totalJumlah = Session::get('totalJumlah', 0);
     @endphp
 
     <a href="{{ route('keranjang') }}" class="m-5 fixed bottom-4 right-4 border border-green-500 text-green-500 p-4 rounded-full shadow-lg hover:bg-green-500 hover:text-white">
