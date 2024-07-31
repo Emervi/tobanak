@@ -20,6 +20,19 @@
     </div>
 @endif
 
+@if(session('error'))
+    <div class="fixed top-4 right-4 bg-red-700 border border-red-800 text-white px-4 py-3 rounded shadow-lg transition-transform transform-gpu duration-300 ease-in-out" role="alert">
+        <div class="flex items-center justify-between">
+            <span class="text-sm">{{ session('error') }}</span>
+            <button onclick="this.parentElement.parentElement.style.transform='translateX(100%)'; setTimeout(() => this.parentElement.parentElement.remove(), 300);" class="ml-4 text-red-500 hover:text-red-700">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+@endif
+
         <div class="flex justify-between items-center mb-4">
             <form action="{{ route('homeUser') }}" method="GET">
                 <button class="border border-pink-500 text-pink-500 hover:text-white hover:bg-pink-500 px-4 py-2 rounded">Kembali</button>

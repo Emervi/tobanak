@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Keranjang;
 use App\Models\Barang;
+use App\Models\BarangTransaksi;
 use App\Models\Transaksi;
 use Carbon\Carbon;
 
@@ -119,5 +120,22 @@ class TransaksiController extends Controller
             ->delete();
 
         return redirect()->back()->with('success', 'Transaksi berhasil dihapus!');
+    }
+
+    // detail transaksi
+    public function detailTransaksi($id_transaksi)
+    {
+        $detailTransaksi = BarangTransaksi::join('barangs', 'barang_transaksis.id_barang', '=', 'barangs.id_barang')
+        ->join('transaksis', 'barang_transaksis.id_transaksi', '=', 'transaksis.id_transaksi')
+        ->select('barang_transaksis.*', 'barangs.nama_barang')
+        ->where('barang_transaksis.id_transaksi', $id_transaksi)
+        ->get();
+
+        $totalHarga = Transaksi::where('id_transaksi', $id_transaksi)
+        ->select('total_harga')
+        ->first()
+        ->total_harga;
+
+        return view('admin.detailTransaksi', compact('detailTransaksi', 'totalHarga'));
     }
 }
