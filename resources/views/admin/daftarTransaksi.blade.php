@@ -57,12 +57,10 @@
             <th class="p-2">No</th>
             <th>Tanggal</th>
             <th>Nama user</th>
-            <th>Nama barang</th>
-            <th>Kuantitas</th>
             <th>Total harga</th>
             <th>Uang pembayaran</th>
             <th>Kembalian</th>
-            <th class="text-center w-1/6">Aksi</th>
+            <th class="text-center w-1/4">Aksi</th>
         </thead>
         <tbody>
             @foreach ( $transaksis as $index => $transaksi )
@@ -70,16 +68,14 @@
                 <td class="p-3">{{ $offset + $index + 1 }}</td>
                 <td>{{ Carbon\Carbon::parse($transaksi->tanggal)->format('m-d-Y') }}</td>
                 <td>{{ $transaksi->name }}</td>
-                <td>{{ $transaksi->nama_barang }}</td>
-                <td>{{ $transaksi->kuantitas }}</td>
-                <td>{{ $transaksi->total_harga }}</td>
-                <td>{{ $transaksi->uang_pembayaran }}</td>
-                <td>{{ $transaksi->kembalian }}</td>
+                <td>Rp. {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
+                <td>Rp. {{ number_format($transaksi->uang_pembayaran, 0, ',', '.') }}</td>
+                <td>Rp. {{ number_format($transaksi->kembalian, 0, ',', '.') }}</td>
                 <td class="flex justify-evenly items-center my-2">
-                    {{-- <a href="{{ route('admin.editUser', [$transaksi->id_transaksi]) }}" class="text-blue-600 w-20 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600">
-                        <i class="fas fa-pen mr-1"></i>
-                        Edit
-                    </a> --}}
+                    <a href="{{ route('admin.detailTransaksi', [$transaksi->id_transaksi]) }}" class="text-yellow-500 w-36 py-1 bg-white border border-yellow-500 rounded-md text-center hover:text-white hover:bg-yellow-500">
+                        <i class="fas fa-eye mr-1"></i>
+                        Detail Barang
+                    </a>
                     <form action="{{ route('admin.hapusTransaksi', [$transaksi->id_transaksi]) }}" method="POST">
                         @csrf
                         @method('delete')

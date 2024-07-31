@@ -67,6 +67,9 @@ Route::middleware('admin')->group(function () {
     // cari transaksi
     Route::post('/admin/dashboard/transaksi', [TransaksiController::class, 'cariTransaksi']);
 
+    // detail transaksi
+    Route::get('/admin/dashboard/transaksi/{id_transaksi}/detail', [TransaksiController::class, 'detailTransaksi'])->name('admin.detailTransaksi');
+
     // hapus transaksi
     Route::delete('/admin/dashboard/transaksi/{id_transaksi}', [TransaksiController::class, 'destroyTransaksi'])->name('admin.hapusTransaksi');
     // \ADMIN.TRANSAKSI
