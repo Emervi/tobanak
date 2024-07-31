@@ -41,34 +41,35 @@
         </div>
         
         <div class="space-y-4">
-            <form action="{{ route('keranjang.update') }}" method="POST">
-                @csrf
-                @foreach($keranjang as $item)
-                    @if($item->barang)
-                        <div class="bg-white p-4 rounded-lg shadow-md flex items-center">
-                            <img class="w-16 h-16 object-cover rounded mr-4" src="{{ asset('images/' . $item->barang->foto_barang) }}" alt="Foto Barang">
-                            <div class="flex-1">
-                                <h3 class="text-lg font-semibold">{{ $item->barang->nama_barang }}</h3>
-                                <p class="text-gray-600">Bahan: {{ $item->barang->bahan_barang }}</p>
-                            </div>
-                            <div class="text-right mr-4">
-                                <span class="block text-lg">Jumlah: 
-                                    <input type="number" name="kuantitas[{{ $item->id_keranjang }}]" value="{{ $item->kuantitas }}" min="1" class="w-16 text-center border border-gray-300 rounded-md">
-                                </span>
-                                <span class="block text-lg font-semibold">Rp {{ number_format($item->barang->harga * $item->kuantitas, 0, ',', '.') }}</span>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <button type="submit" name="action" value="update" class="bg-yellow-400 text-white hover:bg-yellow-500 px-3 py-1 rounded-lg">Update</button>
-                                <form action="{{ route('keranjang.hapus') }}" method="POST" class="inline">
+            @foreach($keranjang as $item)
+                @if($item->barang)
+                    <div class="bg-white p-4 rounded-lg shadow-md flex items-center">
+                        <img class="w-16 h-16 object-cover rounded mr-4" src="{{ asset('images/' . $item->barang->foto_barang) }}" alt="Foto Barang">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold">{{ $item->barang->nama_barang }}</h3>
+                            <p class="text-gray-600">Bahan: {{ $item->barang->bahan_barang }}</p>
+                        </div>
+                        <div class="text-right mr-4">
+                            <span class="block text-lg">Jumlah: {{ $item->kuantitas }}</span>
+                            <span class="block text-lg font-semibold">Rp {{ number_format($item->barang->harga * $item->kuantitas, 0, ',', '.') }}</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            @if($item->kuantitas > 1)
+                                <form action="{{ route('keranjang.kurangi') }}" method="POST" class="inline">
                                     @csrf
                                     <input type="hidden" name="id_keranjang" value="{{ $item->id_keranjang }}">
-                                    <button type="submit" class="bg-red-500 text-white hover:bg-red-600 px-3 py-1 rounded-lg">Hapus</button>
+                                    <button type="submit" class="bg-yellow-400 text-white hover:bg-yellow-500 px-3 py-1 rounded-lg">-</button>
                                 </form>
-                            </div>
+                            @endif
+                            <form action="{{ route('keranjang.hapus') }}" method="POST" class="inline">
+                                @csrf
+                                <input type="hidden" name="id_keranjang" value="{{ $item->id_keranjang }}">
+                                <button type="submit" class="bg-red-500 text-white hover:bg-red-600 px-3 py-1 rounded-lg">Hapus</button>
+                            </form>
                         </div>
-                    @endif
-                @endforeach
-            </form>
+                    </div>
+                @endif
+            @endforeach
         </div>
     </div>
 

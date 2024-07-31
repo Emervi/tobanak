@@ -105,8 +105,9 @@ Route::middleware('user')->group(function () {
 
     Route::get('/keranjang', [KeranjangController::class, 'index'])->name('keranjang');
     Route::post('/keranjang/tambah', [KeranjangController::class, 'tambah'])->name('keranjang.tambah');
-    Route::post('/keranjang/update', [KeranjangController::class, 'update'])->name('keranjang.update');
+    Route::post('/keranjang/kurangi', [KeranjangController::class, 'kurangi'])->name('keranjang.kurangi');
     Route::post('/keranjang/hapus', [KeranjangController::class, 'hapus'])->name('keranjang.hapus');
+
 
     Route::get('/checkout', [TransaksiController::class, 'checkout'])->name('transaksi.checkout');
     Route::post('/proses-checkout', [TransaksiController::class, 'prosesCheckout'])->name('transaksi.prosesCheckout');

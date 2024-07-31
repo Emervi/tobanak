@@ -75,19 +75,18 @@ class KeranjangController extends Controller
     }
 
     // Mengupdate kuantitas barang di keranjang
-    public function update(Request $request)
+    public function kurangi(Request $request)
     {
-        $userId = session('user')->id_user;
+        $idKeranjang = $request->input('id_keranjang');
+        $keranjang = Keranjang::findOrFail($idKeranjang);
 
-        foreach ($request->input('kuantitas') as $idKeranjang => $kuantitas) {
-            $keranjang = Keranjang::where('id_user', $userId)->where('id_keranjang', $idKeranjang)->first();
-            if ($keranjang) {
-                // Pastikan kuantitas tidak kurang dari 1
-                $keranjang->kuantitas = max(1, $kuantitas);
-                $keranjang->save();
-            }
+        if ($keranjang->kuantitas > 1) {
+            $keranjang->kuantitas -= 1;
+            $keranjang->save();
+        } else {
+            $keranjang->delete();
         }
 
-        return redirect()->back()->with('success', 'Keranjang telah diperbarui!');
+        return redirect()->back()->with('success', 'Jumlah kuantitas telah dikurangi');
     }
 }
