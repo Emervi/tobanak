@@ -23,6 +23,25 @@ class UserController extends Controller
             $barangs = Barang::all();
         }
 
+        foreach ($barangs as $barang) {
+            $bahan = $barang->bahan;
+            if ($bahan == 'tebal') {
+                $modal = 20000 * 10;
+            } else if ($bahan == 'street') {
+                $modal = 19000 * 10;
+            } else if ($bahan == 'sedang') {
+                $modal = 18000 * 10;
+            } else {
+                $modal = 17000 * 10;
+            }
+
+            $bebanProduksi = (2 / 100) * $modal;
+            $keuntungan = (25 / 100) * $modal;
+            $hargaJual = $modal + $keuntungan + $bebanProduksi;
+
+            $barang->harga_asli = $hargaJual; // Menyimpan harga asli dalam objek barang
+        }
+
         return view('user.home', compact('barangs', 'kategori'));
     }
 
@@ -34,6 +53,26 @@ class UserController extends Controller
     public function show($id_barang)
     {
         $barang = Barang::where('id_barang', $id_barang)->firstOrFail();
+
+
+        $bahan = $barang->bahan;
+
+        if ($bahan == 'tebal') {
+            $modal = 20000 * 10;
+        } else if ($bahan == 'street') {
+            $modal = 19000 * 10;
+        } else if ($bahan == 'sedang') {
+            $modal = 18000 * 10;
+        } else {
+            $modal = 17000 * 10;
+        }
+
+        $bebanProduksi = (2 / 100) * $modal;
+        $keuntungan = (25 / 100) * $modal;
+        $hargaJual = $modal + $bebanProduksi + $keuntungan;
+
+        $barang->harga_asli = $hargaJual;
+
         return view('user.detail', compact('barang'));
     }
 
