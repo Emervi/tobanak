@@ -55,6 +55,9 @@ class KeranjangController extends Controller
             ]);
         }
 
+        $totalJumlah = Keranjang::where('id_user', $idUser)->sum('kuantitas');
+        session(['totalJumlah' => $totalJumlah]);
+
         return redirect()->back()->with('success', 'Barang telah ditambahkan ke keranjang!');
     }
 
