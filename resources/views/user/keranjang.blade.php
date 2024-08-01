@@ -64,6 +64,8 @@
                             <form action="{{ route('keranjang.hapus') }}" method="POST" class="inline">
                                 @csrf
                                 <input type="hidden" name="id_keranjang" value="{{ $item->id_keranjang }}">
+                                <input type="hidden" name="id_barang" value="{{ $item->barang->id_barang }}">
+                                <input type="hidden" name="kuantitas" value="{{ $item->kuantitas }}">
                                 <button type="submit" class="bg-red-500 text-white hover:bg-red-600 px-3 py-1 rounded-lg">Hapus</button>
                             </form>
                         </div>
