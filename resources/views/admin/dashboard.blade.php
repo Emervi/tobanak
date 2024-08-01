@@ -16,7 +16,7 @@
 
         <div class="font-medium text-5xl flex flex-col md:flex-row justify-evenly items-center mt-3">
             <i class="fas fa-exchange"></i>
-            <p>{{ $jumlahTransaksiToday }}/{{ $jumlahTransaksi }}</p>
+            <p>{{ $jumlahTransaksiToday }}</p>
         </div>
 
     </a>

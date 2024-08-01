@@ -58,6 +58,7 @@
                                 <form action="{{ route('keranjang.kurangi') }}" method="POST" class="inline">
                                     @csrf
                                     <input type="hidden" name="id_keranjang" value="{{ $item->id_keranjang }}">
+                                    <input type="hidden" name="id_barang" value="{{ $item->barang->id_barang }}">
                                     <button type="submit" class="bg-yellow-400 text-white hover:bg-yellow-500 px-3 py-1 rounded-lg">-</button>
                                 </form>
                             @endif
