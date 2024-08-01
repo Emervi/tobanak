@@ -79,12 +79,20 @@
             <img src="{{ asset('images/logo_tobanak.png') }}" class="w-10 h-10">
 
         </div>
-        @if ( session()->has('admin') || session()->has('user') )
+        @if ( session()->has('user') )
         <ul class="flex justify-between gap-7">
-            <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Home</a></li>
-            <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">About</a></li>
-            <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Contact</a></li>
+            <li><a href="{{ route('homeUser') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Home</a></li>
+            <li><a href="{{ route('keranjang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Keranjang</a></li>
+            <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500"></a></li>
         </ul>
+        @elseif ( session()->has('admin') )
+        <ul class="flex justify-between gap-7">
+            <li><a href="{{ route('admin.daftarTransaksi') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Transaksi</a></li>
+            <li><a href="{{ route('admin.daftarBarang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Barang</a></li>
+            <li><a href="{{ route('admin.daftarUser') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">User</a></li>
+        </ul>
+        @else
+
         @endif
         </div>
 
