@@ -34,7 +34,7 @@
     
     <div class="flex flex-col items-center">
         <div class="bg-white shadow-lg rounded-lg overflow-hidden relative">
-            @if($barang->diskon || $barang->potongan)
+            @if($barang->diskon || $barang->potongan > 10000)
                 <div class="absolute top-2 right-2 bg-red-600 text-white text-sm font-bold px-3 py-1 transform rotate-[-30deg] translate-x-2 translate-y-2">
                     @if ($barang->diskon)
                         {{ $barang->diskon }}% OFF
