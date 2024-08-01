@@ -61,16 +61,6 @@ class TransaksiController extends Controller
                     'kuantitas' => $item->kuantitas,
                     'total_harga_barang' => $item->kuantitas * $item->barang->harga,
                 ]);
-
-                // Kurangi stok barang
-                $barang = Barang::where('id_barang', $item->id_barang)->first();
-                if ($barang) {
-                    $stok_baru = $barang->stok_barang - $item->kuantitas;
-                    Barang::where('id_barang', $item->id_barang)
-                    ->update([
-                        'stok_barang' => $stok_baru
-                    ]);
-                }
             }
 
             // Hapus keranjang setelah checkout

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Home')
+@section('title', 'Welcome to Tobanak')
 
 @section('body')
 <div class="fade-in">

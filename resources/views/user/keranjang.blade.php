@@ -90,11 +90,12 @@
             <span class="text-xl font-semibold">Total:</span>
             <span class="text-xl font-semibold">Rp {{ number_format($totalHarga, 0, ',', '.') }}</span>
         </div>
-        <form method="POST" action="{{ route('transaksi.prosesCheckout') }}">
+        <form id="myForm" method="POST" action="{{ route('transaksi.prosesCheckout') }}">
             @csrf
             <div class="flex items-center mb-4">
                 <label for="uang_pembayaran" class="block text-sm font-medium text-gray-700 w-1/3">Uang Pembayaran</label>
-                <input type="number" id="uang_pembayaran" name="uang_pembayaran" class="ml-4 mt-1 block w-2/3 border border-gray-300 rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500 sm:text-lg py-3 px-4" required>
+                <input type="text" id="formatUang" class="ml-4 mt-1 block w-2/3 border border-gray-300 rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500 sm:text-lg py-3 px-4" required>
+                <input type="hidden" id="uang_pembayaran" name="uang_pembayaran">
             </div>
             <button type="submit" class="bg-pink-500 text-white hover:bg-pink-600 px-4 py-2 rounded-lg w-full">Checkout</button>
         </form>
