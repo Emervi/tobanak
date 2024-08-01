@@ -85,12 +85,15 @@ class KeranjangController extends Controller
     // Mengupdate kuantitas barang di keranjang
     public function kurangi(Request $request)
     {
+        $idBarang = $request->input('id_barang');
         $idKeranjang = $request->input('id_keranjang');
         $keranjang = Keranjang::findOrFail($idKeranjang);
 
         if ($keranjang->kuantitas > 1) {
             $keranjang->kuantitas -= 1;
             $keranjang->save();
+            Barang::where('id_barang', $idBarang)
+            ->increment('stok_barang', 1);
         } else {
             $keranjang->delete();
         }
