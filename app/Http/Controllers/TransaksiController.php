@@ -10,6 +10,8 @@ use App\Models\BarangTransaksi;
 use App\Models\Transaksi;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+
 
 class TransaksiController extends Controller
 {
@@ -66,6 +68,9 @@ class TransaksiController extends Controller
             // Hapus keranjang setelah checkout
             Keranjang::where('id_user', session('user')->id_user)->delete();
         });
+
+        Session::forget('keranjang');
+        Session::forget('totalJumlah');
 
         return redirect()->route('user.pesananBerhasil');
     }
