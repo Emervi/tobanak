@@ -59,6 +59,7 @@
                             <option value="topi" {{ ($atribut->kategori_barang == 'topi' ? 'selected' : '') }}>Topi</option>
                             <option value="sepatu" {{ ($atribut->kategori_barang == 'sepatu' ? 'selected' : '') }}>Sepatu</option>
                             <option value="sandal" {{ ($atribut->kategori_barang == 'sandal' ? 'selected' : '') }}>Sandal</option>
+                            <option value="aksesoris" {{ ($atribut->kategori_barang == 'aksesoris' ? 'selected' : '') }}>Aksesoris</option>
                         </select>
                         @error( 'kategori_barang' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
@@ -99,7 +100,7 @@
 
                     <div class="mb-3">
                         <label for="harga" class="block">Harga</label>
-                        <input type="number" name="harga" id="harga" step="0.001" value="{{ $atribut->harga }}" placeholder="Masukan harga barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        <input type="number" name="harga" id="harga" step="0.001" value="{{ $atribut->harga }}" placeholder="Masukan harga barang" class="bg-gray-400 p-1 shadow rounded-sm w-11/12 focus:outline-none" readonly>
                         @error( 'harga' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror
@@ -194,6 +195,7 @@
                             <option value="topi" {{ old('kategori') == 'topi' ? 'selected' : '' }}>Topi</option>
                             <option value="sepatu" {{ old('kategori') == 'sepatu' ? 'selected' : '' }}>Sepatu</option>
                             <option value="sandal" {{ old('kategori') == 'sandal' ? 'selected' : '' }}>Sandal</option>
+                            <option value="aksesoris" {{ old('kategori') == 'aksesoris' ? 'selected' : '' }}>Aksesoris</option>
                         </select>
                         @error( 'kategori_barang' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
