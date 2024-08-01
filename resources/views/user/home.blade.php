@@ -55,7 +55,7 @@
             <div class="mt-2 flex justify-between w-full items-center">
                 @if($barang->diskon)
                     <div class="flex flex-col">
-                        <span class="text-gray-500 line-through">Rp {{ number_format($barang->harga_asli, 0, ',', '.') }}</span>
+                        <span class="text-red-500 font-bold line-through">Rp {{ number_format($barang->harga_asli, 0, ',', '.') }}</span>
                         <span class="text-gray-600 font-bold text-lg">Rp {{ number_format($barang->harga, 0, ',', '.') }}</span>
                     </div>
                 @else
@@ -82,7 +82,7 @@
     @endphp
 
     <a href="{{ route('keranjang') }}" class="m-5 fixed bottom-4 right-4 border border-green-500 text-green-500 p-4 rounded-full shadow-lg hover:bg-green-500 hover:text-white">
-        Keranjang
+        <i class="fas fa-shopping-cart text-2xl"></i>
         @if($totalJumlah > 0)
             <span class="absolute top-0 right-0 bg-red-500 text-white rounded-full px-2 py-1 text-xs font-bold">{{ $totalJumlah }}</span>
         @endif

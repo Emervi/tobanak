@@ -18,7 +18,7 @@
     {{-- notifikasi CRUD barang dan fitur pencarian barang --}}
     <div class="flex justify-between items-center">
 
-        <form action="{{ route('admin.daftarTransaksi') }}" method="POST" class="flex gap-3 w-1/3">
+        <form action="{{ route('admin.daftarTransaksi') }}" method="POST" class="flex gap-3 w-2/3 md:w-1/3">
             @csrf
 
             {{-- form pencarian barang --}}
@@ -74,7 +74,7 @@
                 <td class="flex justify-evenly items-center my-2">
                     <a href="{{ route('admin.detailTransaksi', [$transaksi->id_transaksi]) }}" class="text-yellow-500 w-36 py-1 bg-white border border-yellow-500 rounded-md text-center hover:text-white hover:bg-yellow-500">
                         <i class="fas fa-eye mr-1"></i>
-                        Detail Barang
+                        Detail Transaksi
                     </a>
                     <form action="{{ route('admin.hapusTransaksi', [$transaksi->id_transaksi]) }}" method="POST">
                         @csrf

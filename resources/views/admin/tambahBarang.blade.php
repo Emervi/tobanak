@@ -5,7 +5,7 @@
 @section('body')
 
 {{-- tombol kembali dan tambah --}}
-<div class="w-1/2 mx-auto mt-10">
+<div class="w-2/3 md:w-1/2 mx-auto mt-10">
 
     @isset($barang)
     <div class="bg-white shadow-2xl font-medium p-2 mb-10">

@@ -56,7 +56,7 @@
     </div>
 
     {{-- table daftar barang --}}
-    <table class="w-full bg-white border border-gray-200 mt-3">
+    <table class="min-w-full bg-white border border-gray-200 mt-3">
         <thead class="border border-b-black text-left">
             <th class="p-2">No</th>
             <th>Foto barang</th>
@@ -74,7 +74,7 @@
                 <td class="p-3">{{ $offset + $index + 1 }}</td>
                 <td>
                     {{-- untuk dihosting gunakan yang ini meureun {{ asset('public/images/' . $barang->foto_barang) }} --}}
-                    <img src="{{ asset('images/' . $barang->foto_barang) }}" alt="foto barang" class="w-16 h-16 flex-shrink-0 rounded-md p-1 ml-5">
+                    <img src="{{ asset('images/' . $barang->foto_barang) }}" alt="foto barang" class="w-16 h-16 flex-shrink-0 rounded-md p-1 lg:md-5">
                 </td>
                 <td>{{ $barang->nama_barang }}</td>
                 <td>{{ $barang->stok_barang }}</td>
@@ -82,7 +82,7 @@
                 <td>{{ $barang->bahan }}</td>
                 <td>Rp. {{ number_format($barang->harga, 0) }}</td>
                 <td>{{ $barang->deskripsi_barang }}</td>
-                <td class="flex justify-evenly items-center mt-4">
+                <td class="flex justify-evenly items-center mt-4 gap-2">
                     <a href="{{ route('admin.editBarang', [$barang->id_barang]) }}" class="text-blue-600 w-20 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600">
                         <i class="fas fa-pen mr-1"></i>
                         Edit

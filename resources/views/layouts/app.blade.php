@@ -79,11 +79,13 @@
             <img src="{{ asset('images/logo_tobanak.png') }}" class="w-10 h-10">
 
         </div>
+        @if ( session()->has('admin') || session()->has('user') )
         <ul class="flex justify-between gap-7">
             <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Home</a></li>
             <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">About</a></li>
             <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Contact</a></li>
         </ul>
+        @endif
         </div>
 
         <div>
@@ -108,5 +110,71 @@
         @yield('body')
     </main>
 
+
+    <script>
+        function formatNumber(value) {
+            // Menghapus semua karakter non-digit
+            value = value.replace(/\D/g, '');
+
+            // Batasi input hingga 100.000.000
+            if (parseInt(value) > 100000000) {
+                value = '100000000';
+            }
+
+            // Format angka sesuai format Indonesia
+            return new Intl.NumberFormat('id-ID').format(value);
+        }
+
+        const formattedInputElement = document.getElementById('formatUang');
+        const hiddenInputElement = document.getElementById('uang_pembayaran');
+
+        formattedInputElement.addEventListener('input', function(e) {
+            let rawValue = e.target.value.replace(/\D/g, ''); // Simpan nilai asli tanpa format
+            
+            // Format angka dan set nilai terformat kembali ke input
+            e.target.value = formatNumber(rawValue);
+
+            // Simpan nilai asli ke elemen hidden input
+            hiddenInputElement.value = rawValue;
+        });
+
+        formattedInputElement.addEventListener('keydown', function(e) {
+            // Allow: backspace, delete, tab, escape, enter, dan .
+            if ([46, 8, 9, 27, 13].indexOf(e.keyCode) !== -1 ||
+                // Allow: Ctrl+A
+                (e.keyCode === 65 && (e.ctrlKey || e.metaKey)) ||
+                // Allow: Ctrl+C
+                (e.keyCode === 67 && (e.ctrlKey || e.metaKey)) ||
+                // Allow: Ctrl+V
+                (e.keyCode === 86 && (e.ctrlKey || e.metaKey)) ||
+                // Allow: Ctrl+X
+                (e.keyCode === 88 && (e.ctrlKey || e.metaKey)) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                // Biarkan event terjadi
+                return;
+            }
+
+            // Cegah jika bukan angka
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) &&
+                (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+        // Cegah input dengan karakter non-digit saat menempel
+        formattedInputElement.addEventListener('paste', function(e) {
+            e.preventDefault();
+            let pastedData = e.clipboardData.getData('text');
+            let formattedData = formatNumber(pastedData.replace(/\D/g, ''));
+            formattedInputElement.value = formattedData;
+            hiddenInputElement.value = pastedData.replace(/\D/g, '');
+        });
+
+        // Saat form disubmit, pastikan nilai di elemen hidden input disiapkan untuk dikirim
+        document.getElementById('myForm').addEventListener('submit', function() {
+            hiddenInputElement.value = formattedInputElement.value.replace(/\D/g, '');
+        });
+    </script>
 </body>
 </html>

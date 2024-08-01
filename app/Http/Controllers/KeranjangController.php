@@ -34,6 +34,9 @@ class KeranjangController extends Controller
         $idUser = session('user')->id_user;
         $idBarang = $request->input('id_barang');
 
+        Barang::where('id_barang', $idBarang)
+        ->decrement('stok_barang', 1);
+
         // Cek apakah barang ada dan cukup stoknya
         $barang = Barang::where('id_barang', $idBarang)->firstOrFail();
 
