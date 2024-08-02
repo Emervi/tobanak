@@ -24,14 +24,11 @@ class BarangController extends Controller
     // cari barang
     public function cariBarang(Request $request)
     {
-        $perPage = 5;
-
         $query = $request->keyword_barang;
         $barangs = Barang::where('nama_barang', 'LIKE', "%$query%")
-            ->paginate($perPage);
+        ->get();
 
-        $currentPage = $barangs->currentPage();
-        $offset = ($currentPage - 1) * $perPage;
+        $offset = -1;
 
         return view('admin.daftarBarang', compact('barangs', 'offset'));
     }

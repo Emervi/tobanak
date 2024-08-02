@@ -186,16 +186,16 @@
                     <div class="mb-3">
                         <label class="block">Kategori</label>
                         <select name="kategori_barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
-                            <option value="kaos" {{ old('kategori') == 'kaos' ? 'selected' : '' }}>Kaos</option>
-                            <option value="kemeja" {{ old('kategori') == 'kemeja' ? 'selected' : '' }}>Kemeja</option>
-                            <option value="jaket" {{ old('kategori') == 'jaket' ? 'selected' : '' }}>Jaket</option>
-                            <option value="sweater" {{ old('kategori') == 'sweater' ? 'selected' : '' }}>Sweater</option>
-                            <option value="celana" {{ old('kategori') == 'celana' ? 'selected' : '' }}>Celana</option>
-                            <option value="rok" {{ old('kategori') == 'rok' ? 'selected' : '' }}>Rok</option>
-                            <option value="topi" {{ old('kategori') == 'topi' ? 'selected' : '' }}>Topi</option>
-                            <option value="sepatu" {{ old('kategori') == 'sepatu' ? 'selected' : '' }}>Sepatu</option>
-                            <option value="sandal" {{ old('kategori') == 'sandal' ? 'selected' : '' }}>Sandal</option>
-                            <option value="aksesoris" {{ old('kategori') == 'aksesoris' ? 'selected' : '' }}>Aksesoris</option>
+                            <option value="Kaos" {{ old('kategori') == 'Kaos' ? 'selected' : '' }}>Kaos</option>
+                            <option value="Kemeja" {{ old('kategori') == 'Kemeja' ? 'selected' : '' }}>Kemeja</option>
+                            <option value="Jaket" {{ old('kategori') == 'Jaket' ? 'selected' : '' }}>Jaket</option>
+                            <option value="Sweater" {{ old('kategori') == 'Sweater' ? 'selected' : '' }}>Sweater</option>
+                            <option value="Celana" {{ old('kategori') == 'Celana' ? 'selected' : '' }}>Celana</option>
+                            <option value="Rok" {{ old('kategori') == 'Rok' ? 'selected' : '' }}>Rok</option>
+                            <option value="Topi" {{ old('kategori') == 'Topi' ? 'selected' : '' }}>Topi</option>
+                            <option value="Sepatu" {{ old('kategori') == 'Sepatu' ? 'selected' : '' }}>Sepatu</option>
+                            <option value="Sandal" {{ old('kategori') == 'Sandal' ? 'selected' : '' }}>Sandal</option>
+                            <option value="Aksesoris" {{ old('kategori') == 'Aksesoris' ? 'selected' : '' }}>Aksesoris</option>
                         </select>
                         @error( 'kategori_barang' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
@@ -224,10 +224,10 @@
                     <div class="mb-3">
                         <label class="block">Bahan</label>
                         <select name="bahan" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
-                            <option value="tebal" {{ old('bahan') == 'tebal' ? 'selected' : '' }}>Tebal</option>
-                            <option value="street" {{ old('bahan') == 'street' ? 'selected' : '' }}>Street</option>
-                            <option value="sedang" {{ old('bahan') == 'sedang' ? 'selected' : '' }}>Sedang</option>
-                            <option value="tipis" {{ old('bahan') == 'tipis' ? 'selected' : '' }}>Tipis</option>
+                            <option value="Tebal" {{ old('bahan') == 'Tebal' ? 'selected' : '' }}>Tebal</option>
+                            <option value="Street" {{ old('bahan') == 'Street' ? 'selected' : '' }}>Street</option>
+                            <option value="Sedang" {{ old('bahan') == 'Sedang' ? 'selected' : '' }}>Sedang</option>
+                            <option value="Tipis" {{ old('bahan') == 'Tipis' ? 'selected' : '' }}>Tipis</option>
                         </select>
                         @error( 'bahan' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>

@@ -7,26 +7,30 @@
 {{-- tombol kembali --}}
 <div class="w-11/12 mx-auto mt-10 mb-12">
 
-    <div class="flex justify-start">
+    <div class="flex items-center">
+
         <a href="{{ route('admin.dashboard') }}" class="text-pink-400 p-2 bg-white border border-pink-400 rounded-md hover:text-white hover:bg-pink-400">
             <i class="fas fa-arrow-left mr-1"></i>
             Kembali
         </a>
+
+        <h1 class="text-2xl font-bold m-3 text-center flex-1">Daftar User</h1>
+
     </div>
     
     <div class="mt-7">
     {{-- notifikasi CRUD barang dan fitur pencarian barang --}}
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center w-1/3">
 
-        <form action="{{ route('admin.daftarUser') }}" method="POST" class="flex gap-3">
+        <form action="{{ route('admin.daftarUser') }}" method="POST" class="flex gap-1 w-full">
             @csrf
 
             {{-- form pencarian barang --}}
-            <div class="flex gap-1">
+            <div class="flex gap-1 w-full">
             <button type="submit" class="text-orange-400 py-1.5 px-2 bg-white border border-orange-400 rounded-md hover:text-white hover:bg-orange-400">
                 <i class="fas fa-search"></i>
             </button>
-            <input type="text" name="keyword_user" placeholder="Masukan nama user" class="bg-white p-1 shadow rounded-sm focus:outline-none">
+            <input type="text" name="keyword_user" placeholder="Masukan nama lengkap user" class="bg-white w-full p-1 shadow rounded-sm focus:outline-none">
             </div>
 
             {{-- tombol untuk mengembalikan pencarian seperti semula --}}
@@ -55,7 +59,8 @@
     <table class="w-full bg-white border border-gray-200 mt-3">
         <thead class="border border-b-black text-left">
             <th class="p-2">No</th>
-            <th>Nama</th>
+            <th>Username</th>
+            <th>Nama lengkap</th>
             <th>Email</th>
             <th>Status</th>
             <th class="text-center w-1/6">Aksi</th>
@@ -63,7 +68,12 @@
         <tbody>
             @foreach ( $users as $index => $user )
             <tr class="hover:bg-gray-300">
+                @if ( $offset > -1 )
                 <td class="p-3">{{ $offset + $index + 1 }}</td>
+                @else
+                <td class="p-3">{{ $index + 1 }}</td>
+                @endif
+                <td>{{ $user->username }}</td>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->status }}</td>
@@ -84,8 +94,10 @@
             </tr>    
             @endforeach
 
+            @if ( $offset > -1 )
             {{-- pagination --}}
-            {{ $users->links() }}
+            {{ $users->links() }}    
+            @endif
 
         </tbody>
     </table>

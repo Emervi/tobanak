@@ -96,17 +96,13 @@ class TransaksiController extends Controller
     // Cari transaksi
     public function cariTransaksi(Request $request)
     {
-        $perPage = 5;
-
         $query = $request->keyword_transaksi;
         $transaksis = Transaksi::join('users', 'transaksis.id_user', '=', 'users.id_user')
-            ->join('barangs', 'transaksis.id_barang', '=', 'barangs.id_barang')
-            ->select('transaksis.*', 'users.name', 'barangs.nama_barang')
+            ->select('transaksis.*', 'users.name')
             ->where('tanggal', $query)
-            ->paginate($perPage);
+            ->get();
 
-        $currentPage = $transaksis->currentPage();
-        $offset = ($currentPage - 1) * $perPage;
+        $offset = -1;
 
         return view('admin.daftarTransaksi', compact('transaksis', 'offset'));
     }

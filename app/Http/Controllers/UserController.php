@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\Keranjang;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -12,7 +13,12 @@ class UserController extends Controller
 
     public function homeUser(Request $request)
     {
+        $id_user = session('user')->id_user;
+
         $barangs = Barang::all();
+
+        $totalJumlah = Keranjang::where('id_user', $id_user)
+        ->sum('kuantitas');
 
         $filter = $request->query('filter');
         $kategori = Barang::select('kategori_barang')->distinct()->pluck('kategori_barang');
@@ -42,7 +48,7 @@ class UserController extends Controller
             $barang->harga_asli = $hargaJual; // Menyimpan harga asli dalam objek barang
         }
 
-        return view('user.home', compact('barangs', 'kategori'));
+        return view('user.home', compact('barangs', 'kategori', 'totalJumlah'));
     }
 
     public function keranjang()

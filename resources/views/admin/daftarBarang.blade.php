@@ -7,15 +7,15 @@
 {{-- tombol kembali dan tambah --}}
 <div class="w-11/12 mx-auto mt-10 mb-12">
 
-    <div class="flex justify-between">
+    <div class="flex items-center">
+
         <a href="{{ route('admin.dashboard') }}" class="text-pink-400 p-2 bg-white border border-pink-400 rounded-md hover:text-white hover:bg-pink-400">
             <i class="fas fa-arrow-left mr-1"></i>
             Kembali
         </a>
-        <a href="{{ route('admin.tambahBarang') }}" class="text-green-600 p-2 bg-white border border-green-600 rounded-md hover:text-white hover:bg-green-600">
-            <i class="fas fa-plus"></i>
-            Tambah barang
-        </a>
+
+        <h1 class="text-2xl font-bold m-3 text-center flex-1">Daftar Barang</h1>
+
     </div>
     
     <div class="mt-7">
@@ -71,7 +71,11 @@
         <tbody>
             @foreach ( $barangs as $index => $barang )
             <tr class="hover:bg-gray-300">
+                @if ( $offset > -1 )
                 <td class="p-3">{{ $offset + $index + 1 }}</td>
+                @else
+                <td class="p-3">{{ $index + 1 }}</td>
+                @endif
                 <td>
                     {{-- untuk dihosting gunakan yang ini meureun {{ asset('public/images/' . $barang->foto_barang) }} --}}
                     <img src="{{ asset('images/' . $barang->foto_barang) }}" alt="foto barang" class="w-16 h-16 flex-shrink-0 rounded-md p-1 lg:md-5">
@@ -80,7 +84,7 @@
                 <td>{{ $barang->stok_barang }}</td>
                 <td>{{ $barang->kategori_barang }}</td>
                 <td>{{ $barang->bahan }}</td>
-                <td>Rp. {{ number_format($barang->harga, 0) }}</td>
+                <td>Rp. {{ number_format($barang->harga, 0, ',', '.') }}</td>
                 <td>{{ $barang->deskripsi_barang }}</td>
                 <td class="flex justify-evenly items-center mt-4 gap-2">
                     <a href="{{ route('admin.editBarang', [$barang->id_barang]) }}" class="text-blue-600 w-20 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600">
@@ -99,8 +103,10 @@
             </tr>    
             @endforeach
 
+            @if ( $offset > -1 )
             {{-- pagination --}}
-            {{ $barangs->links() }}
+            {{ $barangs->links() }}    
+            @endif
             
             {{-- <tr class="hover:bg-gray-300">
                 <td class="p-3">1</td>

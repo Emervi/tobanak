@@ -20,6 +20,10 @@ class LoginController extends Controller
         $validator = Validator::make($request->all(), [
             'username' => ['required'],
             'password' => ['required', 'min:8'],
+        ],[
+            'username.required' => 'Username wajib diisi',
+            'password.required' => 'Password wajib diisi',
+            'password.min' => 'Password minimal harus 8 karakter',
         ]);
 
         if ($validator->fails()) {
@@ -53,10 +57,13 @@ class LoginController extends Controller
     {
         Auth::logout();
 
-        session()->flush();
+        session()->forget('user');
+        session()->forget('admin');
+
+        // session()->flush();
         
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        // $request->session()->invalidate();
+        // $request->session()->regenerateToken();
 
         return redirect()->route('auth.login')->with('success', 'Anda berhasil logout sampai jumpa kembali');
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Keranjang;
 use App\Models\Barang;
+use Illuminate\Support\Facades\Session;
 
 class KeranjangController extends Controller
 {
@@ -77,7 +78,11 @@ class KeranjangController extends Controller
         $idKeranjang = $request->input('id_keranjang');
         Keranjang::where('id_keranjang', $idKeranjang)->delete();
         Barang::where('id_barang', $idBarang)
-        ->increment('stok_barang', $kuantitas);
+        ->increment('stok_barang', $kuantitas);        
+
+        // $totalJumlah = Session::get('totalJumlah', 0);
+        // $totalJumlah -= $kuantitas;
+        // Session::put('totalJumlah', $totalJumlah);
 
         return redirect()->back()->with('success', 'Barang berhasil dihapus dari keranjang!');
     }
@@ -94,6 +99,10 @@ class KeranjangController extends Controller
             $keranjang->save();
             Barang::where('id_barang', $idBarang)
             ->increment('stok_barang', 1);
+
+            $totalJumlah = Session::get('totalJumlah', 0);
+            $totalJumlah--;
+            Session::put('totalJumlah', $totalJumlah);
         } else {
             $keranjang->delete();
         }
