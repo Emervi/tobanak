@@ -99,6 +99,11 @@
             {{ $users->links() }}    
             @endif
 
+            @if ( empty($user->name) )
+            <tr>
+                <td colspan="9" class="text-center font-bold text-xl p-3">User tidak ditemukan</td>
+            </tr>                
+            @endif
         </tbody>
     </table>
     </div>
