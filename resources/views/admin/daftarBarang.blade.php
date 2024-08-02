@@ -7,15 +7,19 @@
 {{-- tombol kembali dan tambah --}}
 <div class="w-11/12 mx-auto mt-10 mb-12">
 
-    <div class="flex items-center">
+    <div class="flex items-center justify-between">
 
         <a href="{{ route('admin.dashboard') }}" class="text-pink-400 p-2 bg-white border border-pink-400 rounded-md hover:text-white hover:bg-pink-400">
             <i class="fas fa-arrow-left mr-1"></i>
             Kembali
         </a>
 
-        <h1 class="text-2xl font-bold m-3 text-center flex-1">Daftar Barang</h1>
+        <h1 class="text-2xl font-bold ml-10 text-center">Daftar Barang</h1>
 
+        <a href="{{ route('admin.tambahBarang') }}" class="text-green-500 p-2 bg-white border border-green-500 rounded-md hover:text-white hover:bg-green-600">
+            <i class="fas fa-plus mr-1"></i>
+            Tambah Barang
+        </a>
     </div>
     
     <div class="mt-7">
@@ -124,6 +128,11 @@
                     <button class="text-red-600 w-16 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600">Hapus</button>
                 </td>
             </tr> --}}
+            @if ( empty($barang->nama_barang) )
+            <tr>
+                <td colspan="9" class="text-center font-bold text-xl p-3">Barang tidak ditemukan</td>
+            </tr>                
+            @endif
         </tbody>
     </table>
     </div>

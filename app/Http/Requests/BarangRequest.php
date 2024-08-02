@@ -45,14 +45,14 @@ class BarangRequest extends FormRequest
         return [
             'nama_barang.required' => 'Nama barang wajib diisi.',
             'nama_barang.unique' => 'Nama barang sudah terdaftar',
-            'nama_barang.alpha' => 'Nama barang tidak boleh mengandung angka',
+            'nama_barang.string' => 'Nama barang tidak boleh mengandung angka',
             'kategori_barang.required' => 'Kategori wajib diisi',
             'deskripsi_barang.required' => 'Deskripsi barang wajib diisi',
             'stok_barang.required' => 'Stok barang wajib diisi',
             'stok_barang.integer' => 'Stok barang wajib bernilai bilangan bulat',
             'bahan.required' => 'Bahan wajib diisi',
-            'diskon.required' => 'Diskon wajid diisi, minimal 0',
-            'potongan.required' => 'Potongan wajid diisi, minimal 0',
+            'diskon.required' => 'Diskon wajib diisi, minimal 0',
+            'potongan.required' => 'Potongan wajib diisi, minimal 0',
             'foto_barang.image' => 'File yang dimasukan harus berupa image',
             'foto_barang.mimes' => 'File yang dimasukan harus berformat berikut : jpeg, png, jpg',
         ];
