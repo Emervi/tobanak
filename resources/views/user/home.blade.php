@@ -34,7 +34,7 @@
     
     <div class="flex flex-col items-center">
         <div class="bg-white shadow-lg rounded-lg overflow-hidden relative">
-            @if($barang->diskon || $barang->potongan > 10000)
+            @if($barang->diskon || $barang->potongan > 0)
                 <div class="absolute top-2 right-2 bg-red-600 text-white text-sm font-bold px-3 py-1 transform rotate-[-30deg] translate-x-2 translate-y-2">
                     @if ($barang->diskon)
                         {{ $barang->diskon }}% OFF
@@ -54,6 +54,11 @@
             <p class="text-gray-600 mt-2">Stok: {{ $barang->stok_barang }}</p>
             <div class="mt-2 flex justify-between w-full items-center">
                 @if($barang->diskon)
+                    <div class="flex flex-col">
+                        <span class="text-red-500 font-bold line-through">Rp {{ number_format($barang->harga_asli, 0, ',', '.') }}</span>
+                        <span class="text-gray-600 font-bold text-lg">Rp {{ number_format($barang->harga, 0, ',', '.') }}</span>
+                    </div>
+                @elseif ( $barang->potongan )
                     <div class="flex flex-col">
                         <span class="text-red-500 font-bold line-through">Rp {{ number_format($barang->harga_asli, 0, ',', '.') }}</span>
                         <span class="text-gray-600 font-bold text-lg">Rp {{ number_format($barang->harga, 0, ',', '.') }}</span>
@@ -81,7 +86,7 @@
         $totalJumlah = Session::get('totalJumlah', 0);
     @endphp --}}
 
-    <a href="{{ route('keranjang') }}" class="bg-white m-5 fixed bottom-5 right-2 border border-green-500 text-green-500 p-3 rounded-full shadow-lg hover:bg-green-500 hover:text-white">
+    <a href="{{ route('keranjang') }}" class="bg-white m-5 fixed bottom-5 right-1 border border-green-500 text-green-500 p-3 rounded-full shadow-lg hover:bg-green-500 hover:text-white">
         <i class="fas fa-shopping-cart text-2xl"></i>
         @if($totalJumlah > 0)
             <span class="absolute top-0 right-0 bg-red-500 text-white rounded-full px-2 py-1 text-xs font-bold">{{ $totalJumlah }}</span>

@@ -32,7 +32,7 @@
             </p>
             <div class="mt-20 flex justify-end items-center">
 
-                @if($barang->diskon > 0)
+                @if($barang->diskon > 0 || $barang->potongan > 0)
                     <span class="text-xl font-bold text-red-500 mr-4 line-through">Rp {{ number_format($barang->harga_asli, 0, ',', '.') }}</span>
                 @endif
                 <span class="text-xl font-bold mr-4">Harga: Rp {{ number_format($barang->harga, 0, ',', '.') }}</span>
@@ -52,11 +52,8 @@
             </div>
         </div>
     </div>
-    @php
-        $totalJumlah = Session::get('totalJumlah', 0);
-    @endphp
 
-    <a href="{{ route('keranjang') }}" class="m-5 fixed bottom-4 right-4 border border-green-500 text-green-500 p-4 rounded-full shadow-lg hover:bg-green-500 hover:text-white">
+    <a href="{{ route('keranjang') }}" class="bg-white m-5 fixed bottom-5 right-5 border border-green-500 text-green-500 p-3 rounded-full shadow-lg hover:bg-green-500 hover:text-white">
         <i class="fas fa-shopping-cart text-2xl"></i>
         @if($totalJumlah > 0)
             <span class="absolute top-0 right-0 bg-red-500 text-white rounded-full px-2 py-1 text-xs font-bold">{{ $totalJumlah }}</span>

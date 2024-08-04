@@ -31,11 +31,11 @@ class UserController extends Controller
 
         foreach ($barangs as $barang) {
             $bahan = $barang->bahan;
-            if ($bahan == 'tebal') {
+            if ($bahan == 'Tebal') {
                 $modal = 20000 * 10;
-            } else if ($bahan == 'street') {
+            } else if ($bahan == 'Street') {
                 $modal = 19000 * 10;
-            } else if ($bahan == 'sedang') {
+            } else if ($bahan == 'Sedang') {
                 $modal = 18000 * 10;
             } else {
                 $modal = 17000 * 10;
@@ -58,16 +58,20 @@ class UserController extends Controller
 
     public function show($id_barang)
     {
+        $id_user = session('user')->id_user;
+
         $barang = Barang::where('id_barang', $id_barang)->firstOrFail();
 
+        $totalJumlah = Keranjang::where('id_user', $id_user)
+        ->sum('kuantitas');
 
         $bahan = $barang->bahan;
 
-        if ($bahan == 'tebal') {
+        if ($bahan == 'Tebal') {
             $modal = 20000 * 10;
-        } else if ($bahan == 'street') {
+        } else if ($bahan == 'Street') {
             $modal = 19000 * 10;
-        } else if ($bahan == 'sedang') {
+        } else if ($bahan == 'Sedang') {
             $modal = 18000 * 10;
         } else {
             $modal = 17000 * 10;
@@ -79,7 +83,7 @@ class UserController extends Controller
 
         $barang->harga_asli = $hargaJual;
 
-        return view('user.detail', compact('barang'));
+        return view('user.detail', compact('barang', 'totalJumlah'));
     }
 
 
