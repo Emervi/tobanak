@@ -53,7 +53,7 @@
                             <option value="Kaos" {{ ($atribut->kategori_barang == 'Kaos' ? 'selected' : '') }}>Kaos</option>
                             <option value="Kemeja" {{ ($atribut->kategori_barang == 'Kemeja' ? 'selected' : '') }}>Kemeja</option>
                             <option value="Jaket" {{ ($atribut->kategori_barang == 'Jaket' ? 'selected' : '') }}>Jaket</option>
-                            <option value="Sweater" {{ ($atribut->kategori_barang == 'Sweater' ? 'selected' : '') }}>Sweater</option>
+                            <option value="Gaun" {{ ($atribut->kategori_barang == 'Gaun' ? 'selected' : '') }}>Gaun</option>
                             <option value="Celana" {{ ($atribut->kategori_barang == 'Celana' ? 'selected' : '') }}>Celana</option>
                             <option value="Rok" {{ ($atribut->kategori_barang == 'Rok' ? 'selected' : '') }}>Rok</option>
                             <option value="Topi" {{ ($atribut->kategori_barang == 'Topi' ? 'selected' : '') }}>Topi</option>
@@ -189,7 +189,7 @@
                             <option value="Kaos" {{ old('kategori') == 'Kaos' ? 'selected' : '' }}>Kaos</option>
                             <option value="Kemeja" {{ old('kategori') == 'Kemeja' ? 'selected' : '' }}>Kemeja</option>
                             <option value="Jaket" {{ old('kategori') == 'Jaket' ? 'selected' : '' }}>Jaket</option>
-                            <option value="Sweater" {{ old('kategori') == 'Sweater' ? 'selected' : '' }}>Sweater</option>
+                            <option value="Gaun" {{ old('kategori') == 'Gaun' ? 'selected' : '' }}>Gaun</option>
                             <option value="Celana" {{ old('kategori') == 'Celana' ? 'selected' : '' }}>Celana</option>
                             <option value="Rok" {{ old('kategori') == 'Rok' ? 'selected' : '' }}>Rok</option>
                             <option value="Topi" {{ old('kategori') == 'Topi' ? 'selected' : '' }}>Topi</option>
