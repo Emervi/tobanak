@@ -15,6 +15,7 @@ class CreateBarangsTable extends Migration
     {
         Schema::create('barangs', function (Blueprint $table) {
             $table->id('id_barang');
+            $table->unsignedBigInteger('id_cabang');
             $table->string('nama_barang');
             $table->integer('stok_barang')->nullable();
             $table->text('deskripsi_barang')->nullable();
@@ -24,7 +25,10 @@ class CreateBarangsTable extends Migration
             $table->double('harga');
             $table->integer('diskon');
             $table->integer('potongan');
+            $table->enum('distribusi', ['Dikirim', 'Diterima']);
             $table->timestamps();
+
+            $table->foreign('id_cabang')->references('id_cabang')->on('cabangs')->onDelete('cascade');
         });
     }
 
