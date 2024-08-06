@@ -66,11 +66,16 @@ class KeranjangController extends Controller
     public function hapus(Request $request)
     {
         $request->validate([
+            'id_barang' => 'required|exists:barangs,id_barang',
             'id_keranjang' => 'required|exists:keranjangs,id_keranjang',
         ]);
 
+        $idBarang = $request->input('id_barang');
+        $kuantitas = $request->input('kuantitas');
         $idKeranjang = $request->input('id_keranjang');
         Keranjang::where('id_keranjang', $idKeranjang)->delete();
+        Barang::where('id_barang', $idBarang)
+        ->increment('stok_barang', $kuantitas);
 
         return redirect()->back()->with('success', 'Barang berhasil dihapus dari keranjang!');
     }
