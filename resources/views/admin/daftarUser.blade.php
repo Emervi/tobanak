@@ -63,6 +63,7 @@
             <th>Nama lengkap</th>
             <th>Email</th>
             <th>Status</th>
+            <th>Cabang</th>
             <th class="text-center w-1/6">Aksi</th>
         </thead>
         <tbody>
@@ -77,6 +78,7 @@
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->status }}</td>
+                <td>{{ $user->nama_cabang }}</td>
                 <td class="flex justify-evenly items-center my-2">
                     <a href="{{ route('admin.editUser', [$user->id_user]) }}" class="text-blue-600 w-20 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600">
                         <i class="fas fa-pen mr-1"></i>

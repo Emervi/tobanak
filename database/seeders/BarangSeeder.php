@@ -16,7 +16,47 @@ class BarangSeeder extends Seeder
     {
         // Barang::factory()->count(20)->create();
 
-        function isiBarang($nama, $stok, $deskripsi, $foto, $kategori, $bahan, $harga, $diskon, $potongan){
+        function isiBarang($nama, $stok, $deskripsi, $foto, $kategori, $bahan, $diskon, $potongan, $distribusi){
+
+            // Harga modal dengan patokan bahan
+        $bahan = $bahan;
+        if ($bahan == 'Tebal') {
+            $modal = 20000 * 10;
+        } else if ($bahan == 'Street') {
+            $modal = 19000 * 10;
+        } else if ($bahan == 'Sedang') {
+            $modal = 18000 * 10;
+        } else {
+            $modal = 17000 * 10;
+        }
+
+        // Menemukan harga jual
+        $bebanProduksi = (2 / 100) * $modal;
+        $keuntungan = (25 / 100) * $modal;
+        $hargaJual = $modal + $keuntungan + $bebanProduksi;
+
+        session()->put('hargaAsli', $hargaJual);
+
+        // Pengecekan apakah ada diskon yang diinputkan
+        if ( empty($diskon)  ){
+            $diskon = 0;
+        }else{
+            $diskon = $diskon;
+        }
+
+        // Pengecekan apakah ada potongan yang diinputkan
+        if ( empty($potongan) ){
+            $potongan = 0;
+        }else{
+            $potongan = $potongan;
+        }
+        
+        // Perhitungan harga diskon
+        $hargaDiskon = ($diskon / 100) * $hargaJual;
+        $hargaJual -= $hargaDiskon;
+
+        // Perhitungan harga potongan
+        $hargaJual -= $potongan;
 
             Barang::create([
                 'nama_barang' => $nama,
@@ -25,9 +65,11 @@ class BarangSeeder extends Seeder
                 'foto_barang' => $foto,
                 'kategori_barang' => $kategori,
                 'bahan' => $bahan,
-                'harga' => $harga,
+                'harga' => $hargaJual,
                 'diskon' => $diskon,
-                'potongan' => $potongan, 
+                'potongan' => $potongan,
+                'id_cabang' => rand(1, 2),
+                'distribusi'=> $distribusi,
             ]);
 
         };
@@ -39,9 +81,9 @@ class BarangSeeder extends Seeder
             'baju batman.jpeg',
             'Kaos',
             'Tebal',
-            254000,
-            10,
-            0
+            0,
+            0,
+            'Diterima'
         );
 
         isiBarang(
@@ -51,9 +93,9 @@ class BarangSeeder extends Seeder
             'topi bebek.jpeg',
             'Topi',
             'Sedang',
-            230000,
             25,
-            0
+            0,
+            'Dikirim'
         );
 
         isiBarang(
@@ -63,9 +105,9 @@ class BarangSeeder extends Seeder
             'jaket dino.jpeg',
             'Jaket',
             'Tebal',
-            254000,
             0,
-            4000
+            4000,
+            'Diterima'
         );
 
         isiBarang(
@@ -75,9 +117,9 @@ class BarangSeeder extends Seeder
             'topi hiu.jpeg',
             'Topi',
             'Tipis',
-            200000,
             0,
-            0
+            0,
+            'Dikirim'
         );
 
         isiBarang(
@@ -87,9 +129,9 @@ class BarangSeeder extends Seeder
             'rok biru.jpeg',
             'Rok',
             'Street',
-            220000,
             0,
-            20000
+            20000,
+            'Ditolak'
         );
 
         isiBarang(
@@ -99,9 +141,9 @@ class BarangSeeder extends Seeder
             'sweater beruang.jpeg',
             'Sweater',
             'Sedang',
-            235000,
             15,
-            0
+            0,
+            'Dikirim'
         );
 
         isiBarang(
@@ -111,9 +153,9 @@ class BarangSeeder extends Seeder
             'celana biru.jpeg',
             'Celana',
             'Tipis',
-            225000,
             0,
-            100000
+            100000,
+            'Ditolak'
         );
 
         // Barang::create([

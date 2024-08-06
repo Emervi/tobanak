@@ -25,7 +25,7 @@ class CreateBarangsTable extends Migration
             $table->double('harga');
             $table->integer('diskon');
             $table->integer('potongan');
-            $table->enum('distribusi', ['Dikirim', 'Diterima']);
+            $table->enum('distribusi', ['Dikirim', 'Diterima', 'Ditolak']);
             $table->timestamps();
 
             $table->foreign('id_cabang')->references('id_cabang')->on('cabangs')->onDelete('cascade');

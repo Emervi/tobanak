@@ -29,9 +29,7 @@ class BarangRequest extends FormRequest
             'deskripsi_barang' => ['required'],
             'stok_barang' => ['required', 'integer'],
             'bahan' => ['required'],
-            'foto_barang' => ['image', 'mimes:jpeg,png,jpg'],
-            'diskon' => ['required'],
-            'potongan' => ['required'],
+            'foto_barang' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ];
     }
 
@@ -51,10 +49,10 @@ class BarangRequest extends FormRequest
             'stok_barang.required' => 'Stok barang wajib diisi',
             'stok_barang.integer' => 'Stok barang wajib bernilai bilangan bulat',
             'bahan.required' => 'Bahan wajib diisi',
-            'diskon.required' => 'Diskon wajib diisi, minimal 0',
-            'potongan.required' => 'Potongan wajib diisi, minimal 0',
+            'foto_barang.required' => 'Foto wajib diisi, maksimal berukuran 2 MB',
             'foto_barang.image' => 'File yang dimasukan harus berupa image',
             'foto_barang.mimes' => 'File yang dimasukan harus berformat berikut : jpeg, png, jpg',
+            'foto_barang.max' => 'Foto maksimal berukuran 2 MB'
         ];
     }
 }

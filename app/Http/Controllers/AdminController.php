@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
+use App\Models\Cabang;
 use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,10 +19,17 @@ class AdminController extends Controller
 
         $jumlahUser = User::count();
 
+        $jumlahTransaksi = Transaksi::count();
+
+        $jumlahCabang = Cabang::count();
+
+        $totalStokBarang = Barang::sum('stok_barang');  
+
         $jumlahTransaksiToday = Transaksi::where('tanggal', today())
         ->count();
-
-        $jumlahTransaksi = Transaksi::count();
+        
+        $jumlahTransaksiYesterday = Transaksi::where('tanggal', today()->subDay())
+        ->count();      
 
         $jumlahPendapatan = Transaksi::where('tanggal', today())
         ->sum('total_harga');
@@ -31,8 +39,11 @@ class AdminController extends Controller
         return view('admin.dashboard', [
             'jumlahBarang' => $jumlahBarang,
             'jumlahUser' => $jumlahUser,
-            'jumlahTransaksiToday' => $jumlahTransaksiToday,
             'jumlahTransaksi' => $jumlahTransaksi,
+            'jumlahCabang' => $jumlahCabang,
+            'totalStokBarang' => $totalStokBarang,
+            'jumlahTransaksiToday' => $jumlahTransaksiToday,
+            'jumlahTransaksiYesterday' => $jumlahTransaksiYesterday,
             'name' => $name,
             'jumlahPendapatan' => $jumlahPendapatan,
         ]);
@@ -43,7 +54,9 @@ class AdminController extends Controller
     {
         $perPage = 5;
 
-        $users = User::latest()->paginate($perPage);
+        $users = User::join('cabangs', 'users.id_cabang', '=', 'cabangs.id_cabang')
+        ->select('users.*', 'cabangs.nama_cabang')
+        ->paginate($perPage);
 
         $currentPage = $users->currentPage();
         $offset = ($currentPage - 1) * $perPage;
@@ -69,7 +82,9 @@ class AdminController extends Controller
         $user = User::where('id_user', $id_user)
         ->get();
 
-        return view('admin.editUser', compact('user'));
+        $cabangs = Cabang::get();
+
+        return view('admin.editUser', compact('user', 'cabangs'));
     }
 
     // update user

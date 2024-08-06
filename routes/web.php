@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\CabangController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\KeranjangController;
@@ -73,6 +74,24 @@ Route::middleware('admin')->group(function () {
     // hapus transaksi
     Route::delete('/admin/dashboard/transaksi/{id_transaksi}', [TransaksiController::class, 'destroyTransaksi'])->name('admin.hapusTransaksi');
     // \ADMIN.TRANSAKSI
+
+    // ADMIN.CABANG
+    // halaman daftar cabang
+    Route::get('/admin/dashboard/cabang', [CabangController::class, 'daftarCabang'])->name('admin.daftarCabang');
+    // cari cabang
+    Route::post('/admin/dashboard/cabang', [CabangController::class, 'cariCabang']);
+
+    // halaman tambah cabang
+    Route::get('/admin/dashboard/cabang/tambahCabang', [CabangController::class, 'tambahCabang'])->name('admin.tambahCabang');
+    // halaman update cabang
+    Route::get('/admin/dashboard/cabang/{id_cabang}/editCabang', [CabangController::class, 'editCabang'])->name('admin.editCabang');
+    // store cabang
+    Route::post('/admin/dashboard/cabang/tambahCabang', [CabangController::class, 'storeCabang']);
+    // update cabang
+    Route::put('/admin/dashboard/cabang/{id_cabang}', [CabangController::class, 'updateCabang'])->name('admin.updateCabang');
+    // hapus cabang
+    Route::delete('/admin/dashboard/cabang/{id_cabang}', [CabangController::class, 'destroyCabang'])->name('admin.hapusCabang');
+    // \ADMIN.CABANG
 
 });
 

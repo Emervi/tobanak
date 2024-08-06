@@ -86,6 +86,18 @@
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror
                     </div>
+
+                    <div class="mb-5">
+                        <label class="block">Pilih cabang</label>
+                        <select name="id_cabang" class="bg-gray-300 p-1 shadow rounded-sm w-full focus:outline-none">
+                            @foreach ( $cabangs as $cabang )
+                                <option value="{{ $cabang->id_cabang }}" {{ ($cabang->id_cabang == $atribut->id_cabang) ? 'selected' : ''  }}>{{ $cabang->nama_cabang }}</option>
+                            @endforeach
+                        </select>
+                        @error( 'id_cabang' )
+                            <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 {{-- column 2 --}}
@@ -166,6 +178,9 @@
                 <div class="w-full">
                     <label for="foto_barang" class="block">Foto Barang</label>
                     <input type="file" name="foto_barang" id="foto_barang" class="bg-gray-300 shadow rounded p-2 w-full">
+                    @error( 'foto_barang' )
+                        <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
+                    @enderror
                 </div>
 
             </div>
@@ -184,7 +199,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="block">Kategori</label>
+                        <label class="block">Pilih kategori</label>
                         <select name="kategori_barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                             <option value="Kaos" {{ old('kategori') == 'Kaos' ? 'selected' : '' }}>Kaos</option>
                             <option value="Kemeja" {{ old('kategori') == 'Kemeja' ? 'selected' : '' }}>Kemeja</option>
@@ -209,6 +224,18 @@
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror
                     </div>
+
+                    <div class="mb-5">
+                        <label class="block">Pilih cabang</label>
+                        <select name="id_cabang" class="bg-gray-300 p-1 shadow rounded-sm w-full focus:outline-none">
+                            @foreach ( $cabangs as $cabang )
+                                <option value="{{ $cabang->id_cabang }}">{{ $cabang->nama_cabang }}</option>
+                            @endforeach
+                        </select>
+                        @error( 'id_cabang' )
+                            <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 {{-- column 2 --}}
@@ -222,7 +249,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="block">Bahan</label>
+                        <label class="block">Pilih bahan</label>
                         <select name="bahan" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                             <option value="Tebal" {{ old('bahan') == 'Tebal' ? 'selected' : '' }}>Tebal</option>
                             <option value="Street" {{ old('bahan') == 'Street' ? 'selected' : '' }}>Street</option>

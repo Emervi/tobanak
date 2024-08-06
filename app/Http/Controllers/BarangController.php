@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BarangRequest;
 use App\Models\Barang;
+use App\Models\Cabang;
 use Illuminate\Http\Request;
 
 class BarangController extends Controller
@@ -13,7 +14,10 @@ class BarangController extends Controller
     {
         $perPage = 5;
 
-        $barangs = Barang::latest()->paginate($perPage);
+        $barangs = Barang::join('cabangs', 'barangs.id_cabang', '=', 'cabangs.id_cabang')
+        ->select('barangs.*', 'cabangs.nama_cabang')
+        ->latest()
+        ->paginate($perPage);
 
         $currentPage = $barangs->currentPage();
         $offset = ($currentPage - 1) * $perPage;
@@ -36,7 +40,9 @@ class BarangController extends Controller
     // halaman tambah barang
     public function tambahBarang()
     {
-        return view('admin.tambahBarang');
+        $cabangs = Cabang::get();
+
+        return view('admin.tambahBarang', compact('cabangs'));
     }
 
     // store barang
@@ -62,19 +68,26 @@ class BarangController extends Controller
 
         session()->put('hargaAsli', $hargaJual);
 
-        $diskon = $request->diskon;
-        $potongan = $request->potongan;
-
-        // Perhitungan harga jika ada diskon
-        if ($request->has('diskon')) {
-            $hargaDiskon = ($diskon / 100) * $hargaJual;
-            $hargaJual -= $hargaDiskon;
+        // Pengecekan apakah ada diskon yang diinputkan
+        if ( empty($request->diskon)  ){
+            $diskon = 0;
+        }else{
+            $diskon = $request->diskon;
         }
 
-        // Perhitungan harga jika ada potongan
-        if ($request->has('potongan')) {
-            $hargaJual -= $potongan;
+        // Pengecekan apakah ada potongan yang diinputkan
+        if ( empty($request->potongan) ){
+            $potongan = 0;
+        }else{
+            $potongan = $request->potongan;
         }
+        
+        // Perhitungan harga diskon
+        $hargaDiskon = ($diskon / 100) * $hargaJual;
+        $hargaJual -= $hargaDiskon;
+
+        // Perhitungan harga potongan
+        $hargaJual -= $potongan;
 
         // Logic untuk memasukan foto
         if ($request->has('foto_barang')) {
@@ -94,6 +107,8 @@ class BarangController extends Controller
             'harga' => $hargaJual,
             'diskon' => $diskon,
             'potongan' => $potongan,
+            'id_cabang' => $request->id_cabang,
+            'distribusi' => 'Dikirim',
         ]);
 
         return redirect()->route('admin.daftarBarang')->with('success', 'Barang berhasil ditambahkan!');
@@ -103,23 +118,26 @@ class BarangController extends Controller
     public function editBarang($id_barang)
     {
         $barang = Barang::where('id_barang', $id_barang)
-            ->get();
+        ->get();
 
-        return view('admin.tambahBarang', compact('barang'));
+        $cabangs = Cabang::get();
+
+        return view('admin.tambahBarang', compact('barang', 'cabangs'));
     }
 
     // update barang
     public function updateBarang(Request $request, $id_barang)
     {
+        $barang = Barang::where('id_barang', $id_barang)
+        ->first();
+
         $request->validate([
             'nama_barang' => ['required', 'string', 'unique:barangs,nama_barang,' . $id_barang . ',id_barang'],
             'kategori_barang' => ['required'],
             'deskripsi_barang' => ['required'],
             'stok_barang' => ['required', 'integer'],
             'bahan' => ['required'],
-            'foto_barang' => ['image', 'mimes:jpeg,png,jpg'],
-            'diskon' => ['required'],
-            'potongan' => ['required'],
+            'foto_barang' => ['image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ], [
             'nama_barang.required' => 'Nama barang wajib diisi.',
             'nama_barang.unique' => 'Nama barang sudah terdaftar',
@@ -129,10 +147,9 @@ class BarangController extends Controller
             'stok_barang.required' => 'Stok barang wajib diisi',
             'stok_barang.integer' => 'Stok barang wajib bernilai bilangan bulat',
             'bahan.required' => 'Bahan wajib diisi',
-            'diskon.required' => 'Diskon wajib diisi, minimal 0',
-            'potongan.required' => 'Potongan wajib diisi, minimal 0',
             'foto_barang.image' => 'File yang dimasukan harus berupa image',
             'foto_barang.mimes' => 'File yang dimasukan harus berformat berikut : jpeg, png, jpg',
+            'foto_barang.max' => 'Foto maksimal berukuran 2 MB'
         ]);
 
         $bahan = $request->bahan;
@@ -153,19 +170,26 @@ class BarangController extends Controller
 
         session()->put('hargaAsli', $hargaJual);
 
-        $diskon = $request->diskon;
-        $potongan = $request->potongan;
-
-        // Perhitungan harga jika ada diskon
-        if ($request->has('diskon')) {
-            $hargaDiskon = ($diskon / 100) * $hargaJual;
-            $hargaJual -= $hargaDiskon;
+        // Pengecekan apakah ada diskon yang diinputkan
+        if ( empty($request->diskon) ){
+            $diskon = 0;
+        }else{
+            $diskon = $request->diskon;
         }
 
-        // Perhitungan harga jika ada potongan
-        if ($request->has('potongan')) {
-            $hargaJual -= $potongan;
+        // Pengecekan apakah ada potongan yang diinputkan
+        if ( empty($request->potongan) ){
+            $potongan = 0;
+        }else{
+            $potongan = $request->potongan;
         }
+        
+        // Perhitungan harga diskon
+        $hargaDiskon = ($diskon / 100) * $hargaJual;
+        $hargaJual -= $hargaDiskon;
+
+        // Perhitungan harga potongan
+        $hargaJual -= $potongan;
 
         // logic untuk memasukan foto
         if ($request->has('foto_barang')) {
@@ -177,6 +201,11 @@ class BarangController extends Controller
                 ->first();
         }
 
+        // logic perpindahan distribusi barang
+        if ( $request->id_cabang !== $barang->id_cabang ){
+            $distribusi = "Dikirim";
+        }
+
         Barang::where('id_barang', $id_barang)
             ->update([
                 'foto_barang' => $imageName,
@@ -186,8 +215,10 @@ class BarangController extends Controller
                 'stok_barang' => $request->stok_barang,
                 'bahan' => $bahan,
                 'harga' => $hargaJual,
-                'diskon' => $request->diskon,
-                'potongan' => $request->potongan,
+                'diskon' => $diskon,
+                'potongan' => $potongan,
+                'id_cabang' => $request->id_cabang,
+                'distribusi' => $distribusi,
             ]);
 
         return redirect()->route(('admin.daftarBarang'))->with('success', 'Barang berhasil diupdate!');
