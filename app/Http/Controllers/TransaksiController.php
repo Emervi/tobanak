@@ -45,7 +45,9 @@ class TransaksiController extends Controller
             return redirect()->back()->with('error', 'Uang pembayaran tidak cukup!');
         }
 
-        DB::transaction(function () use ($request, $keranjang, $totalHarga, $uangPembayaran, $kembalian) {
+        $transaksiId = null;
+
+        DB::transaction(function () use ($request, $keranjang, $totalHarga, $uangPembayaran, $kembalian, &$transaksiId) {
             // Membuat transaksi baru
             $transaksi = Transaksi::create([
                 'tanggal' => Carbon::now()->toDateString(),
@@ -54,6 +56,8 @@ class TransaksiController extends Controller
                 'uang_pembayaran' => $uangPembayaran,
                 'kembalian' => $kembalian,
             ]);
+
+            $transaksiId = $transaksi->id_transaksi;
 
             // Menambahkan barang_transaksis
             foreach ($keranjang as $item) {
@@ -71,9 +75,16 @@ class TransaksiController extends Controller
 
         Session::forget('keranjang');
         Session::forget('totalJumlah');
+        session()->put('orderData', [
+            'orderId' => $transaksiId, // Nomor order
+            'keranjang' => $keranjang, // Daftar barang
+            'totalHarga' => $totalHarga, // Total belanja
+            'uangPembayaran' => $uangPembayaran, // Uang pembayaran
+        ]);
 
         return redirect()->route('user.pesananBerhasil');
     }
+
 
 
 
