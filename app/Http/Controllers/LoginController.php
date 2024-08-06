@@ -33,6 +33,7 @@ class LoginController extends Controller
         // Autentikasi pengguna
         $credentials = $request->only('username', 'password');
 
+        // dd(Auth::attempt($credentials));
         if (Auth::attempt($credentials)) {
 
             $user = Auth::user();
@@ -48,9 +49,9 @@ class LoginController extends Controller
             return redirect()->intended(route('homeUser'));
         }
 
-        return Redirect::back()->withErrors([
-            'error' => 'These credentials do not match our records.',
-        ])->withInput();
+        return redirect()->back()->with([
+            'error' => 'Username atau Password salah!',
+        ]);
     }
 
     public function logout(Request $request)

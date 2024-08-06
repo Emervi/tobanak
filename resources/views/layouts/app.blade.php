@@ -89,7 +89,7 @@
     <script>
         function confirmDelete(event) {
             event.preventDefault();
-            if (confirm('Are you sure you want to delete this post?')) {
+            if (confirm('Apakah anda yakin ingin menghapus data tersebut?')) {
                 event.target.closest('form').submit();
             }
         }
@@ -115,6 +115,7 @@
             <li><a href="{{ route('admin.daftarTransaksi') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Transaksi</a></li>
             <li><a href="{{ route('admin.daftarBarang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Barang</a></li>
             <li><a href="{{ route('admin.daftarUser') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">User</a></li>
+            <li><a href="{{ route('admin.daftarCabang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Cabang</a></li>
         </ul>
         @else
 

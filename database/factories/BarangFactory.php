@@ -26,7 +26,8 @@ class BarangFactory extends Factory
             'bahan' => $this->faker->randomElement($bahan),
             'harga' => $this->faker->numberBetween(200000, 260000),
             'diskon' => $this->faker->numberBetween(1, 90),
-            'potongan' => $this->faker->numberBetween(1000, 75000)
+            'potongan' => $this->faker->numberBetween(1000, 75000),
+            'id_cabang' => '1',
         ];
     }
 }

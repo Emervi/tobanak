@@ -64,6 +64,7 @@
             <th>Uang pembayaran</th>
             <th>Total harga</th>
             <th>Kembalian</th>
+            <th>Cabang</th>
             <th class="text-center w-1/4">Aksi</th>
         </thead>
         <tbody>
@@ -79,6 +80,7 @@
                 <td>Rp. {{ number_format($transaksi->uang_pembayaran, 0, ',', '.') }}</td>
                 <td>Rp. {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
                 <td>Rp. {{ number_format($transaksi->kembalian, 0, ',', '.') }}</td>
+                <td>{{ $transaksi->nama_cabang }}</td>
                 <td class="flex justify-evenly items-center my-2">
                     <a href="{{ route('admin.detailTransaksi', [$transaksi->id_transaksi]) }}" class="text-yellow-500 w-36 py-1 bg-white border border-yellow-500 rounded-md text-center hover:text-white hover:bg-yellow-500">
                         <i class="fas fa-eye mr-1"></i>

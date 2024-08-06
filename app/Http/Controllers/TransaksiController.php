@@ -55,6 +55,7 @@ class TransaksiController extends Controller
                 'total_harga' => $totalHarga,
                 'uang_pembayaran' => $uangPembayaran,
                 'kembalian' => $kembalian,
+                'id_cabang' => 1,
             ]);
 
             $transaksiId = $transaksi->id_transaksi;
@@ -94,9 +95,10 @@ class TransaksiController extends Controller
         $perPage = 5;
 
         $transaksis = Transaksi::join('users', 'transaksis.id_user', '=', 'users.id_user')
-            ->select('transaksis.*', 'users.name')
-            ->latest()
-            ->paginate($perPage);
+        ->join('cabangs', 'transaksis.id_cabang', '=', 'cabangs.id_cabang')
+        ->select('transaksis.*', 'users.name', 'cabangs.nama_cabang')
+        ->latest()
+        ->paginate($perPage);
 
         $currentPage = $transaksis->currentPage();
         $offset = ($currentPage - 1) * $perPage;

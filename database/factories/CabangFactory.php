@@ -14,7 +14,10 @@ class CabangFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'nama_cabang' => $this->faker->word(),
+            'lokasi_cabang' => $this->faker->sentence(),
+            'kota_cabang' => $this->faker->word(),
+            'email_cabang' => $this->faker->safeEmail(),
         ];
     }
 }

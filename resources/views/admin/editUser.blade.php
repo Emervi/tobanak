@@ -40,6 +40,18 @@
                         @enderror
                     </div>
 
+                    <div class="mb-5">
+                        <label class="block">Pilih cabang</label>
+                        <select name="id_cabang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                            @foreach ( $cabangs as $cabang )
+                                <option value="{{ $cabang->id_cabang }}" {{ ($cabang->id_cabang == $atribut->id_cabang) ? 'selected' : ''  }}>{{ $cabang->nama_cabang }}</option>
+                            @endforeach
+                        </select>
+                        @error( 'id_cabang' )
+                            <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                 </div>
 
                 {{-- column 2 --}}
