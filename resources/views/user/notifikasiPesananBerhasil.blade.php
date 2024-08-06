@@ -9,8 +9,11 @@
 
     <!-- Struk Belanja -->
     <div class="bg-white p-4 rounded-lg shadow-md mb-6 max-w-lg mx-auto mt-10">
-        <h2 class="text-lg font-bold mb-3">Struk Belanja</h2>
-        <div class="border-b border-gray-200 pb-2 mb-2">
+        <div class="text-center w-full">
+            <p class="text-lg mb-3">============= &nbsp;
+                <span class="font-bold">{{ $cabangs->nama_cabang }}</span> 
+                &nbsp; =============</p></div>
+        <div class=" pb-2 my-4">
             <p class="text-sm">Tanggal: {{ \Carbon\Carbon::now()->format('d-m-Y H:i:s') }}</p>
             <p class="text-sm">Nomor Order: {{ session('orderData.orderId') }}</p>
         </div>
@@ -37,9 +40,19 @@
                     @endforeach
                 </tbody>
                 <tfoot>
+                
                     <tr class="border-t">
-                        <td class="py-1 px-2 font-bold" colspan="3">Total Belanja</td>
-                        <td class="py-1 px-2 text-right font-bold">Rp {{ number_format(session('orderData.totalHarga'), 0, ',', '.') }}</td>
+                        
+                        <td class="py-1 px-2 font-bold" colspan="3">
+                            <div class="mt-6">
+                                Total Belanja
+                            </div>
+                        </td>
+                        <td class="py-1 px-2 text-right font-bold">
+                            <div class="mt-6">
+                            Rp {{ number_format(session('orderData.totalHarga'), 0, ',', '.') }}
+                            </div>
+                        </td>    
                     </tr>
                     <tr>
                         <td class="py-1 px-2 font-bold" colspan="3">Uang Pembayaran</td>
@@ -49,10 +62,11 @@
                         <td class="py-1 px-2 font-bold" colspan="3">Kembalian</td>
                         <td class="py-1 px-2 text-right font-bold">Rp {{ number_format(session('orderData.uangPembayaran') - session('orderData.totalHarga'), 0, ',', '.') }}</td>
                     </tr>
+                
                 </tfoot>
             </table>
         </div>
-        <div class="flex justify-between mt-4">
+        <div class="flex justify-between mt-10">
             <a href="#" class="bg-yellow-500 text-gray-900 px-3 py-1 rounded-lg shadow hover:bg-yellow-600 text-sm"><i class="fa-solid fa-print"></i> Print</a>
             <a href="{{ route('homeUser') }}" class="bg-blue-500 text-white px-3 py-1 rounded-lg shadow hover:bg-blue-700 text-sm"><i class="fa-solid fa-house"></i> Beranda</a>
         </div>
