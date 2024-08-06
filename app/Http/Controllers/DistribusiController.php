@@ -27,7 +27,11 @@ class DistribusiController extends Controller
             'distribusi' => $request->input('status'),
         ]);
 
-        return redirect()->route('distribusi')->with('success','status distribusi berhasil di ubah');
+        if($request->input('status') == 'Diterima') {
+            return redirect()->route('distribusi')->with('success', 'Barang berhasil ditambahkan, semoga ga kayak nambahin perasaan ke orang yang salah');
+        }
+
+        return redirect()->route('distribusi')->with('tolak', 'Barang ditolak, kayak cinta kamu yang nggak pernah diterima.');
 
     }
 }

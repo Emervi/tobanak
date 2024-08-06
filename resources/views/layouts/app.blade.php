@@ -7,7 +7,9 @@
     <title>@yield('title', 'Tobanak')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="shortcut icon" href="{{ asset('bat.ico') }}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Sans+MS&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="{{ asset('tobanak.ico') }}" type="image/x-icon">
     <style>
         /* Chrome, Safari, Edge, Opera */
         input[type="number"]::-webkit-outer-spin-button,
@@ -100,7 +102,7 @@
     <nav class="w-full p-3 flex justify-between bg-pink-300 items-center">
         <div class="flex justify-between gap-10 items-center">
         <div class="font-bold text-2xl ml-5">
-            <img src="{{ asset('images/logo_tobanak.png') }}" class="w-10 h-10">
+            <img src="{{ asset('images/tobanak.png') }}" class="w-10 h-10">
 
         </div>
         @if ( session()->has('user') )

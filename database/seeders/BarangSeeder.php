@@ -158,6 +158,18 @@ class BarangSeeder extends Seeder
             'Ditolak'
         );
 
+        isiBarang(
+            'Kolor Bapa',
+            1,
+            'Terbaru , wangi nya masih terasa',
+            'celana biru.jpeg',
+            'Celana',
+            'Tipis',
+            99,
+            0,
+            'Diterima'
+        );
+
         // Barang::create([
         //     'nama_barang' => 'Baju Anak Laki-laki',
         //     'stok_barang' => 50,
