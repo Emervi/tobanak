@@ -1,14 +1,15 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CabangController;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\TransaksiController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DistribusiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -134,6 +135,11 @@ Route::middleware('user')->group(function () {
     Route::get('/detail-produk/{id_barang}', [UserController::class, 'show'])->name('detailProduk');
 
     Route::get('/user/pesananBerhasil', [UserController::class, 'notifikasiBerhasil'])->name('user.pesananBerhasil');
+    
+    
+    Route::get('/distribusi', [DistribusiController::class, 'index'])->name('distribusi');
+    Route::post('/distribusi/update-status/{id_barang}', [DistribusiController::class, 'updateStatus'])->name('distribusi.updateStatus');
+
     // Penutup Halaman User
 });
 

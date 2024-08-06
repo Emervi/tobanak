@@ -107,6 +107,7 @@
         <ul class="flex justify-between gap-7">
             <li><a href="{{ route('homeUser') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Home</a></li>
             <li><a href="{{ route('keranjang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Keranjang</a></li>
+            <li><a href="{{ route('distribusi') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Distribusi</a></li>
             <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500"></a></li>
         </ul>
         @elseif ( session()->has('admin') )

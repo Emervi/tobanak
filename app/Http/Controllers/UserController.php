@@ -3,52 +3,67 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\Cabang;
 use App\Models\Keranjang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
 
-    // Halaman User
-
     public function homeUser(Request $request)
     {
-        $id_user = session('user')->id_user;
 
-        $barangs = Barang::all();
+        $id_user = session('user')->id_user;
+        $cabang_user = session('user')->id_cabang;
+        $cabangs = Cabang::where('id_cabang', $cabang_user)->first();
+
 
         $totalJumlah = Keranjang::where('id_user', $id_user)
-        ->sum('kuantitas');
+            ->sum('kuantitas');
+
 
         $filter = $request->query('filter');
         $kategori = Barang::select('kategori_barang')->distinct()->pluck('kategori_barang');
 
+
+        $query = Barang::where('id_cabang', $cabang_user)
+            ->where('distribusi', 'Diterima');
+
         if ($filter) {
-            $barangs = Barang::where('kategori_barang', $filter)->get();
-        } else {
-            $barangs = Barang::all();
+            $query->where('kategori_barang', $filter);
         }
 
+        $barangs = $query->get();
+
+        // Menghitung harga asli untuk setiap barang
         foreach ($barangs as $barang) {
             $bahan = $barang->bahan;
-            if ($bahan == 'Tebal') {
-                $modal = 20000 * 10;
-            } else if ($bahan == 'Street') {
-                $modal = 19000 * 10;
-            } else if ($bahan == 'Sedang') {
-                $modal = 18000 * 10;
-            } else {
-                $modal = 17000 * 10;
+            switch ($bahan) {
+                case 'Tebal':
+                    $modal = 20000 * 10;
+                    break;
+                case 'Street':
+                    $modal = 19000 * 10;
+                    break;
+                case 'Sedang':
+                    $modal = 18000 * 10;
+                    break;
+                default:
+                    $modal = 17000 * 10;
+                    break;
             }
 
             $bebanProduksi = (2 / 100) * $modal;
             $keuntungan = (25 / 100) * $modal;
-            $hargaJual = $modal + $keuntungan + $bebanProduksi;
+            $hargaJual = $modal + $bebanProduksi + $keuntungan;
 
             $barang->harga_asli = $hargaJual; // Menyimpan harga asli dalam objek barang
         }
 
-        return view('user.home', compact('barangs', 'kategori', 'totalJumlah'));
+       
+
+        return view('user.home', compact('barangs', 'kategori', 'totalJumlah', 'cabangs'));
     }
 
     public function keranjang()
@@ -63,18 +78,23 @@ class UserController extends Controller
         $barang = Barang::where('id_barang', $id_barang)->firstOrFail();
 
         $totalJumlah = Keranjang::where('id_user', $id_user)
-        ->sum('kuantitas');
+            ->sum('kuantitas');
 
         $bahan = $barang->bahan;
 
-        if ($bahan == 'Tebal') {
-            $modal = 20000 * 10;
-        } else if ($bahan == 'Street') {
-            $modal = 19000 * 10;
-        } else if ($bahan == 'Sedang') {
-            $modal = 18000 * 10;
-        } else {
-            $modal = 17000 * 10;
+        switch ($bahan) {
+            case 'Tebal':
+                $modal = 20000 * 10;
+                break;
+            case 'Street':
+                $modal = 19000 * 10;
+                break;
+            case 'Sedang':
+                $modal = 18000 * 10;
+                break;
+            default:
+                $modal = 17000 * 10;
+                break;
         }
 
         $bebanProduksi = (2 / 100) * $modal;
@@ -86,14 +106,17 @@ class UserController extends Controller
         return view('user.detail', compact('barang', 'totalJumlah'));
     }
 
-
     // Penutup Halaman User
 
     // notifikasi pesanan berhasil
     public function notifikasiBerhasil()
     {
-        return view('user.notifikasiPesananBerhasil');
+        $cabang_user = session('user')->id_cabang;
+        $cabangs = Cabang::where('id_cabang', $cabang_user)->first();
+
+        return view('user.notifikasiPesananBerhasil', compact('cabangs'));
     }
     // \notifikasi pesanan berhasil
-
 }
+
+
