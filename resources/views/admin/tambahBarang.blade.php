@@ -50,15 +50,16 @@
                     <div class="mb-3">
                         <label class="block">Kategori</label>
                         <select name="kategori_barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
-                            <option value="kaos" {{ ($atribut->kategori_barang == 'kaos' ? 'selected' : '') }}>Kaos</option>
-                            <option value="kemeja" {{ ($atribut->kategori_barang == 'kemeja' ? 'selected' : '') }}>Kemeja</option>
-                            <option value="jaket" {{ ($atribut->kategori_barang == 'jaket' ? 'selected' : '') }}>Jaket</option>
-                            <option value="sweater" {{ ($atribut->kategori_barang == 'sweater' ? 'selected' : '') }}>Sweater</option>
-                            <option value="celana" {{ ($atribut->kategori_barang == 'celana' ? 'selected' : '') }}>Celana</option>
-                            <option value="rok" {{ ($atribut->kategori_barang == 'rok' ? 'selected' : '') }}>Rok</option>
-                            <option value="topi" {{ ($atribut->kategori_barang == 'topi' ? 'selected' : '') }}>Topi</option>
-                            <option value="sepatu" {{ ($atribut->kategori_barang == 'sepatu' ? 'selected' : '') }}>Sepatu</option>
-                            <option value="sandal" {{ ($atribut->kategori_barang == 'sandal' ? 'selected' : '') }}>Sandal</option>
+                            <option value="Kaos" {{ ($atribut->kategori_barang == 'Kaos' ? 'selected' : '') }}>Kaos</option>
+                            <option value="Kemeja" {{ ($atribut->kategori_barang == 'Kemeja' ? 'selected' : '') }}>Kemeja</option>
+                            <option value="Jaket" {{ ($atribut->kategori_barang == 'Jaket' ? 'selected' : '') }}>Jaket</option>
+                            <option value="Gaun" {{ ($atribut->kategori_barang == 'Gaun' ? 'selected' : '') }}>Gaun</option>
+                            <option value="Celana" {{ ($atribut->kategori_barang == 'Celana' ? 'selected' : '') }}>Celana</option>
+                            <option value="Rok" {{ ($atribut->kategori_barang == 'Rok' ? 'selected' : '') }}>Rok</option>
+                            <option value="Topi" {{ ($atribut->kategori_barang == 'Topi' ? 'selected' : '') }}>Topi</option>
+                            <option value="Sepatu" {{ ($atribut->kategori_barang == 'Sepatu' ? 'selected' : '') }}>Sepatu</option>
+                            <option value="Sandal" {{ ($atribut->kategori_barang == 'Sandal' ? 'selected' : '') }}>Sandal</option>
+                            <option value="Aksesoris" {{ ($atribut->kategori_barang == 'Aksesoris' ? 'selected' : '') }}>Aksesoris</option>
                         </select>
                         @error( 'kategori_barang' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
@@ -68,10 +69,10 @@
                     <div class="mb-3">
                         <label class="block">Bahan</label>
                         <select name="bahan" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
-                            <option value="tebal" {{ ($atribut->bahan == 'tebal' ? 'selected' : '') }}>Tebal</option>
-                            <option value="street" {{ ($atribut->bahan == 'street' ? 'selected' : '') }}>Street</option>
-                            <option value="sedang" {{ ($atribut->bahan == 'sedang' ? 'selected' : '') }}>Sedang</option>
-                            <option value="tipis" {{ ($atribut->bahan == 'tipis' ? 'selected' : '') }}>Tipis</option>
+                            <option value="Tebal" {{ ($atribut->bahan == 'Tebal' ? 'selected' : '') }}>Tebal</option>
+                            <option value="Street" {{ ($atribut->bahan == 'Street' ? 'selected' : '') }}>Street</option>
+                            <option value="Sedang" {{ ($atribut->bahan == 'Sedang' ? 'selected' : '') }}>Sedang</option>
+                            <option value="Tipis" {{ ($atribut->bahan == 'Tipis' ? 'selected' : '') }}>Tipis</option>
                         </select>
                         @error( 'bahan' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
@@ -99,7 +100,7 @@
 
                     <div class="mb-3">
                         <label for="harga" class="block">Harga</label>
-                        <input type="number" name="harga" id="harga" step="0.001" value="{{ $atribut->harga }}" placeholder="Masukan harga barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        <input type="number" name="harga" id="harga" step="0.001" value="{{ $atribut->harga }}" placeholder="Masukan harga barang" class="bg-gray-400 p-1 shadow rounded-sm w-11/12 focus:outline-none" readonly>
                         @error( 'harga' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror
@@ -115,7 +116,7 @@
 
                     <div>
                         <label for="potongan" class="block">Potongan(Rp.)</label>
-                        <input type="number" name="potongan" id="potongan" step="0.001" value="{{ $atribut->potongan }}" placeholder="Masukan potongan barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        <input type="number" name="potongan" id="potongan" value="{{ $atribut->potongan }}" placeholder="Masukan potongan barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                         @error( 'potongan' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror
@@ -185,15 +186,16 @@
                     <div class="mb-3">
                         <label class="block">Kategori</label>
                         <select name="kategori_barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
-                            <option value="kaos" {{ old('kategori') == 'kaos' ? 'selected' : '' }}>Kaos</option>
-                            <option value="kemeja" {{ old('kategori') == 'kemeja' ? 'selected' : '' }}>Kemeja</option>
-                            <option value="jaket" {{ old('kategori') == 'jaket' ? 'selected' : '' }}>Jaket</option>
-                            <option value="sweater" {{ old('kategori') == 'sweater' ? 'selected' : '' }}>Sweater</option>
-                            <option value="celana" {{ old('kategori') == 'celana' ? 'selected' : '' }}>Celana</option>
-                            <option value="rok" {{ old('kategori') == 'rok' ? 'selected' : '' }}>Rok</option>
-                            <option value="topi" {{ old('kategori') == 'topi' ? 'selected' : '' }}>Topi</option>
-                            <option value="sepatu" {{ old('kategori') == 'sepatu' ? 'selected' : '' }}>Sepatu</option>
-                            <option value="sandal" {{ old('kategori') == 'sandal' ? 'selected' : '' }}>Sandal</option>
+                            <option value="Kaos" {{ old('kategori') == 'Kaos' ? 'selected' : '' }}>Kaos</option>
+                            <option value="Kemeja" {{ old('kategori') == 'Kemeja' ? 'selected' : '' }}>Kemeja</option>
+                            <option value="Jaket" {{ old('kategori') == 'Jaket' ? 'selected' : '' }}>Jaket</option>
+                            <option value="Gaun" {{ old('kategori') == 'Gaun' ? 'selected' : '' }}>Gaun</option>
+                            <option value="Celana" {{ old('kategori') == 'Celana' ? 'selected' : '' }}>Celana</option>
+                            <option value="Rok" {{ old('kategori') == 'Rok' ? 'selected' : '' }}>Rok</option>
+                            <option value="Topi" {{ old('kategori') == 'Topi' ? 'selected' : '' }}>Topi</option>
+                            <option value="Sepatu" {{ old('kategori') == 'Sepatu' ? 'selected' : '' }}>Sepatu</option>
+                            <option value="Sandal" {{ old('kategori') == 'Sandal' ? 'selected' : '' }}>Sandal</option>
+                            <option value="Aksesoris" {{ old('kategori') == 'Aksesoris' ? 'selected' : '' }}>Aksesoris</option>
                         </select>
                         @error( 'kategori_barang' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
@@ -222,10 +224,10 @@
                     <div class="mb-3">
                         <label class="block">Bahan</label>
                         <select name="bahan" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
-                            <option value="tebal" {{ old('bahan') == 'tebal' ? 'selected' : '' }}>Tebal</option>
-                            <option value="street" {{ old('bahan') == 'street' ? 'selected' : '' }}>Street</option>
-                            <option value="sedang" {{ old('bahan') == 'sedang' ? 'selected' : '' }}>Sedang</option>
-                            <option value="tipis" {{ old('bahan') == 'tipis' ? 'selected' : '' }}>Tipis</option>
+                            <option value="Tebal" {{ old('bahan') == 'Tebal' ? 'selected' : '' }}>Tebal</option>
+                            <option value="Street" {{ old('bahan') == 'Street' ? 'selected' : '' }}>Street</option>
+                            <option value="Sedang" {{ old('bahan') == 'Sedang' ? 'selected' : '' }}>Sedang</option>
+                            <option value="Tipis" {{ old('bahan') == 'Tipis' ? 'selected' : '' }}>Tipis</option>
                         </select>
                         @error( 'bahan' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
@@ -242,7 +244,7 @@
 
                     <div>
                         <label for="potongan" class="block">Potongan(Rp.)</label>
-                        <input type="number" name="potongan" id="potongan" step="0.001" value="{{ old('potongan') }}" placeholder="Masukan potongan barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        <input type="number" name="potongan" id="potongan" value="{{ old('potongan') }}" placeholder="Masukan potongan barang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                         @error( 'potongan' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror

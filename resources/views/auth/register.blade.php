@@ -6,12 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Register</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="bg-gray-100">
 
     <div class="w-1/3 bg-white mx-auto p-5 rounded-md shadow-xl mt-12">
 
-        <h2 class="font-bold text-center text-2xl mb-4">Register</h2>
+        <h1 class="flex-1 text-2xl font-semibold mb-6 flex items-center">
+            <a href="{{ route('landingPage') }}"><i class="fas fa-home text-pink-400 hover:text-black"></i></a>
+            <p class="flex-1 text-center mr-7">Register</p>
+        </h1>
 
         <form action="{{ url('/register') }}" method="POST">
             @csrf

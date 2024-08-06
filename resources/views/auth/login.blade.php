@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
 
@@ -24,15 +25,11 @@
             <p>{{ session('error') }}</p>
         </div>
         @endif
-
-        @if ($errors->has('error'))
-        <div class="w-full bg-red-400 mx-auto mb-2 text-center font-medium p-0.5">
-            <p>{{ $errors->first('error') }}</p>
-        </div>
-        @endif
-
-
-        <h1 class="text-2xl font-semibold mb-6 text-center">Login</h1>
+        
+        <h1 class="flex-1 text-2xl font-semibold mb-6 flex items-center">
+            <a href="{{ route('landingPage') }}"><i class="fas fa-home text-pink-400 hover:text-black"></i></a>
+            <p class="flex-1 text-center mr-6">Login</p>
+        </h1>
 
         <form method="POST" action="{{ route('auth.login') }}">
             @csrf

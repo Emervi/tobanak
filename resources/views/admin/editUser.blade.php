@@ -25,9 +25,30 @@
                 <div>
 
                     <div class="mb-3">
-                        <label for="name" class="block">Nama User</label>
+                        <label for="username" class="block">Username</label>
+                        <input type="text" name="username" id="username" value="{{ $atribut->username }}" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        @error( 'username' )
+                            <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="name" class="block">Nama</label>
                         <input type="text" name="name" id="name" value="{{ $atribut->name }}" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                         @error( 'name' )
+                            <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                </div>
+
+                {{-- column 2 --}}
+                <div>
+
+                    <div class="mb-3">
+                        <label for="email" class="block">Email</label>
+                        <input type="email" name="email" id="email" value="{{ $atribut->email }}" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        @error( 'email' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror
                     </div>
@@ -42,19 +63,6 @@
                             <input type="radio" name="status" id="user" value="user" {{ $atribut->status == 'user' ? 'checked' : '' }}>
                             <label for="user">User</label>
                         </div>
-                    </div>
-
-                </div>
-
-                {{-- column 2 --}}
-                <div>
-
-                    <div class="mb-3">
-                        <label for="email" class="block">Email</label>
-                        <input type="email" name="email" id="email" value="{{ $atribut->email }}" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
-                        @error( 'email' )
-                            <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
-                        @enderror
                     </div>
 
                 </div>

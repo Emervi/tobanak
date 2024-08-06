@@ -83,7 +83,7 @@ Route::middleware('cek_session_null')->group(function () {
     // landing page
     Route::get('/', function () {
         return view('home');
-    });
+    })->name('landingPage');
     // \landing page
 
     // LOGIN

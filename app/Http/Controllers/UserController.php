@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\Keranjang;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -12,7 +13,12 @@ class UserController extends Controller
 
     public function homeUser(Request $request)
     {
+        $id_user = session('user')->id_user;
+
         $barangs = Barang::all();
+
+        $totalJumlah = Keranjang::where('id_user', $id_user)
+        ->sum('kuantitas');
 
         $filter = $request->query('filter');
         $kategori = Barang::select('kategori_barang')->distinct()->pluck('kategori_barang');
@@ -25,11 +31,11 @@ class UserController extends Controller
 
         foreach ($barangs as $barang) {
             $bahan = $barang->bahan;
-            if ($bahan == 'tebal') {
+            if ($bahan == 'Tebal') {
                 $modal = 20000 * 10;
-            } else if ($bahan == 'street') {
+            } else if ($bahan == 'Street') {
                 $modal = 19000 * 10;
-            } else if ($bahan == 'sedang') {
+            } else if ($bahan == 'Sedang') {
                 $modal = 18000 * 10;
             } else {
                 $modal = 17000 * 10;
@@ -42,7 +48,7 @@ class UserController extends Controller
             $barang->harga_asli = $hargaJual; // Menyimpan harga asli dalam objek barang
         }
 
-        return view('user.home', compact('barangs', 'kategori'));
+        return view('user.home', compact('barangs', 'kategori', 'totalJumlah'));
     }
 
     public function keranjang()
@@ -52,16 +58,20 @@ class UserController extends Controller
 
     public function show($id_barang)
     {
+        $id_user = session('user')->id_user;
+
         $barang = Barang::where('id_barang', $id_barang)->firstOrFail();
 
+        $totalJumlah = Keranjang::where('id_user', $id_user)
+        ->sum('kuantitas');
 
         $bahan = $barang->bahan;
 
-        if ($bahan == 'tebal') {
+        if ($bahan == 'Tebal') {
             $modal = 20000 * 10;
-        } else if ($bahan == 'street') {
+        } else if ($bahan == 'Street') {
             $modal = 19000 * 10;
-        } else if ($bahan == 'sedang') {
+        } else if ($bahan == 'Sedang') {
             $modal = 18000 * 10;
         } else {
             $modal = 17000 * 10;
@@ -73,7 +83,7 @@ class UserController extends Controller
 
         $barang->harga_asli = $hargaJual;
 
-        return view('user.detail', compact('barang'));
+        return view('user.detail', compact('barang', 'totalJumlah'));
     }
 
 

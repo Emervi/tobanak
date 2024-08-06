@@ -24,14 +24,11 @@ class BarangController extends Controller
     // cari barang
     public function cariBarang(Request $request)
     {
-        $perPage = 5;
-
         $query = $request->keyword_barang;
         $barangs = Barang::where('nama_barang', 'LIKE', "%$query%")
-            ->paginate($perPage);
+        ->get();
 
-        $currentPage = $barangs->currentPage();
-        $offset = ($currentPage - 1) * $perPage;
+        $offset = -1;
 
         return view('admin.daftarBarang', compact('barangs', 'offset'));
     }
@@ -48,11 +45,11 @@ class BarangController extends Controller
 
         // Harga modal dengan patokan bahan
         $bahan = $request->bahan;
-        if ($bahan == 'tebal') {
+        if ($bahan == 'Tebal') {
             $modal = 20000 * 10;
-        } else if ($bahan == 'street') {
+        } else if ($bahan == 'Street') {
             $modal = 19000 * 10;
-        } else if ($bahan == 'sedang') {
+        } else if ($bahan == 'Sedang') {
             $modal = 18000 * 10;
         } else {
             $modal = 17000 * 10;
@@ -115,23 +112,35 @@ class BarangController extends Controller
     public function updateBarang(Request $request, $id_barang)
     {
         $request->validate([
-            'nama_barang' => ['required', 'string'],
+            'nama_barang' => ['required', 'string', 'unique:barangs,nama_barang,' . $id_barang . ',id_barang'],
             'kategori_barang' => ['required'],
             'deskripsi_barang' => ['required'],
             'stok_barang' => ['required', 'integer'],
             'bahan' => ['required'],
-            'harga' => ['required', 'numeric'],
             'foto_barang' => ['image', 'mimes:jpeg,png,jpg'],
             'diskon' => ['required'],
             'potongan' => ['required'],
+        ], [
+            'nama_barang.required' => 'Nama barang wajib diisi.',
+            'nama_barang.unique' => 'Nama barang sudah terdaftar',
+            'nama_barang.string' => 'Nama barang tidak boleh mengandung angka',
+            'kategori_barang.required' => 'Kategori wajib diisi',
+            'deskripsi_barang.required' => 'Deskripsi barang wajib diisi',
+            'stok_barang.required' => 'Stok barang wajib diisi',
+            'stok_barang.integer' => 'Stok barang wajib bernilai bilangan bulat',
+            'bahan.required' => 'Bahan wajib diisi',
+            'diskon.required' => 'Diskon wajib diisi, minimal 0',
+            'potongan.required' => 'Potongan wajib diisi, minimal 0',
+            'foto_barang.image' => 'File yang dimasukan harus berupa image',
+            'foto_barang.mimes' => 'File yang dimasukan harus berformat berikut : jpeg, png, jpg',
         ]);
 
         $bahan = $request->bahan;
-        if ($bahan == 'tebal') {
+        if ($bahan == 'Tebal') {
             $modal = 20000 * 10;
-        } else if ($bahan == 'street') {
+        } else if ($bahan == 'Street') {
             $modal = 19000 * 10;
-        } else if ($bahan == 'sedang') {
+        } else if ($bahan == 'Sedang') {
             $modal = 18000 * 10;
         } else {
             $modal = 17000 * 10;
@@ -188,7 +197,7 @@ class BarangController extends Controller
     public function destroyBarang($id_barang)
     {
         Barang::where('id_barang', $id_barang)
-            ->delete();
+        ->delete();
 
         return redirect()->back()->with('success', 'Barang berhasil dihapus!');
     }

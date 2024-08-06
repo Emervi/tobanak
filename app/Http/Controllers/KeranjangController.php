@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Keranjang;
 use App\Models\Barang;
+use Illuminate\Support\Facades\Session;
 
 class KeranjangController extends Controller
 {
@@ -77,12 +78,19 @@ class KeranjangController extends Controller
     // Mengupdate kuantitas barang di keranjang
     public function kurangi(Request $request)
     {
+        $idBarang = $request->input('id_barang');
         $idKeranjang = $request->input('id_keranjang');
         $keranjang = Keranjang::findOrFail($idKeranjang);
 
         if ($keranjang->kuantitas > 1) {
             $keranjang->kuantitas -= 1;
             $keranjang->save();
+            Barang::where('id_barang', $idBarang)
+            ->increment('stok_barang', 1);
+
+            $totalJumlah = Session::get('totalJumlah', 0);
+            $totalJumlah--;
+            Session::put('totalJumlah', $totalJumlah);
         } else {
             $keranjang->delete();
         }

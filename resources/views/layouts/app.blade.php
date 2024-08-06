@@ -61,6 +61,30 @@
         .alert.show {
             display: block;
         }
+
+        /* @keyframes laju {
+            from { transform: translateX(-500px) }
+            to { transform: translateX(1300px) }
+        }
+        .laju {
+            animation: laju 5s linear infinite forwards;
+        }
+
+        @keyframes laju-red {
+            from { transform: translateX(-500px) }
+            to { transform: translateX(1300px) }
+        }
+        .laju-red {
+            animation: laju-red 5s linear infinite forwards;
+        }
+
+        @keyframes laju-blue {
+            from { transform: translateX(-500px) }
+            to { transform: translateX(1300px) }
+        }
+        .laju-blue {
+            animation: laju-blue 5s linear infinite forwards;
+        } */
     </style>
     <script>
         function confirmDelete(event) {
@@ -79,12 +103,21 @@
             <img src="{{ asset('images/logo_tobanak.png') }}" class="w-10 h-10">
 
         </div>
-        @if ( session()->has('admin') || session()->has('user') )
+        @if ( session()->has('user') )
         <ul class="flex justify-between gap-7">
-            <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Home</a></li>
-            <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">About</a></li>
-            <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Contact</a></li>
+            <li><a href="{{ route('homeUser') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Home</a></li>
+            <li><a href="{{ route('keranjang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Keranjang</a></li>
+            <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500"></a></li>
         </ul>
+        @elseif ( session()->has('admin') )
+        <ul class="flex justify-between gap-7">
+            <li><a href="{{ route('admin.dashboard') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Home</a></li>
+            <li><a href="{{ route('admin.daftarTransaksi') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Transaksi</a></li>
+            <li><a href="{{ route('admin.daftarBarang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Barang</a></li>
+            <li><a href="{{ route('admin.daftarUser') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">User</a></li>
+        </ul>
+        @else
+
         @endif
         </div>
 
@@ -107,6 +140,11 @@
     </nav>
 
     <main>
+        {{-- <div class="w-full bg-white p-1 relative">
+            <i class="fas fa-shopping-cart text-2xl laju">Belanja</i>
+            <i class="fas fa-shopping-cart text-red-500 text-2xl laju-red">Di</i>
+            <i class="fas fa-shopping-cart text-blue-500 text-2xl laju-blue">Tobanak</i>
+        </div> --}}
         @yield('body')
     </main>
 

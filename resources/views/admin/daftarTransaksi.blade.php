@@ -7,11 +7,15 @@
 {{-- tombol kembali --}}
 <div class="w-11/12 mx-auto mt-10 mb-12">
 
-    <div class="flex justify-start">
+    <div class="flex items-center">
+
         <a href="{{ route('admin.dashboard') }}" class="text-pink-400 p-2 bg-white border border-pink-400 rounded-md hover:text-white hover:bg-pink-400">
             <i class="fas fa-arrow-left mr-1"></i>
             Kembali
         </a>
+
+        <h1 class="text-2xl font-bold m-3 text-center flex-1">Daftar Transaksi</h1>
+
     </div>
     
     <div class="mt-7">
@@ -57,19 +61,23 @@
             <th class="p-2">No</th>
             <th>Tanggal</th>
             <th>Nama user</th>
-            <th>Total harga</th>
             <th>Uang pembayaran</th>
+            <th>Total harga</th>
             <th>Kembalian</th>
             <th class="text-center w-1/4">Aksi</th>
         </thead>
         <tbody>
             @foreach ( $transaksis as $index => $transaksi )
             <tr class="hover:bg-gray-300">
+                @if ( $offset > -1 )
                 <td class="p-3">{{ $offset + $index + 1 }}</td>
+                @else
+                <td class="p-3">{{ $index + 1 }}</td>
+                @endif
                 <td>{{ Carbon\Carbon::parse($transaksi->tanggal)->format('m-d-Y') }}</td>
                 <td>{{ $transaksi->name }}</td>
-                <td>Rp. {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
                 <td>Rp. {{ number_format($transaksi->uang_pembayaran, 0, ',', '.') }}</td>
+                <td>Rp. {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
                 <td>Rp. {{ number_format($transaksi->kembalian, 0, ',', '.') }}</td>
                 <td class="flex justify-evenly items-center my-2">
                     <a href="{{ route('admin.detailTransaksi', [$transaksi->id_transaksi]) }}" class="text-yellow-500 w-36 py-1 bg-white border border-yellow-500 rounded-md text-center hover:text-white hover:bg-yellow-500">
@@ -88,8 +96,10 @@
             </tr>    
             @endforeach
 
+            @if ( $offset > -1 )
             {{-- pagination --}}
-            {{ $transaksis->links() }}
+            {{ $transaksis->links() }}    
+            @endif
 
             @if ( empty($transaksi->tanggal) )
             <tr>

@@ -23,6 +23,9 @@ class AdminController extends Controller
 
         $jumlahTransaksi = Transaksi::count();
 
+        $jumlahPendapatan = Transaksi::where('tanggal', today())
+        ->sum('total_harga');
+
         $name = session('admin')->name;
 
         return view('admin.dashboard', [
@@ -31,6 +34,7 @@ class AdminController extends Controller
             'jumlahTransaksiToday' => $jumlahTransaksiToday,
             'jumlahTransaksi' => $jumlahTransaksi,
             'name' => $name,
+            'jumlahPendapatan' => $jumlahPendapatan,
         ]);
     }
 
@@ -50,14 +54,11 @@ class AdminController extends Controller
     // cari barang
     public function cariUser(Request $request)
     {
-        $perPage = 5;
-
         $query = $request->keyword_user;
         $users = User::where('name', 'LIKE', "%$query%")
-        ->paginate($perPage);
+        ->get();
 
-        $currentPage = $users->currentPage();
-        $offset = ($currentPage - 1) * $perPage;
+        $offset = -1;
 
         return view('admin.daftarUser', compact('users', 'offset'));
     }
@@ -74,18 +75,49 @@ class AdminController extends Controller
     // update user
     public function updateUser(Request $request, $id_user)
     {
+        $user = User::where('id_user',$id_user)
+        ->firstOrFail();
+
         $request->validate([
-            'name' => ['required'],
-            'email' => ['required', 'email'],
-            'status' => ['required'],
+            'username' => [
+                'required', 
+                'unique:users,username,' . $user->id_user . ',id_user', 
+                'min:6'
+            ],
+            'name' => [
+                'required', 
+                'string', 
+                'max:35'
+            ],
+            'email' => [
+                'required', 
+                'unique:users,email,' . $user->id_user . ',id_user', 
+                'email'
+            ],
+            'status' => [
+                'required'
+            ],
+        ], [
+            'username.required' => 'Username wajib diisi.',
+            'username.unique' => 'Username sudah terdaftar.',
+            'username.min' => 'Username harus memiliki minimal 6 karakter.',
+            'name.required' => 'Nama wajib diisi.',
+            'name.string' => 'Nama wajib berupa huruf.',
+            'name.max' => 'Nama tidak boleh lebih dari 35 huruf.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Email harus valid.',
+            'email.unique' => 'Email sudah terdaftar.',
+            'status' => 'Status wajib diisi.',
         ]);
 
-        User::where('id_user', $id_user)
-        ->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'status' => $request->status,
-        ]);
+        // $user->update([
+        //     'username' => $request->username,
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'status' => $request->status,
+        // ]);
+
+        $user->update($request->all());
 
         return redirect()->route(('admin.daftarUser'))->with('success', 'User berhasil diupdate!');
     }
