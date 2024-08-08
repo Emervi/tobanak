@@ -7,9 +7,10 @@
     <title>@yield('title', 'Tobanak')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="{{ asset('tobanak.ico') }}" type="image/x-icon">
+
     <link href="https://fonts.googleapis.com/css2?family=Comic+Sans+MS&display=swap" rel="stylesheet">
 
-    <link rel="icon" href="{{ asset('tobanak.ico') }}" type="image/x-icon">
     <style>
         /* Chrome, Safari, Edge, Opera */
         input[type="number"]::-webkit-outer-spin-button,
@@ -87,6 +88,25 @@
         .laju-blue {
             animation: laju-blue 5s linear infinite forwards;
         } */
+
+        
+        .notif-badge {
+            display: none;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #f00; /* Red background */
+            color: #fff; /* White text */
+            border-radius: 9999px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .notif-badge.show {
+            display: block;
+        }
+    
     </style>
     <script>
         function confirmDelete(event) {
