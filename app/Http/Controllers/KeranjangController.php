@@ -59,7 +59,11 @@ class KeranjangController extends Controller
         $totalJumlah = Keranjang::where('id_user', $idUser)->sum('kuantitas');
         session(['totalJumlah' => $totalJumlah]);
 
-        return redirect()->back()->with('success', 'Barang telah ditambahkan ke keranjang!');
+        return response()->json([
+            'success' => true,
+            'stok_barang' => Barang::where('id_barang', $idBarang)->value('stok_barang'),
+            'totalJumlah' => $totalJumlah,
+        ]);
     }
 
     // Menghapus barang dari keranjang
@@ -100,6 +104,6 @@ class KeranjangController extends Controller
             $keranjang->delete();
         }
 
-        return redirect()->back()->with('success', 'Jumlah kuantitas telah dikurangi');
+        return redirect()->back()->with('success', 'kuantitas telah dikurangi, seperti perhatian dia');
     }
 }
