@@ -45,20 +45,21 @@ class BarangController extends Controller
         return view('admin.tambahBarang', compact('cabangs'));
     }
 
-    // store barang
-    public function storeBarang(BarangRequest $request)
-    {
+    // untuk mengabil lalu menampilkan harga dengan json
+    public function getHarga(Request $request)
+    {        
+        $bahan = $request->input('bahan');
 
-        // Harga modal dengan patokan bahan
-        $bahan = $request->bahan;
         if ($bahan == 'Tebal') {
             $modal = 20000 * 10;
         } else if ($bahan == 'Street') {
             $modal = 19000 * 10;
         } else if ($bahan == 'Sedang') {
             $modal = 18000 * 10;
-        } else {
+        } else if ($bahan == 'Tipis') {
             $modal = 17000 * 10;
+        } else {
+            $modal = 0;
         }
 
         // Menemukan harga jual
@@ -66,35 +67,57 @@ class BarangController extends Controller
         $keuntungan = (25 / 100) * $modal;
         $hargaJual = $modal + $keuntungan + $bebanProduksi;
 
-        session()->put('hargaAsli', $hargaJual);
-
-        // Pengecekan apakah ada diskon yang diinputkan
-        if ( empty($request->diskon)  ){
+        // pengecekan diskon
+        if ( $request->has('diskon') ){
+            $diskon = $request->input('diskon');
+        }else{
             $diskon = 0;
-        }else{
-            $diskon = $request->diskon;
         }
 
-        // Pengecekan apakah ada potongan yang diinputkan
-        if ( empty($request->potongan) ){
-            $potongan = 0;
+        // pengecekan potongna
+        if ( $request->has('potongan') ){
+            $potongan = $request->input('potongan');
         }else{
-            $potongan = $request->potongan;
+            $potongan = 0;
         }
-        
-        // Perhitungan harga diskon
+
+        // Perhitungan harga hasil diskon
         $hargaDiskon = ($diskon / 100) * $hargaJual;
         $hargaJual -= $hargaDiskon;
 
-        // Perhitungan harga potongan
+        // Perhitungan harga hasil potongan
         $hargaJual -= $potongan;
 
-        // Logic untuk memasukan foto
-        if ($request->has('foto_barang')) {
-            $imageName = time() . '.' . $request->foto_barang->extension();
-            $request->foto_barang->move(public_path('images'), $imageName);
-        } else {
-            $imageName = 'noPhoto.jpg';
+        // Pengecekan akhir jika harga kurang dari 0 maka akan tetap 0
+        if ( $hargaJual < 0 ){
+            $hargaJual = 0;
+        }
+        
+        return response()->json(['hargaAkhir' => $hargaJual]);
+    }
+
+    // store barang
+    public function storeBarang(BarangRequest $request)
+    {
+        $hargaJual = $request->harga;
+
+        // logic memasukan gambar
+        $image = $request->foto_barang;
+        $imageName = time() . '.' . $image->extension();
+        $image->move(public_path('images'), $imageName);
+
+        // mengecek apakah ada diskon
+        if ( !empty($request->diskon) ){
+            $diskon = $request->diskon;
+        }else{
+            $diskon = 0;
+        }
+
+        // mengecek apakah ada potongan
+        if ( !empty($request->potongan) ){
+            $potongan = $request->potongan;
+        }else{
+            $potongan = 0;
         }
 
         Barang::create([
@@ -103,13 +126,15 @@ class BarangController extends Controller
             'kategori_barang' => $request->kategori_barang,
             'deskripsi_barang' => $request->deskripsi_barang,
             'stok_barang' => $request->stok_barang,
-            'bahan' => $bahan,
+            'bahan' => $request->bahan,
             'harga' => $hargaJual,
             'diskon' => $diskon,
             'potongan' => $potongan,
             'id_cabang' => $request->id_cabang,
             'distribusi' => 'Dikirim',
         ]);
+
+        session()->put('hargaAsli', $hargaJual);
 
         return redirect()->route('admin.daftarBarang')->with('success', 'Barang berhasil ditambahkan!');
     }
@@ -130,6 +155,8 @@ class BarangController extends Controller
     {
         $barang = Barang::where('id_barang', $id_barang)
         ->first();
+
+        $hargaJual = $request->harga;
 
         $request->validate([
             'nama_barang' => ['required', 'string', 'unique:barangs,nama_barang,' . $id_barang . ',id_barang'],
@@ -152,53 +179,29 @@ class BarangController extends Controller
             'foto_barang.max' => 'Foto maksimal berukuran 2 MB'
         ]);
 
-        $bahan = $request->bahan;
-        if ($bahan == 'Tebal') {
-            $modal = 20000 * 10;
-        } else if ($bahan == 'Street') {
-            $modal = 19000 * 10;
-        } else if ($bahan == 'Sedang') {
-            $modal = 18000 * 10;
-        } else {
-            $modal = 17000 * 10;
-        }
-
-        // Menemukan harga jual
-        $bebanProduksi = (2 / 100) * $modal;
-        $keuntungan = (25 / 100) * $modal;
-        $hargaJual = $modal + $keuntungan + $bebanProduksi;
-
-        session()->put('hargaAsli', $hargaJual);
-
-        // Pengecekan apakah ada diskon yang diinputkan
-        if ( empty($request->diskon) ){
-            $diskon = 0;
-        }else{
-            $diskon = $request->diskon;
-        }
-
-        // Pengecekan apakah ada potongan yang diinputkan
-        if ( empty($request->potongan) ){
-            $potongan = 0;
-        }else{
-            $potongan = $request->potongan;
-        }
-        
-        // Perhitungan harga diskon
-        $hargaDiskon = ($diskon / 100) * $hargaJual;
-        $hargaJual -= $hargaDiskon;
-
-        // Perhitungan harga potongan
-        $hargaJual -= $potongan;
-
         // logic untuk memasukan foto
         if ($request->has('foto_barang')) {
-            $imageName = time() . '.' . $request->foto_barang->extension();
-            $request->foto_barang->move(public_path('images'), $imageName);
+            $image = $request->foto_barang;
+            $imageName = time() . '.' . $image->extension();
+            $image->move(public_path('images'), $imageName);
         } else {
             $imageName = Barang::where('id_barang', $id_barang)
                 ->pluck('foto_barang')
                 ->first();
+        }
+
+        // mengecek apakah ada diskon
+        if ( !empty($request->diskon) ){
+            $diskon = $request->diskon;
+        }else{
+            $diskon = 0;
+        }
+
+        // mengecek apakah ada potongan
+        if ( !empty($request->potongan) ){
+            $potongan = $request->potongan;
+        }else{
+            $potongan = 0;
         }
 
         // logic perpindahan distribusi barang
@@ -213,7 +216,7 @@ class BarangController extends Controller
                 'kategori_barang' => $request->kategori_barang,
                 'deskripsi_barang' => $request->deskripsi_barang,
                 'stok_barang' => $request->stok_barang,
-                'bahan' => $bahan,
+                'bahan' => $request->bahan,
                 'harga' => $hargaJual,
                 'diskon' => $diskon,
                 'potongan' => $potongan,

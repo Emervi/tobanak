@@ -26,7 +26,7 @@
 
                     <div class="mb-3">
                         <label for="username" class="block">Username</label>
-                        <input type="text" name="username" id="username" value="{{ $atribut->username }}" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        <input type="text" name="username" id="username" value="{{ old('username', $atribut->username) }}" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                         @error( 'username' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror
@@ -34,7 +34,7 @@
 
                     <div class="mb-3">
                         <label for="name" class="block">Nama</label>
-                        <input type="text" name="name" id="name" value="{{ $atribut->name }}" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        <input type="text" name="name" id="name" value="{{ old('name', $atribut->name) }}" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                         @error( 'name' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror
@@ -44,7 +44,7 @@
                         <label class="block">Pilih cabang</label>
                         <select name="id_cabang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                             @foreach ( $cabangs as $cabang )
-                                <option value="{{ $cabang->id_cabang }}" {{ ($cabang->id_cabang == $atribut->id_cabang) ? 'selected' : ''  }}>{{ $cabang->nama_cabang }}</option>
+                                <option value="{{ $cabang->id_cabang }}" {{ ( old('id_cabang', $atribut->id_cabang) == $cabang->id_cabang ) ? 'selected' : ''  }}>{{ $cabang->nama_cabang }}</option>
                             @endforeach
                         </select>
                         @error( 'id_cabang' )
@@ -59,7 +59,7 @@
 
                     <div class="mb-3">
                         <label for="email" class="block">Email</label>
-                        <input type="email" name="email" id="email" value="{{ $atribut->email }}" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                        <input type="email" name="email" id="email" value="{{ old('email', $atribut->email) }}" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                         @error( 'email' )
                             <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                         @enderror

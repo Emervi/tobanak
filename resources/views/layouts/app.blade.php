@@ -5,9 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title', 'Tobanak')</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="shortcut icon" href="{{ asset('bat.ico') }}" type="image/x-icon">
+    {{-- Dropzone --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css">
+
+    {{-- Tailwindcss --}}
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    {{-- Font Awesome --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    {{-- Javascript --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         /* Chrome, Safari, Edge, Opera */
         input[type="number"]::-webkit-outer-spin-button,
@@ -86,6 +96,7 @@
             animation: laju-blue 5s linear infinite forwards;
         } */
     </style>
+    @yield('style')
     <script>
         function confirmDelete(event) {
             event.preventDefault();
