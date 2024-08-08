@@ -22,6 +22,12 @@ use App\Http\Controllers\DistribusiController;
 |
 */
 
+// TEST AREA
+Route::get('/test', function(){
+    return view('test');
+})->name('test');
+// \TEST AREA
+
 // ADMIN
 Route::middleware('admin')->group(function () {
 
@@ -34,6 +40,9 @@ Route::middleware('admin')->group(function () {
     // cari barang
     Route::post('/admin/dashboard/barang', [BarangController::class, 'cariBarang']);
 
+    // route untuk get harga 
+    Route::post('/get-harga', [BarangController::class, 'getHarga'])->name('get.harga');
+    
     // halaman tambah barang
     Route::get('/admin/dashboard/barang/tambahBarang', [BarangController::class, 'tambahBarang'])->name('admin.tambahBarang');
     // halaman update barang
@@ -45,8 +54,6 @@ Route::middleware('admin')->group(function () {
     // hapus barang
     Route::delete('/admin/dashboard/barang/{id_barang}', [BarangController::class, 'destroyBarang'])->name('admin.hapusBarang');
 
-    // // reset harga
-    // Route::put('/resetHarga/{id_barang}', [BarangController::class, 'resetHarga'])->name('admin.resetHarga');
     // \ADMIN.BARANG
 
     // ADMIN.USER

@@ -69,78 +69,79 @@
 
             </div>
 
-            <div class="container mx-auto">
-            <div class="overflow-x-auto">
-            {{-- table daftar barang --}}
-            <table class="min-w-full bg-white border border-gray-200 mt-3">
-                <thead class="border border-b-black text-left">
-                    <th class="p-2">No</th>
-                    <th class="p-2">Foto barang</th>
-                    <th class="p-2">Nama barang</th>
-                    <th class="p-2">Stok barang</th>
-                    <th class="p-2">Kategori</th>
-                    <th class="p-2">Bahan</th>
-                    <th class="w-1/12">Harga</th>
-                    <th class="w-2/6">Deskripsi barang</th>
-                    <th class="w-1/12">Cabang</th>
-                    <th class="w-1/12">Status distribusi</th>
-                    <th class="text-center">Aksi</th>
-                </thead>
-                <tbody>
-                    @foreach ($barangs as $index => $barang)
-                        <tr class="hover:bg-gray-300">
+            <div class="container mx-auto bg-white p-3 shadow-xl mt-5">
+                <div class="overflow-x-auto">
+                    {{-- table daftar barang --}}
+                    <table class="min-w-full bg-white border border-gray-200 mt-3">
+                        <thead class="border border-b-black text-left">
+                            <th class="p-2">No</th>
+                            <th class="p-2">Foto barang</th>
+                            <th class="p-2">Nama barang</th>
+                            <th class="p-2">Stok barang</th>
+                            <th class="p-2">Kategori</th>
+                            <th class="p-2">Bahan</th>
+                            <th class="p-2 w-1/12">Harga</th>
+                            <th class="p-2 w-2/6">Deskripsi barang</th>
+                            <th class="p-2 w-1/12">Cabang</th>
+                            <th class="p-2 w-2/12">Status distribusi</th>
+                            <th class="p-2 text-center">Aksi</th>
+                        </thead>
+                        <tbody>
+                            @foreach ($barangs as $index => $barang)
+                                <tr class="odd:bg-gray-300">
+                                    @if ($offset > -1)
+                                        <td class="p-3">{{ $offset + $index + 1 }}</td>
+                                    @else
+                                        <td class="p-3">{{ $index + 1 }}</td>
+                                    @endif
+                                    <td>
+                                        {{-- untuk dihosting gunakan yang ini meureun {{ asset('public/images/' . $barang->foto_barang) }} --}}
+                                        <img src="{{ asset('images/' . $barang->foto_barang) }}" alt="foto barang"
+                                            class="w-16 h-16 rounded-md p-1">
+                                    </td>
+                                    <td class="px-2">{{ $barang->nama_barang }}</td>
+                                    <td class="px-2">{{ $barang->stok_barang }}</td>
+                                    <td class="px-2">{{ $barang->kategori_barang }}</td>
+                                    <td class="px-2">{{ $barang->bahan }}</td>
+                                    <td class="px-2">Rp. {{ number_format($barang->harga, 0, ',', '.') }}</td>
+                                    <td class="px-2">{{ $barang->deskripsi_barang }}</td>
+                                    <td class="px-2">{{ $barang->nama_cabang }}</td>
+                                    <td class="px-2">
+                                        @if ($barang->distribusi === 'Diterima')
+                                            ✔Diterima✔
+                                        @elseif ($barang->distribusi === 'Ditolak')
+                                            💥Ditolak💥
+                                        @else
+                                            🚚Dikirim🚚
+                                        @endif
+                                    </td>
+                                    <td class="flex justify-evenly items-center mt-4 mx-2 gap-2">
+                                        <a href="{{ route('admin.editBarang', [$barang->id_barang]) }}"
+                                            class="text-blue-600 w-20 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600">
+                                            <i class="fas fa-pen mr-1"></i>
+                                            Edit
+                                        </a>
+                                        <form action="{{ route('admin.hapusBarang', [$barang->id_barang]) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('delete')
+                                            <button
+                                                class="text-red-600 w-20 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600"
+                                                onclick="confirmDelete(event)">
+                                                <i class="fas fa-trash mr-1"></i>
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+
                             @if ($offset > -1)
-                                <td class="p-3">{{ $offset + $index + 1 }}</td>
-                            @else
-                                <td class="p-3">{{ $index + 1 }}</td>
+                                {{-- pagination --}}
+                                {{ $barangs->links() }}
                             @endif
-                            <td>
-                                {{-- untuk dihosting gunakan yang ini meureun {{ asset('public/images/' . $barang->foto_barang) }} --}}
-                                <img src="{{ asset('images/' . $barang->foto_barang) }}" alt="foto barang"
-                                    class="w-16 h-16 flex-shrink-0 rounded-md p-1 lg:md-5">
-                            </td>
-                            <td>{{ $barang->nama_barang }}</td>
-                            <td>{{ $barang->stok_barang }}</td>
-                            <td>{{ $barang->kategori_barang }}</td>
-                            <td>{{ $barang->bahan }}</td>
-                            <td>Rp. {{ number_format($barang->harga, 0, ',', '.') }}</td>
-                            <td>{{ $barang->deskripsi_barang }}</td>
-                            <td>{{ $barang->nama_cabang }}</td>
-                            <td>
-                                @if ( $barang->distribusi === 'Diterima' )
-                                    ✔Diterima✔
-                                @elseif ( $barang->distribusi === 'Ditolak' )
-                                    💥Ditolak💥
-                                @else
-                                    🚚Dikirim🚚
-                                @endif
-                            </td>
-                            <td class="flex justify-evenly items-center mt-4 mx-2 gap-2">
-                                <a href="{{ route('admin.editBarang', [$barang->id_barang]) }}"
-                                    class="text-blue-600 w-20 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600">
-                                    <i class="fas fa-pen mr-1"></i>
-                                    Edit
-                                </a>
-                                <form action="{{ route('admin.hapusBarang', [$barang->id_barang]) }}" method="POST">
-                                    @csrf
-                                    @method('delete')
-                                    <button
-                                        class="text-red-600 w-20 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600"
-                                        onclick="confirmDelete(event)">
-                                        <i class="fas fa-trash mr-1"></i>
-                                        Hapus
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
 
-                    @if ($offset > -1)
-                        {{-- pagination --}}
-                        {{ $barangs->links() }}
-                    @endif
-
-                    {{-- <tr class="hover:bg-gray-300">
+                            {{-- <tr class="hover:bg-gray-300">
                 <td class="p-3">1</td>
                 <td>
                     <img src="https://i.pinimg.com/564x/48/49/ba/4849ba2ea6517f805785071120cccc08.jpg" alt="foto barang" class="w-16 h-16 flex-shrink-0 rounded-md p-1 ml-5">
@@ -156,14 +157,14 @@
                     <button class="text-red-600 w-16 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600">Hapus</button>
                 </td>
             </tr> --}}
-                    @if (empty($barang->nama_barang))
-                        <tr>
-                            <td colspan="9" class="text-center font-bold text-xl p-3">Barang tidak ditemukan</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
-            </div>
+                            @if (empty($barang->nama_barang))
+                                <tr>
+                                    <td colspan="9" class="text-center font-bold text-xl p-3">Barang tidak ditemukan</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>
