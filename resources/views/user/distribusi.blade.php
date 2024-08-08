@@ -16,6 +16,18 @@
         </div>
     </div>
     @endif
+    @if(session('tolak'))
+    <div class="z-10 fixed top-4 right-4 bg-red-700 border border-red-800 text-white px-4 py-3 rounded shadow-lg transition-transform transform-gpu duration-300 ease-in-out" role="alert">
+        <div class="flex items-center justify-between">
+            <span class="text-sm">{{ session('tolak') }}</span>
+            <button onclick="this.parentElement.parentElement.style.transform='translateX(100%)'; setTimeout(() => this.parentElement.parentElement.remove(), 300);" class="ml-4 text-red-500 hover:text-red-700">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+    @endif
 
     @if ($barangs->isEmpty())
     <div class="text-center max-h-screen mt-72">
@@ -35,7 +47,6 @@
                     <th class="p-2">Bahan</th>
                     <th class="w-1/12">Harga</th>
                     <th class="w-2/6">Deskripsi barang</th>
-                    <th class="w-1/12">Cabang</th>
                     <th class="w-1/12">Status distribusi</th>
                     <th class="text-center">Aksi</th>
                 </tr>
@@ -54,7 +65,6 @@
                         <td>{{ $barang->bahan }}</td>
                         <td>Rp. {{ number_format($barang->harga, 0, ',', '.') }}</td>
                         <td>{{ $barang->deskripsi_barang }}</td>
-                        <td>{{ $barang->nama_cabang }}</td>
                         <td>
                             @if ($barang->distribusi === 'Diterima')
                                 ✔Diterima✔

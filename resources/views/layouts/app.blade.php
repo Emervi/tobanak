@@ -7,7 +7,10 @@
     <title>@yield('title', 'Tobanak')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link rel="icon" href="{{ asset('tobanak.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('tobanak.ico') }}" type="image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Sans+MS&display=swap" rel="stylesheet">
+
     <style>
         /* Chrome, Safari, Edge, Opera */
         input[type="number"]::-webkit-outer-spin-button,
