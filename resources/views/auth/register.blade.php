@@ -10,14 +10,14 @@
 </head>
 <body class="bg-gray-100">
 
-    <div class="w-1/3 bg-white mx-auto p-5 rounded-md shadow-xl mt-12">
+    <div class="w-1/3 bg-white mx-auto p-5 rounded-md shadow-xl mt-7">
 
         <h1 class="flex-1 text-2xl font-semibold mb-6 flex items-center">
             <a href="{{ route('landingPage') }}"><i class="fas fa-home text-pink-400 hover:text-black"></i></a>
             <p class="flex-1 text-center mr-7">Register</p>
         </h1>
 
-        <form action="{{ url('/register') }}" method="POST">
+        <form action="{{ route('auth.register') }}" method="POST">
             @csrf
 
             <div class="mb-4 text-sm">
@@ -56,6 +56,19 @@
                 <label for="password2" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
                 <input type="password" name="password2" id="password2" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 sm:text-sm">
                 @error('password2')
+                <p class="text-red-500 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4 text-sm">
+                <label class="block text-sm font-medium text-gray-700">Cabang Lokasi</label>
+                <select name="id_cabang" id="id_cabang" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 sm:text-sm">
+                    <option value="" disabled selected>Pilih cabang lokasi</option>
+                    @foreach ( $cabangs as $cabang )
+                        <option value="{{ $cabang->id_cabang }}">{{ $cabang->nama_cabang }}</option>
+                    @endforeach
+                </select>                
+                @error('id_cabang')
                 <p class="text-red-500 text-sm">{{ $message }}</p>
                 @enderror
             </div>

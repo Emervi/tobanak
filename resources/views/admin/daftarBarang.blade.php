@@ -67,6 +67,19 @@
                     </div>
                 @endif
 
+                @isset ($distribusis)
+                <div>
+                    <form method="GET" action="{{ route('admin.daftarBarang') }}">
+                        <select name="filter_distribusi" class=" bg-white text-gray-700 py-2 px-10 shadow border border-gray-200 rounded" onchange="this.form.submit()">
+                            <option value="">Semua Distribusi</option>
+                            @foreach( $distribusis as $distribusi )
+                                <option value="{{ $distribusi }}" {{ request('filter_distribusi') == $distribusi ? 'selected' : '' }}>{{ $distribusi }}</option>
+                            @endforeach
+                        </select>
+                    </form>
+                </div>
+                @endisset
+
             </div>
 
             <div class="container mx-auto bg-white p-3 shadow-xl mt-5">
@@ -88,7 +101,7 @@
                         </thead>
                         <tbody>
                             @foreach ($barangs as $index => $barang)
-                                <tr class="odd:bg-gray-300">
+                                <tr class="odd:bg-gray-200">
                                     @if ($offset > -1)
                                         <td class="p-3">{{ $offset + $index + 1 }}</td>
                                     @else
@@ -159,7 +172,7 @@
             </tr> --}}
                             @if (empty($barang->nama_barang))
                                 <tr>
-                                    <td colspan="9" class="text-center font-bold text-xl p-3">Barang tidak ditemukan</td>
+                                    <td colspan="11" class="text-center font-bold text-xl p-3">Barang tidak ditemukan</td>
                                 </tr>
                             @endif
                         </tbody>

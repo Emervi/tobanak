@@ -68,7 +68,9 @@ class AdminController extends Controller
     public function cariUser(Request $request)
     {
         $query = $request->keyword_user;
-        $users = User::where('name', 'LIKE', "%$query%")
+        $users = User::join('cabangs', 'users.id_cabang', '=', 'cabangs.id_cabang')
+        ->select('users.*', 'cabangs.nama_cabang')
+        ->where('name', 'LIKE', "%$query%")
         ->get();
 
         $offset = -1;

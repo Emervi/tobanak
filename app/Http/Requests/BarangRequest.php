@@ -24,7 +24,7 @@ class BarangRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama_barang' => ['required', 'unique:barangs', 'string'],
+            'nama_barang' => ['required', 'string'],
             'kategori_barang' => ['required'],
             'deskripsi_barang' => ['required'],
             'stok_barang' => ['required', 'integer'],
@@ -42,7 +42,6 @@ class BarangRequest extends FormRequest
     {
         return [
             'nama_barang.required' => 'Nama barang wajib diisi.',
-            'nama_barang.unique' => 'Nama barang sudah terdaftar',
             'nama_barang.string' => 'Nama barang tidak boleh mengandung angka',
             'kategori_barang.required' => 'Kategori wajib diisi',
             'deskripsi_barang.required' => 'Deskripsi barang wajib diisi',
