@@ -24,7 +24,10 @@ class UserController extends Controller
 
 
         $filter = $request->query('filter');
-        $kategori = Barang::select('kategori_barang')->distinct()->pluck('kategori_barang');
+        $kategori = Barang::where('id_cabang', $cabang_user)
+        ->where('distribusi', 'Diterima')
+        ->distinct()
+        ->pluck('kategori_barang');
 
 
         $query = Barang::where('id_cabang', $cabang_user)
