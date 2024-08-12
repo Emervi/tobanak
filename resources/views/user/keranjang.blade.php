@@ -6,6 +6,7 @@
 <div class="flex flex-col md:flex-row mt-8 mx-4 md:mx-10">
     <!-- Daftar Produk di Keranjang -->
     <div class="md:w-7/12 p-4">
+        
         @if(session('success'))
             <div class="fixed top-4 right-4 bg-green-700 border border-green-800 text-white px-4 py-3 rounded shadow-lg transition-transform transform-gpu duration-300 ease-in-out" role="alert">
                 <div class="flex items-center justify-between">
@@ -93,9 +94,9 @@
         <span class="text-xl font-semibold">Rp {{ number_format($totalHarga, 0, ',', '.') }}</span>
     </div>
     @if ($keranjang->isEmpty())
-    <button class="bg-gray-500 text-white px-4 py-2 rounded-lg w-full" disabled >Checkout</button>
+        <button class="bg-gray-500 text-white px-4 py-2 rounded-lg w-full" disabled >Checkout</button>
     @else
-    <button @click="isOpen = true" class="bg-pink-500 text-white hover:bg-pink-600 px-4 py-2 rounded-lg w-full" >Checkout</button>
+        <button @click="isOpen = true" class="bg-pink-500 text-white hover:bg-pink-600 px-4 py-2 rounded-lg w-full" >Checkout</button>
     @endif
 
     <!-- Modal -->

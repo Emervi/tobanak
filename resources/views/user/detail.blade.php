@@ -17,7 +17,7 @@
         <div class="flex-1">
             <h2 class="text-xl font-bold">{{ $barang->nama_barang }}</h2>
             <p class="text-gray-600 mt-10">Bahan: {{ $barang->bahan }}</p>
-            <p class="text-gray-600 mt-2">Stok: {{ $barang->stok_barang }}</p>
+            <p class="text-gray-600 mt-2 stok-barang" data-id="{{ $barang->id_barang }}">Stok: {{ $barang->stok_barang }}</p>
             <p class="text-gray-600 mt-2">Kategori: {{ $barang->kategori_barang }}</p>
             <p class="text-gray-600 mt-2">Deskripsi: {{ $barang->deskripsi_barang }}</p>
             <p class="text-red-600 mt-4 font-bold">
@@ -41,23 +41,87 @@
                     Tambah ke Keranjang
                 </div>
                 @else
-                <form action="{{ route('keranjang.tambah') }}" method="POST">
+                <form class="add-form-keranjang" action="{{ route('keranjang.tambah') }}" method="POST">
                     @csrf
                     <input type="hidden" name="id_barang" value="{{ $barang->id_barang }}">
-                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">
+                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 add-button" data-id="{{ $barang->id_barang }}" {{ $barang->stok_barang <= 0 ? 'disabled' : '' }}>
                         Tambah ke Keranjang
-                    </button>
+                    </button>                    
                 </form>
                 @endif
             </div>
         </div>
     </div>
 
-    <a href="{{ route('keranjang') }}" class="bg-white m-5 fixed bottom-5 right-5 border border-green-500 text-green-500 p-3 rounded-full shadow-lg hover:bg-green-500 hover:text-white">
+    <a href="{{ route('keranjang') }}" class="bg-white m-5 fixed bottom-5 right-1 border border-green-500 text-green-500 p-3 rounded-full shadow-lg hover:bg-green-500 hover:text-white">
         <i class="fas fa-shopping-cart text-2xl"></i>
-        @if($totalJumlah > 0)
+        
+        <span class="absolute top-0 right-0 bg-green-700 text-white rounded-full px-2 py-1 text-xs font-bold">{{ $totalJumlah > 0 ? $totalJumlah : '0' }}</span>
+        
+        <!--@if($totalJumlah > 0)
             <span class="absolute top-0 right-0 bg-green-700 text-white rounded-full px-2 py-1 text-xs font-bold">{{ $totalJumlah }}</span>
-        @endif
+        @endif-->
+        
     </a>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+
+    function updateUI() {
+        $('.stok-barang').each(function() {
+            var stok = parseInt($(this).text().replace('Stok: ', ''));
+            var idBarang = $(this).data('id');
+            var button = $('button[data-id="' + idBarang + '"]');
+
+            if (stok <= 0) {
+                button.removeClass('bg-green-500 hover:bg-green-700').addClass('bg-gray-400').prop('disabled', true);
+            } else {
+                button.prop('disabled', false).removeClass('bg-gray-400').addClass('bg-green-500');
+            }
+        });
+    }
+
+    $(".add-form-keranjang").on('submit', function(event) {
+        event.preventDefault();
+
+        var form = $(this);
+        var formData = form.serialize();
+
+        $.ajax({
+            url: form.attr('action'),
+            method: form.attr('method'),
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    var totalJumlah = response.totalJumlah;
+                    var stokBaru = response.stok_barang;
+                    var idBarang = form.find('input[name="id_barang"]').val();
+
+                    $('.stok-barang[data-id="' + idBarang + '"]').text('Stok: ' + stokBaru);
+
+                    // Update tombol tambah berdasarkan stok
+                    updateUI();
+
+                    var notifBtnKeranjang = $('a[href="{{ route('keranjang') }}"]');
+                    if (totalJumlah > 0) {
+                        notifBtnKeranjang.find('span').text(totalJumlah);
+                    } else {
+                        notifBtnKeranjang.find('span').text('');
+                    }
+                } else {
+                    alert('Gagal memasukkan ke keranjang');
+                }
+            },
+            error: function(xhr) {
+                alert('Error: ' + xhr.statusText);
+            }
+        });
+    });
+
+    updateUI();
+});
+
+</script>
 @endsection
