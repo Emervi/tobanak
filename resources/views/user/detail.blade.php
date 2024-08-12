@@ -55,7 +55,13 @@
 
     <a href="{{ route('keranjang') }}" class="bg-white m-5 fixed bottom-5 right-1 border border-green-500 text-green-500 p-3 rounded-full shadow-lg hover:bg-green-500 hover:text-white">
         <i class="fas fa-shopping-cart text-2xl"></i>
+        
         <span class="absolute top-0 right-0 bg-green-700 text-white rounded-full px-2 py-1 text-xs font-bold">{{ $totalJumlah > 0 ? $totalJumlah : '0' }}</span>
+        
+        <!--@if($totalJumlah > 0)
+            <span class="absolute top-0 right-0 bg-green-700 text-white rounded-full px-2 py-1 text-xs font-bold">{{ $totalJumlah }}</span>
+        @endif-->
+        
     </a>
 </div>
 

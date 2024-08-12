@@ -24,6 +24,7 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
+            'id_cabang' => ['required'],
             'username' => ['required', 'unique:users,username', 'min:6'],
             'name' => ['required', 'string', 'max:35'],
             'email' => ['required', 'unique:users,email', 'email'],
@@ -40,6 +41,7 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
+            'id_cabang.required' => 'Cabang wajib diisi.',
             'username.required' => 'Username wajib diisi.',
             'username.unique' => 'Username sudah terdaftar.',
             'username.min' => 'Username harus memiliki minimal 6 karakter.',

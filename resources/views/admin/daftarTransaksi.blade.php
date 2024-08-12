@@ -80,7 +80,7 @@
                         </thead>
                         <tbody>
                             @foreach ($transaksis as $index => $transaksi)
-                                <tr class="odd:bg-gray-300">
+                                <tr class="odd:bg-gray-200">
                                     @if ($offset > -1)
                                         <td class="p-3">{{ $offset + $index + 1 }}</td>
                                     @else

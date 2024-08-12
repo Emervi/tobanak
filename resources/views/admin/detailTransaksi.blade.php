@@ -29,7 +29,7 @@
                         </thead>
                         <tbody>
                             @foreach ($detailTransaksi as $index => $transaksi)
-                                <tr class="odd:bg-gray-300 text-center">
+                                <tr class="odd:bg-gray-200 text-center">
                                     <td class="p-3">{{ $index + 1 }}</td>
                                     <td>{{ $transaksi->nama_barang }}</td>
                                     <td>{{ $transaksi->kuantitas }}</td>

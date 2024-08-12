@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class BarangController extends Controller
 {
     // halaman barang
-    public function daftarBarang()
+    public function daftarBarang(Request $request)
     {
         $perPage = 5;
 
@@ -19,10 +19,28 @@ class BarangController extends Controller
         ->latest()
         ->paginate($perPage);
 
-        $currentPage = $barangs->currentPage();
-        $offset = ($currentPage - 1) * $perPage;
+        $filter = $request->query('filter_distribusi');
+        $distribusis = Barang::select('distribusi')
+        ->distinct()
+        ->pluck('distribusi');
 
-        return view('admin.daftarBarang', compact('barangs', 'offset'));
+        if ($filter){
+
+            $barangs = Barang::join('cabangs', 'barangs.id_cabang', '=', 'cabangs.id_cabang')
+            ->select('barangs.*', 'cabangs.nama_cabang')
+            ->where('distribusi', $filter)
+            ->get();
+
+            $offset = -1;
+
+        }else{
+
+            $currentPage = $barangs->currentPage();
+            $offset = ($currentPage - 1) * $perPage;
+
+        }
+
+        return view('admin.daftarBarang', compact('barangs', 'offset', 'distribusis'));
     }
 
     // cari barang
@@ -153,13 +171,15 @@ class BarangController extends Controller
     // update barang
     public function updateBarang(Request $request, $id_barang)
     {
-        $barang = Barang::where('id_barang', $id_barang)
+        $barang = Barang::join('cabangs', 'barangs.id_cabang', '=', 'cabangs.id_cabang')
+        ->select('barangs.*', 'cabangs.id_cabang')
+        ->where('id_barang', $id_barang)
         ->first();
 
         $hargaJual = $request->harga;
 
         $request->validate([
-            'nama_barang' => ['required', 'string', 'unique:barangs,nama_barang,' . $id_barang . ',id_barang'],
+            'nama_barang' => ['required', 'string'],
             'kategori_barang' => ['required'],
             'deskripsi_barang' => ['required'],
             'stok_barang' => ['required', 'integer'],
@@ -167,7 +187,6 @@ class BarangController extends Controller
             'foto_barang' => ['image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ], [
             'nama_barang.required' => 'Nama barang wajib diisi.',
-            'nama_barang.unique' => 'Nama barang sudah terdaftar',
             'nama_barang.string' => 'Nama barang tidak boleh mengandung angka',
             'kategori_barang.required' => 'Kategori wajib diisi',
             'deskripsi_barang.required' => 'Deskripsi barang wajib diisi',
@@ -205,7 +224,9 @@ class BarangController extends Controller
         }
 
         // logic perpindahan distribusi barang
-        if ( $request->id_cabang !== $barang->id_cabang ){
+        if ( $request->id_cabang == $barang->id_cabang ){
+            $distribusi = $barang->distribusi;
+        }else{
             $distribusi = "Dikirim";
         }
 
