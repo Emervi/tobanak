@@ -46,7 +46,7 @@
                         <img class="w-16 h-16 object-cover rounded mr-4" src="{{ asset('images/' . $item->barang->foto_barang) }}" alt="Foto Barang">
                         <div class="flex-1">
                             <h3 class="text-lg font-semibold">{{ $item->barang->nama_barang }}</h3>
-                            <p class="text-gray-600">Bahan: {{ $item->barang->bahan_barang }}</p>
+                            <p class="text-gray-600">Bahan: {{ $item->barang->bahan }}</p>
                         </div>
                         <div class="text-right mr-4">
                             <span class="block text-lg">Jumlah: {{ $item->kuantitas }}</span>
