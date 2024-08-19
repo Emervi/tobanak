@@ -215,7 +215,7 @@
 
         {{-- container table --}}
         <div class="mt-7">
-            {{-- notifikasi CRUD barang dan fitur pencarian barang --}}
+            {{-- fitur pencarian barang --}}
             <div class="flex justify-between items-center">
 
                 @empty(request('filter_distribusi'))
@@ -298,7 +298,7 @@
                         {{ request('filter_distribusi') ? request('filter_distribusi') : 'Semua barang' }}
                     </h2>
                     {{-- table daftar barang --}}
-                    <table class="min-w-full bg-white border border-gray-200 mt-3 text-center">
+                    <table class="min-w-full bg-white border border-gray-200 mt-3">
                         <thead class="border border-b-black ">
                             <th class="p-2">No</th>
                             <th class="p-2">Foto barang</th>

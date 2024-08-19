@@ -25,13 +25,16 @@ class BarangController extends Controller
 
         $barangs = Barang::leftJoin('cabangs', 'cabangs.id_cabang', '=', 'barangs.id_cabang')
         ->select('barangs.*', 'cabangs.nama_cabang')
-        ->latest()
+        ->latest('barangs.updated_at')
         ->get();
 
         $barangSiap = Barang::where('distribusi', 'Siap kirim')
+        ->latest()
         ->get();
 
-        $barangTerproses = Barang::where('distribusi', '!=', 'Siap kirim')
+        $barangTerproses = Barang::join('cabangs', 'cabangs.id_cabang', '=', 'barangs.id_cabang')
+        ->where('distribusi', '!=', 'Siap kirim')
+        ->latest('barangs.created_at')
         ->get();
 
         $filter = $request->query('filter_distribusi');

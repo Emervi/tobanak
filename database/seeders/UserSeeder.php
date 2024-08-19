@@ -28,6 +28,7 @@ class UserSeeder extends Seeder
             'email' => 'userTransmart@user.com',
             'status' => 'user',
             'id_cabang' => 1,
+            'alamat' => 'Jl. Olahraga'
         ]);
 
 
@@ -46,6 +47,7 @@ class UserSeeder extends Seeder
             'email' => 'userGriya@user.com',
             'status' => 'user',
             'id_cabang' => 2,
+            'alamat' => 'Jl. Permata Bumi'
         ]);
     }
 }

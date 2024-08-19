@@ -1,15 +1,20 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Transaksi')
+@section('title', 'Daftar Ekspedisi')
 
 @section('body')
 
-    {{-- tombol kembali --}}
+@php
+    use \Carbon\Carbon;
+    Carbon::setLocale('id');
+@endphp
+
+    {{-- tombol kembali dan tambah --}}
     <div class="w-11/12 mx-auto mt-10 mb-12">
 
-        <h1 class="text-2xl font-bold m-3 text-center flex-1">Daftar Transaksi</h1>
+        <h1 class="text-2xl font-bold ml-10 text-center">Daftar Ekspedisi</h1>
 
-        <div class="flex items-center">
+        <div class="flex items-center justify-between">
 
             <a href="{{ route('admin.dashboard') }}"
                 class="text-pink-400 p-2 bg-white border border-pink-400 rounded-md hover:text-white hover:bg-pink-400">
@@ -17,27 +22,32 @@
                 Kembali
             </a>
 
+            <a href="{{ route('admin.tambahEkspedisi') }}"
+                class="text-green-500 p-2 bg-white border border-green-500 rounded-md hover:text-white hover:bg-green-600">
+                <i class="fas fa-plus mr-1"></i>
+                Tambah Ekspedisi
+            </a>
         </div>
 
         <div class="mt-7">
-            {{-- notifikasi CRUD barang dan fitur pencarian barang --}}
+            {{-- fitur pencarian ekspedisi --}}
             <div class="flex justify-between items-center">
 
-                <form action="{{ route('admin.daftarTransaksi') }}" method="POST" class="flex gap-3 w-2/3 md:w-1/3">
+                <form action="{{ route('admin.daftarEkspedisi') }}" method="POST" class="flex gap-3">
                     @csrf
 
-                    {{-- form pencarian barang --}}
-                    <div class=" w-2/3 gap-1">
+                    {{-- form pencarian ekspedisi --}}
+                    <div class="flex gap-1">
                         <button type="submit"
-                            class="text-orange-400 py-2 px-2 bg-white border border-orange-400 rounded-md hover:text-white hover:bg-orange-400">
+                            class="text-orange-400 py-1.5 px-2 bg-white border border-orange-400 rounded-md hover:text-white hover:bg-orange-400">
                             <i class="fas fa-search"></i>
                         </button>
-                        <input type="date" name="keyword_transaksi" placeholder="Masukan tanggal transaksi"
-                            class="bg-white p-1 w-5/6 shadow rounded-sm focus:outline-none">
+                        <input type="text" name="keyword_ekspedisi" placeholder="Masukan nama ekspedisi"
+                            class="bg-white p-1 shadow rounded-sm focus:outline-none">
                     </div>
 
                     {{-- tombol untuk mengembalikan pencarian seperti semula --}}
-                    <a href="{{ route('admin.daftarTransaksi') }}"
+                    <a href="{{ route('admin.daftarEkspedisi') }}"
                         class="text-blue-400 py-2 px-2 bg-white border border-blue-400 rounded-md hover:text-white hover:bg-blue-400">
                         <i class="fas fa-sync"></i>
                     </a>
@@ -67,38 +77,37 @@
             <div class="container mx-auto bg-white p-3 shadow-xl mt-5">
                 <div class="overflow-x-auto">
                     {{-- table daftar barang --}}
-                    <table class="w-full bg-white border border-gray-200 mt-3 text-center">
+                    <table class="min-w-full bg-white border text-center border-gray-200 mt-3">
                         <thead class="border border-b-black">
                             <th class="p-2">No</th>
-                            <th>Tanggal</th>
-                            <th>Nama user</th>
-                            <th>Uang pembayaran</th>
-                            <th>Total harga</th>
-                            <th>Kembalian</th>
-                            <th>Cabang</th>
-                            <th class="text-center w-1/4">Aksi</th>
+                            <th>Nama ekspedisi</th>
+                            <th>Jenis pengiriman</th>
+                            <th>Harga ekspedisi</th>
+                            <th>Estimasi pengiriman</th>
+                            <th class="text-center">Aksi</th>
                         </thead>
                         <tbody>
-                            @foreach ($transaksis as $index => $transaksi)
+                            @foreach ($ekspedisis as $index => $ekspedisi)
                                 <tr class="odd:bg-gray-200 hover:bg-gray-300">
-                                    @if ($offset > -1)
-                                        <td class="p-3">{{ $offset + $index + 1 }}</td>
-                                    @else
-                                        <td class="p-3">{{ $index + 1 }}</td>
-                                    @endif
-                                    <td>{{ Carbon\Carbon::parse($transaksi->tanggal)->format('m-d-Y') }}</td>
-                                    <td>{{ $transaksi->name }}</td>
-                                    <td>Rp. {{ number_format($transaksi->uang_pembayaran, 0, ',', '.') }}</td>
-                                    <td>Rp. {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
-                                    <td>Rp. {{ number_format($transaksi->kembalian, 0, ',', '.') }}</td>
-                                    <td>{{ $transaksi->nama_cabang }}</td>
-                                    <td class="flex justify-evenly items-center my-2">
-                                        <a href="{{ route('admin.detailTransaksi', [$transaksi->id_transaksi]) }}"
-                                            class="text-yellow-500 w-36 py-1 bg-white border border-yellow-500 rounded-md text-center hover:text-white hover:bg-yellow-500">
-                                            <i class="fas fa-eye mr-1"></i>
-                                            Detail Transaksi
+                                    <td class="p-3">{{ $index + 1 }}</td>
+                                    <td>{{ $ekspedisi->nama_ekspedisi }}</td>
+                                    <td>{{ $ekspedisi->jenis_pengiriman }}</td>
+                                    <td class="px-2">Rp. {{ number_format($ekspedisi->harga_ekspedisi, 0, ',', '.') }}</td>
+                                    <td>
+                                        <p>{{ $ekspedisi->estimasi_pengiriman }} hari</p>
+                                        {{ Carbon::now()->translatedFormat('d F') }}
+                                        @if ( $ekspedisi->estimasi_pengiriman > 1 )
+                                        - 
+                                        {{ Carbon::now()->addDays($ekspedisi->estimasi_pengiriman - 1)->translatedFormat('d F') }}
+                                        @endif
+                                    </td>
+                                    <td class="flex justify-evenly items-center my-3">
+                                        <a href="{{ route('admin.editEkspedisi', [$ekspedisi->id_ekspedisi]) }}"    
+                                            class="text-blue-600 w-20 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600">
+                                            <i class="fas fa-pen mr-1"></i>
+                                            Edit
                                         </a>
-                                        <form action="{{ route('admin.hapusTransaksi', [$transaksi->id_transaksi]) }}"
+                                        <form action="{{ route('admin.hapusEkspedisi', [$ekspedisi->id_ekspedisi]) }}"
                                             method="POST">
                                             @csrf
                                             @method('delete')
@@ -113,22 +122,16 @@
                                 </tr>
                             @endforeach
 
-                            @if ($offset > -1)
-                                {{-- pagination --}}
-                                {{ $transaksis->links() }}
-                            @endif
-
-                            @if (empty($transaksi->tanggal))
+                            {{-- cek apakah hasil yang dicari ada --}}
+                            @if (empty($ekspedisi->nama_ekspedisi))
                                 <tr>
-                                    <td colspan="9" class="text-center font-bold text-xl p-3">Transaksi tidak ditemukan
-                                    </td>
+                                    <td colspan="9" class="text-center font-bold text-xl p-3">Ekspedisi tidak ditemukan</td>
                                 </tr>
                             @endif
                         </tbody>
                     </table>
                 </div>
             </div>
-
         </div>
 
     </div>

@@ -16,9 +16,9 @@ class CreateEkspedisisTable extends Migration
         Schema::create('ekspedisis', function (Blueprint $table) {
             $table->id('id_ekspedisi');
             $table->string('nama_ekspedisi');
+            $table->string('jenis_pengiriman');
             $table->double('harga_ekspedisi');
-            $table->date('estimasi_awal');
-            $table->date('estimasi_akhir');
+            $table->integer('estimasi_pengiriman');
             $table->timestamps();
         });
     }

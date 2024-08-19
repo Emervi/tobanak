@@ -153,10 +153,11 @@
         @elseif ( session()->has('admin') )
         <ul class="flex justify-between gap-7">
             <li><a href="{{ route('admin.dashboard') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Home</a></li>
-            <li><a href="{{ route('admin.daftarTransaksi') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Transaksi</a></li>
-            <li><a href="{{ route('admin.daftarBarang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Barang</a></li>
             <li><a href="{{ route('admin.daftarUser') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">User</a></li>
+            <li><a href="{{ route('admin.daftarBarang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Barang</a></li>
+            <li><a href="{{ route('admin.daftarTransaksi') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Transaksi</a></li>
             <li><a href="{{ route('admin.daftarCabang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Cabang</a></li>
+            <li><a href="{{ route('admin.daftarEkspedisi') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Ekspedisi</a></li>
         </ul>
         @else
 
@@ -205,6 +206,7 @@
             return new Intl.NumberFormat('id-ID').format(value);
         }
 
+        // Format uang untuk halaman keranjang
         const formattedInputElement = document.getElementById('formatUang');
         const hiddenInputElement = document.getElementById('uang_pembayaran');
 
