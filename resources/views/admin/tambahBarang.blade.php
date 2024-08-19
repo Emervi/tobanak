@@ -126,22 +126,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="mb-3">
-                                    <label class="block">Pilih cabang</label>
-                                    <select name="id_cabang"
-                                        class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
-                                        @foreach ($cabangs as $cabang)
-                                            <option value="{{ $cabang->id_cabang }}"
-                                                {{ old('id_cabang', $atribut->id_cabang) == $cabang->id_cabang ? 'selected' : '' }}>
-                                                {{ $cabang->nama_cabang }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('id_cabang')
-                                        <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-5">
+                                <div>
                                     <label for="deskripsi_barang" class="block">Deskripsi barang</label>
                                     <textarea name="deskripsi_barang" id="deskripsi_barang" placeholder="Masukan deskripsi barang"
                                         class="bg-gray-300 p-1 shadow rounded-sm w-full resize-none h-24 focus:outline-none">{{ old('deskripsi_barang', $atribut->deskripsi_barang) }}</textarea>
@@ -201,7 +186,7 @@
                                     @enderror
                                 </div>
 
-                                <div>
+                                <div class="mb-5">
                                     <label for="harga" class="block">Harga</label>
                                     <input type="number" name="harga" id="harga"
                                         value="{{ old('harga', $atribut->harga) }}"
@@ -308,19 +293,7 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
-                                <label class="block">Pilih cabang</label>
-                                <select name="id_cabang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
-                                    @foreach ($cabangs as $cabang)
-                                        <option {{ old('id_cabang') == $cabang->id_cabang ? 'selected' : '' }} value="{{ $cabang->id_cabang }}">{{ $cabang->nama_cabang }}</option>
-                                    @endforeach
-                                </select>
-                                @error('id_cabang')
-                                    <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div class="mb-5">
+                            <div>
                                 <label for="deskripsi_barang" class="block">Deskripsi barang</label>
                                 <textarea name="deskripsi_barang" id="deskripsi_barang" placeholder="Masukan deskripsi barang"
                                     class="bg-gray-300 p-1 shadow rounded-sm w-full resize-none h-24 focus:outline-none">{{ old('deskripsi_barang') }}</textarea>
@@ -369,7 +342,7 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-2">
+                            <div class="mb-3">
                                 <label for="potongan" class="block">Potongan(Rp.)</label>
                                 <input type="number" name="potongan" id="potongan" value="{{ old('potongan') }}"
                                     placeholder="Masukan potongan barang"
@@ -379,7 +352,7 @@
                                 @enderror
                             </div>
 
-                            <div>
+                            <div class="mb-5">
                                 <label for="harga" class="block">Harga</label>
                                 <input type="number" name="harga" id="harga" value="{{ old('harga') }}"
                                     class="bg-gray-400 p-1 shadow rounded-sm w-full focus:outline-none" readonly>
