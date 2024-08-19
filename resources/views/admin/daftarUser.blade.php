@@ -7,6 +7,8 @@
     {{-- tombol kembali --}}
     <div class="w-11/12 mx-auto mt-10 mb-12">
 
+        <h1 class="text-2xl font-bold m-3 text-center flex-1">Daftar User</h1>
+
         <div class="flex items-center">
 
             <a href="{{ route('admin.dashboard') }}"
@@ -14,8 +16,6 @@
                 <i class="fas fa-arrow-left mr-1"></i>
                 Kembali
             </a>
-
-            <h1 class="text-2xl font-bold m-3 text-center flex-1">Daftar User</h1>
 
         </div>
 
@@ -79,7 +79,7 @@
                         </thead>
                         <tbody>
                             @foreach ($users as $index => $user)
-                                <tr class="odd:bg-gray-200">
+                                <tr class="odd:bg-gray-200 hover:bg-gray-300">
                                     @if ($offset > -1)
                                         <td class="p-3">{{ $offset + $index + 1 }}</td>
                                     @else

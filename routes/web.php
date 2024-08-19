@@ -10,6 +10,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DistribusiController;
+use App\Http\Controllers\EkspedisiController;
 use App\Http\Controllers\TestController;
 
 /*
@@ -34,6 +35,8 @@ Route::middleware('admin')->group(function () {
     // dashboard
     Route::get('/admin/dashboard', [AdminController::class, 'dashboardAdmin'])->name('admin.dashboard');
 
+
+
     // ADMIN.BARANG
     // halaman daftar barang
     Route::get('/admin/dashboard/barang', [BarangController::class, 'daftarBarang'])->name('admin.daftarBarang');
@@ -57,8 +60,9 @@ Route::middleware('admin')->group(function () {
     Route::put('/admin/dashboard/barang/tambahBarang/{id_barang}', [BarangController::class, 'updateBarang'])->name('admin.updateBarang');
     // hapus barang
     Route::delete('/admin/dashboard/barang/{id_barang}', [BarangController::class, 'destroyBarang'])->name('admin.hapusBarang');
-
     // \ADMIN.BARANG
+
+
 
     // ADMIN.USER
     // halaman daftar user
@@ -74,6 +78,8 @@ Route::middleware('admin')->group(function () {
     Route::delete('/admin/dashboard/user/{id_user}', [AdminController::class, 'destroyUser'])->name('admin.hapusUser');
     // \ADMIN.USER
 
+
+
     // ADMIN.TRANSAKSI
     // halaman daftar transaksi
     Route::get('/admin/dashboard/transaksi', [TransaksiController::class, 'daftarTransaksi'])->name('admin.daftarTransaksi');
@@ -86,6 +92,8 @@ Route::middleware('admin')->group(function () {
     // hapus transaksi
     Route::delete('/admin/dashboard/transaksi/{id_transaksi}', [TransaksiController::class, 'destroyTransaksi'])->name('admin.hapusTransaksi');
     // \ADMIN.TRANSAKSI
+
+
 
     // ADMIN.CABANG
     // halaman daftar cabang
@@ -104,6 +112,24 @@ Route::middleware('admin')->group(function () {
     // hapus cabang
     Route::delete('/admin/dashboard/cabang/{id_cabang}', [CabangController::class, 'destroyCabang'])->name('admin.hapusCabang');
     // \ADMIN.CABANG
+
+    // ADMIN.EKSPEDISI
+    // halaman daftar ekspedisi
+    Route::get('/admin/dashboard/ekspedisi', [EkspedisiController::class, 'daftarEkspedisi'])->name('admin.daftarEkspedisi');
+    // cari ekspedisi
+    Route::post('/admin/dashboard/ekspedisi', [EkspedisiController::class, 'cariEkspedisi']);
+
+    // halaman tambah ekspedisi
+    Route::get('/admin/dashboard/ekspedisi/tambahEkspedisi', [EkspedisiController::class, 'tambahEkspedisi'])->name('admin.tambahEkspedisi');
+    // halaman update ekspedisi
+    Route::get('/admin/dashboard/ekspedisi/{id_ekspedisi}/editEkspedisi', [EkspedisiController::class, 'editEkspedisi'])->name('admin.editEkspedisi');
+    // store ekspedisi
+    Route::post('/admin/dashboard/ekspedisi/tambahEkspedisi', [EkspedisiController::class, 'storeEkspedisi']);
+    // update ekspedisi
+    Route::put('/admin/dashboard/ekspedisi/{id_ekspedisi}', [EkspedisiController::class, 'updateEkspedisi'])->name('admin.updateEkspedisi');
+    // hapus ekspedisi
+    Route::delete('/admin/dashboard/ekspedisi/{id_ekspedisi}', [EkspedisiController::class, 'destroyEkspedisi'])->name('admin.hapusEkspedisi');
+    // \ADMIN.EKSPEDISI
 
 });
 

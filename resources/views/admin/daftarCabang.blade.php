@@ -7,6 +7,8 @@
     {{-- tombol kembali dan tambah --}}
     <div class="w-11/12 mx-auto mt-10 mb-12">
 
+        <h1 class="text-2xl font-bold ml-10 text-center">Daftar Cabang</h1>
+
         <div class="flex items-center justify-between">
 
             <a href="{{ route('admin.dashboard') }}"
@@ -14,8 +16,6 @@
                 <i class="fas fa-arrow-left mr-1"></i>
                 Kembali
             </a>
-
-            <h1 class="text-2xl font-bold ml-10 text-center">Daftar Cabang</h1>
 
             <a href="{{ route('admin.tambahCabang') }}"
                 class="text-green-500 p-2 bg-white border border-green-500 rounded-md hover:text-white hover:bg-green-600">
@@ -25,13 +25,13 @@
         </div>
 
         <div class="mt-7">
-            {{-- notifikasi CRUD barang dan fitur pencarian barang --}}
+            {{-- fitur pencarian cabang --}}
             <div class="flex justify-between items-center">
 
                 <form action="{{ route('admin.daftarCabang') }}" method="POST" class="flex gap-3">
                     @csrf
 
-                    {{-- form pencarian barang --}}
+                    {{-- form pencarian cabang --}}
                     <div class="flex gap-1">
                         <button type="submit"
                             class="text-orange-400 py-1.5 px-2 bg-white border border-orange-400 rounded-md hover:text-white hover:bg-orange-400">
@@ -83,7 +83,7 @@
                         </thead>
                         <tbody>
                             @foreach ($cabangs as $index => $cabang)
-                                <tr class="odd:bg-gray-200">
+                                <tr class="odd:bg-gray-200 hover:bg-gray-300">
                                     @if ($offset > -1)
                                         <td class="p-3">{{ $offset + $index + 1 }}</td>
                                     @else
