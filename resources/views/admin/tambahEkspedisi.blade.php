@@ -25,7 +25,7 @@
 
                             {{-- column 1 --}}
                             <div>
-                                
+
                                 <div class="mb-3">
                                     <label for="nama_ekspedisi" class="block">Nama ekspedisi</label>
                                     <input type="text" name="nama_ekspedisi" id="nama_ekspedisi"
@@ -35,12 +35,23 @@
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror
                                 </div>
-    
+
                                 <div class="mb-3">
                                     <label for="jenis_pengiriman" class="block">Jenis pengiriman</label>
-                                    <input type="text" name="jenis_pengiriman" id="jenis_pengiriman"
-                                        value="{{ $atribut->jenis_pengiriman }}" placeholder="Masukan nama ekspedisi"
+                                    <select name="jenis_pengiriman" id="jenis_pengiriman"
                                         class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                        <option value="" disabled selected>Pilih jenis pengiriman</option>
+                                        <option value="Hemat" {{ old('jenis_pengiriman', $atribut->jenis_pengiriman) == 'Hemat' ? 'selected' : '' }}>
+                                            Hemat</option>
+                                        <option value="Reguler" {{ old('jenis_pengiriman', $atribut->jenis_pengiriman) == 'Reguler' ? 'selected' : '' }}>
+                                            Reguler</option>
+                                        <option value="Express" {{ old('jenis_pengiriman', $atribut->jenis_pengiriman) == 'Express' ? 'selected' : '' }}>
+                                            Express</option>
+                                        <option value="Same Day" {{ old('jenis_pengiriman', $atribut->jenis_pengiriman) == 'Same Day' ? 'selected' : '' }}>Same
+                                            Day</option>
+                                        <option value="Kargo" {{ old('jenis_pengiriman', $atribut->jenis_pengiriman) == 'Kargo' ? 'selected' : '' }}>Kargo
+                                        </option>
+                                    </select>
                                     @error('jenis_pengiriman')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror
@@ -50,7 +61,7 @@
 
                             {{-- column 2 --}}
                             <div>
-                                
+
                                 <div class="mb-3">
                                     <label for="estimasi_pengiriman" class="block">Estimasi pengiriman(Hari)</label>
                                     <input type="text" name="estimasi_pengiriman" id="estimasi_pengiriman"
@@ -60,13 +71,14 @@
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror
                                 </div>
-    
+
                                 <div class="mb-5">
                                     <label for="harga_ekspedisi" class="block">Harga ekspedisi</label>
                                     <input type="text" name="harga_ekspedisi" id="formatUangEkspedisi"
                                         value="{{ $atribut->harga_ekspedisi }}" placeholder="Masukan harga ekspedisi"
                                         class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
-                                    <input type="hidden" name="harga_ekspedisi" id="harga_ekspedisi" value="{{ $atribut->harga_ekspedisi }}">
+                                    <input type="hidden" name="harga_ekspedisi" id="harga_ekspedisi"
+                                        value="{{ $atribut->harga_ekspedisi }}">
                                     @error('harga_ekspedisi')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror
@@ -123,9 +135,20 @@
 
                             <div class="mb-3">
                                 <label for="jenis_pengiriman" class="block">Jenis pengiriman</label>
-                                <input type="text" name="jenis_pengiriman" id="jenis_pengiriman"
-                                    value="{{ old('jenis_pengiriman') }}" placeholder="Masukan nama ekspedisi"
+                                <select name="jenis_pengiriman" id="jenis_pengiriman"
                                     class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                    <option value="" disabled selected>Pilih jenis pengiriman</option>
+                                    <option value="Hemat" {{ old('jenis_pengiriman') == 'Hemat' ? 'selected' : '' }}>Hemat
+                                    </option>
+                                    <option value="Reguler" {{ old('jenis_pengiriman') == 'Reguler' ? 'selected' : '' }}>
+                                        Reguler</option>
+                                    <option value="Express" {{ old('jenis_pengiriman') == 'Express' ? 'selected' : '' }}>
+                                        Express</option>
+                                    <option value="Same Day" {{ old('jenis_pengiriman') == 'Same Day' ? 'selected' : '' }}>Same
+                                        Day</option>
+                                    <option value="Kargo" {{ old('jenis_pengiriman') == 'Kargo' ? 'selected' : '' }}>Kargo
+                                    </option>
+                                </select>
                                 @error('jenis_pengiriman')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror
@@ -151,7 +174,8 @@
                                 <input type="text" name="harga_ekspedisi" id="formatUangEkspedisi"
                                     value="{{ old('harga_ekspedisi') }}" placeholder="Masukan harga ekspedisi"
                                     class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
-                                <input type="hidden" name="harga_ekspedisi" id="harga_ekspedisi" value="{{ old('harga_ekspedisi') }}">
+                                <input type="hidden" name="harga_ekspedisi" id="harga_ekspedisi"
+                                    value="{{ old('harga_ekspedisi') }}">
                                 @error('harga_ekspedisi')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror

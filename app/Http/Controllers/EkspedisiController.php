@@ -38,12 +38,13 @@ class EkspedisiController extends Controller
     {
         $request->validate([
             'nama_ekspedisi' => ['required'],
-            'jenis_pengiriman' => ['required'],
+            'jenis_pengiriman' => ['required', 'unique:ekspedisis,jenis_pengiriman'],
             'harga_ekspedisi' => ['required'],
             'estimasi_pengiriman' => ['required', 'numeric', 'min:1'],
         ], [
             'nama_ekspedisi.required' => 'Nama ekspedisi wajib diisi.',
             'jenis_pengiriman.required' => 'Jenis pengiriman wajib diisi.',
+            'jenis_pengiriman.unique' => 'Jenis pengiriman ini sudah terdaftar.',
             'harga_ekspedisi.required' => 'Harga ekspedisi wajib diisi.',
             'estimasi_pengiriman.required' => 'Estimasi pengiriman wajib diisi.',
             'estimasi_pengiriman.numeric' => 'Estimasi pengiriman wajid berupa angka.',
@@ -74,14 +75,17 @@ class EkspedisiController extends Controller
     {
         $request->validate([
             'nama_ekspedisi' => ['required'],
-            'jenis_pengiriman' => ['required'],
+            'jenis_pengiriman' => ['required', 'unique:ekspedisis,jenis_pengiriman, ' . $id_ekspedisi . ',id_ekspedisi'],
             'harga_ekspedisi' => ['required'],
-            'estimasi_pengiriman' => ['required'],
+            'estimasi_pengiriman' => ['required', 'numeric', 'min:1'],
         ], [
             'nama_ekspedisi.required' => 'Nama ekspedisi wajib diisi.',
             'jenis_pengiriman.required' => 'Jenis pengiriman wajib diisi.',
+            'jenis_pengiriman.unique' => 'Jenis pengiriman ini sudah terdaftar.',
             'harga_ekspedisi.required' => 'Harga ekspedisi wajib diisi.',
             'estimasi_pengiriman.required' => 'Estimasi pengiriman wajib diisi.',
+            'estimasi_pengiriman.numeric' => 'Estimasi pengiriman wajid berupa angka.',
+            'estimasi_pengiriman.min' => 'Estimasi pengiriman tidak boleh kurang dari 1 hari.',
         ]);
 
         Ekspedisis::where('id_ekspedisi', $id_ekspedisi)
