@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\Cabang;
+use App\Models\Ekspedisis;
 use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -22,6 +23,8 @@ class AdminController extends Controller
         $jumlahTransaksi = Transaksi::count();
 
         $jumlahCabang = Cabang::count();
+
+        $jumlahEkspedisi = Ekspedisis::count();
 
         $totalStokBarang = Barang::sum('stok_barang');  
 
@@ -41,6 +44,7 @@ class AdminController extends Controller
             'jumlahUser' => $jumlahUser,
             'jumlahTransaksi' => $jumlahTransaksi,
             'jumlahCabang' => $jumlahCabang,
+            'jumlahEkspedisi' => $jumlahEkspedisi,
             'totalStokBarang' => $totalStokBarang,
             'jumlahTransaksiToday' => $jumlahTransaksiToday,
             'jumlahTransaksiYesterday' => $jumlahTransaksiYesterday,
