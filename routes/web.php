@@ -10,6 +10,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DistribusiController;
+use App\Http\Controllers\TestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +24,8 @@ use App\Http\Controllers\DistribusiController;
 */
 
 // TEST AREA
-Route::get('/test', function(){
-    return view('test');
-})->name('test');
+Route::get('/test', [TestController::class, 'index'])->name('TEST');
+Route::put('/test/put', [TestController::class, 'put'])->name('TEST.PUT');
 // \TEST AREA
 
 // ADMIN
@@ -49,6 +49,10 @@ Route::middleware('admin')->group(function () {
     Route::get('/admin/dashboard/barang/tambahBarang/{id_barang}/edit', [BarangController::class, 'editBarang'])->name('admin.editBarang');
     // store barang
     Route::post('/admin/dashboard/barang/tambahBarang', [BarangController::class, 'storeBarang']);
+    // distribusi barang
+    Route::put('/admin/dashboard/barang/distribusiBarang', [BarangController::class, 'distribusiBarang'])->name('admin.distribusiBarang');
+    // tarik barang
+    Route::put('/admin/dashboard/barang/tarikBarang', [BarangController::class, 'tarikBarang'])->name('admin.tarikBarang');
     // update barang
     Route::put('/admin/dashboard/barang/tambahBarang/{id_barang}', [BarangController::class, 'updateBarang'])->name('admin.updateBarang');
     // hapus barang

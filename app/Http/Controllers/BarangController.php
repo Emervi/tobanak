@@ -12,47 +12,84 @@ class BarangController extends Controller
     // halaman barang
     public function daftarBarang(Request $request)
     {
-        $perPage = 5;
+        // $perPage = 5;
+        // $currentPage = $barangs->currentPage();
+        // $offset = ($currentPage - 1) * $perPage;
 
-        $barangs = Barang::join('cabangs', 'barangs.id_cabang', '=', 'cabangs.id_cabang')
+        // $barangs = Barang::leftJoin('cabangs', 'barangs.id_cabang', '=', 'cabangs.id_cabang')
+        // ->select('barangs.*', 'cabangs.nama_cabang')
+        // ->latest()
+        // ->get();
+
+        $cabangs = Cabang::all();
+
+        $barangs = Barang::leftJoin('cabangs', 'cabangs.id_cabang', '=', 'barangs.id_cabang')
         ->select('barangs.*', 'cabangs.nama_cabang')
         ->latest()
-        ->paginate($perPage);
+        ->get();
+
+        $barangSiap = Barang::where('distribusi', 'Siap kirim')
+        ->get();
+
+        $barangTerproses = Barang::where('distribusi', '!=', 'Siap kirim')
+        ->get();
 
         $filter = $request->query('filter_distribusi');
-        $distribusis = Barang::select('distribusi')
-        ->distinct()
-        ->pluck('distribusi');
 
-        if ($filter){
+        if ( $filter ){
 
             $barangs = Barang::join('cabangs', 'barangs.id_cabang', '=', 'cabangs.id_cabang')
             ->select('barangs.*', 'cabangs.nama_cabang')
             ->where('distribusi', $filter)
+            ->latest()
             ->get();
-
-            $offset = -1;
-
-        }else{
-
-            $currentPage = $barangs->currentPage();
-            $offset = ($currentPage - 1) * $perPage;
 
         }
 
-        return view('admin.daftarBarang', compact('barangs', 'offset', 'distribusis'));
+        if ( $filter == 'Siap kirim' ){
+
+            $barangs = Barang::where('distribusi', 'Siap kirim')
+            ->latest()
+            ->get();
+
+        }
+
+        $offset = -1;
+
+        $totalStok = Barang::sum('stok_barang');
+        
+        return view('admin.daftarBarang', compact(
+            'barangs', 
+            'offset', 
+            'totalStok', 
+            'cabangs', 
+            'barangSiap', 
+            'barangTerproses'
+        ));
     }
 
     // cari barang
     public function cariBarang(Request $request)
     {
+        $request->validate([
+            'keyword_barang' => ['required'],
+        ], [
+            'keyword_barang.required' => 'Nama barang kosong.',
+        ]);
+
+        $cabangs = Cabang::all();
+
         $query = $request->keyword_barang;
-        $barangs = Barang::where('nama_barang', 'LIKE', "%$query%")
+        $barangs = Barang::leftJoin('cabangs', 'cabangs.id_cabang', '=', 'barangs.id_cabang')
+        ->select('barangs.*', 'cabangs.nama_cabang')
+        ->where('nama_barang', 'LIKE', "%$query%")
         ->get();
 
         $offset = -1;
 
-        return view('admin.daftarBarang', compact('barangs', 'offset'));
+        $totalStok = Barang::sum('stok_barang');
+
+        return view('admin.daftarBarang', compact('barangs', 'offset', 'totalStok', 'cabangs'));
     }
 
     // halaman tambah barang
@@ -148,8 +185,7 @@ class BarangController extends Controller
             'harga' => $hargaJual,
             'diskon' => $diskon,
             'potongan' => $potongan,
-            'id_cabang' => $request->id_cabang,
-            'distribusi' => 'Dikirim',
+            'distribusi' => 'Siap kirim',
         ]);
 
         session()->put('hargaAsli', $hargaJual);
@@ -171,11 +207,6 @@ class BarangController extends Controller
     // update barang
     public function updateBarang(Request $request, $id_barang)
     {
-        $barang = Barang::join('cabangs', 'barangs.id_cabang', '=', 'cabangs.id_cabang')
-        ->select('barangs.*', 'cabangs.id_cabang')
-        ->where('id_barang', $id_barang)
-        ->first();
-
         $hargaJual = $request->harga;
 
         $request->validate([
@@ -224,11 +255,11 @@ class BarangController extends Controller
         }
 
         // logic perpindahan distribusi barang
-        if ( $request->id_cabang == $barang->id_cabang ){
-            $distribusi = $barang->distribusi;
-        }else{
-            $distribusi = "Dikirim";
-        }
+        // if ( $request->id_cabang == $barang->id_cabang ){
+        //     $distribusi = $barang->distribusi;
+        // }else{
+        //     $distribusi = "Dikirim";
+        // }
 
         Barang::where('id_barang', $id_barang)
             ->update([
@@ -241,11 +272,74 @@ class BarangController extends Controller
                 'harga' => $hargaJual,
                 'diskon' => $diskon,
                 'potongan' => $potongan,
-                'id_cabang' => $request->id_cabang,
-                'distribusi' => $distribusi,
             ]);
 
         return redirect()->route(('admin.daftarBarang'))->with('success', 'Barang berhasil diupdate!');
+    }
+
+    // distribusi barang
+    public function distribusiBarang(Request $request){
+
+        $request->validate([
+            'id_cabang' => ['required'],
+            'checkboxs' => ['required'],
+        ], [
+            'id_cabang.required' => 'Cabang wajib diisi.',
+            'checkboxs.required' => 'Barang belum dipilih.',
+        ]);
+
+        $id_barangs = $request->input('id_barangs', []);
+        $checkboxs = $request->input('checkboxs', []);
+        $id_cabang = $request->id_cabang;
+
+        foreach ( $id_barangs as $id_barang ) {
+
+            $barang = Barang::where('id_barang', $id_barang)
+            ->first();
+
+            $checkbox = isset($checkboxs[$id_barang]);
+
+            Barang::where('id_barang', $id_barang)
+            ->update([
+                'id_cabang' => $checkbox ? $id_cabang : $barang->id_cabang,
+                'distribusi' => $checkbox ? 'Dikirim' : $barang->distribusi,
+            ]);
+
+        }
+
+        return redirect()->back()->with('success', 'Barang berhasil dikirim!');
+
+    }
+
+    // distribusi barang
+    public function tarikBarang(Request $request){
+
+        $request->validate([
+            'checkboxs' => ['required'],
+        ], [
+            'checkboxs.required' => 'Barang belum dipilih.',
+        ]);
+
+        $id_barangs = $request->input('id_barangs', []);
+        $checkboxs = $request->input('checkboxs', []);
+
+        foreach ( $id_barangs as $id_barang ) {
+
+            $barang = Barang::where('id_barang', $id_barang)
+            ->first();
+
+            $checkbox = isset($checkboxs[$id_barang]);
+
+            Barang::where('id_barang', $id_barang)
+            ->update([
+                'id_cabang' => $checkbox ? null : $barang->id_cabang,
+                'distribusi' => $checkbox ? 'Siap kirim' : $barang->distribusi,
+            ]);
+
+        }
+
+        return redirect()->back()->with('success', 'Barang berhasil dikirim!');
+
     }
 
     // destroy barang
