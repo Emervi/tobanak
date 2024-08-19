@@ -95,7 +95,7 @@
                                     <td class="px-2">Rp. {{ number_format($ekspedisi->harga_ekspedisi, 0, ',', '.') }}</td>
                                     <td>
                                         <p>{{ $ekspedisi->estimasi_pengiriman }} hari</p>
-                                        {{ Carbon::now()->translatedFormat('d F') }}
+                                        {{ Carbon::now()->translatedFormat('d') }}
                                         @if ( $ekspedisi->estimasi_pengiriman > 1 )
                                         - 
                                         {{ Carbon::now()->addDays($ekspedisi->estimasi_pengiriman - 1)->translatedFormat('d F') }}

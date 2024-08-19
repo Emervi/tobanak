@@ -18,17 +18,26 @@ class UserSeeder extends Seeder
             'username' => 'admin1',
             'name' => 'Admin Transmart',
             'email' => 'adminTransmart@admin.com',
-            'status' => 'admin',
+            'status' => 'Admin',
             'id_cabang' => 1,
         ]);
 
         User::factory()->create([
-            'username' => 'user1',
+            'username' => 'pelanggan1',
             'name' => 'User Transmart',
             'email' => 'userTransmart@user.com',
-            'status' => 'user',
+            'status' => 'Pelanggan',
             'id_cabang' => 1,
-            'alamat' => 'Jl. Olahraga'
+            'alamat' => 'Jl. Olahraga',
+            'no_telp' => '0821-2140-5050',
+        ]);
+
+        User::factory()->create([
+            'username' => 'kasir1',
+            'name' => 'Kasir Transmart',
+            'email' => 'kasirTransmart@kasir.com',
+            'status' => 'Kasir',
+            'id_cabang' => 1,
         ]);
 
 
@@ -37,7 +46,7 @@ class UserSeeder extends Seeder
             'username' => 'admin2',
             'name' => 'Admin Griya',
             'email' => 'adminGriya@admin.com',
-            'status' => 'admin',
+            'status' => 'Admin',
             'id_cabang' => 2,
         ]);
 
@@ -45,9 +54,18 @@ class UserSeeder extends Seeder
             'username' => 'user2',
             'name' => 'User Griya',
             'email' => 'userGriya@user.com',
-            'status' => 'user',
+            'status' => 'Pelanggan',
             'id_cabang' => 2,
-            'alamat' => 'Jl. Permata Bumi'
+            'alamat' => 'Jl. Permata Bumi',
+            'no_telp' => '0831-5029-2031',
+        ]);
+
+        User::factory()->create([
+            'username' => 'kasir2',
+            'name' => 'Kasir Griya',
+            'email' => 'kasirGriya@kasir.com',
+            'status' => 'Kasir',
+            'id_cabang' => 2,
         ]);
     }
 }
