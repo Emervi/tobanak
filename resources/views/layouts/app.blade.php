@@ -125,26 +125,38 @@
 </head>
 <body class="bg-gray-100">
 
-    <nav class="w-full p-3 flex justify-between bg-pink-300 items-center">
+    <nav class="w-full p-3 flex justify-between bg-rose-400 items-center">
         <div class="flex justify-between gap-10 items-center">
         <div class="font-bold text-2xl ml-5">
-            <img src="{{ asset('images/tobanak.png') }}" class="w-10 h-10">
+            @if (session()->has('user'))
+                <a href="{{ route('homeUser') }}">
+                    <img src="{{ asset('images/tobanak.png') }}" class="w-10 h-10">
+                </a>
+            @elseif (session()->has('admin'))
+                <a href="{{ route('admin.dashboard') }}">
+                    <img src="{{ asset('images/tobanak.png') }}" class="w-10 h-10">
+                </a>
+            @else
+                <a href="{{ route('auth.login') }}">
+                    <img src="{{ asset('images/tobanak.png') }}" class="w-10 h-10">
+                </a>
+            @endif
 
         </div>
         @if ( session()->has('user') )
         <ul class="flex justify-between gap-7">
-            <li><a href="{{ route('homeUser') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Home</a></li>
-            <li><a href="{{ route('keranjang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Keranjang</a></li>
-            <li><a href="{{ route('distribusi') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Distribusi</a></li>
+            <li><a href="{{ route('homeUser') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Home</a></li>
+            <li><a href="{{ route('keranjang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Keranjang</a></li>
+            <li><a href="{{ route('distribusi') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Distribusi</a></li>
             <li><a href="" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500"></a></li>
         </ul>
         @elseif ( session()->has('admin') )
         <ul class="flex justify-between gap-7">
-            <li><a href="{{ route('admin.dashboard') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Home</a></li>
-            <li><a href="{{ route('admin.daftarTransaksi') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Transaksi</a></li>
-            <li><a href="{{ route('admin.daftarBarang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Barang</a></li>
-            <li><a href="{{ route('admin.daftarUser') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">User</a></li>
-            <li><a href="{{ route('admin.daftarCabang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500">Cabang</a></li>
+            <li><a href="{{ route('admin.dashboard') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Home</a></li>
+            <li><a href="{{ route('admin.daftarTransaksi') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Transaksi</a></li>
+            <li><a href="{{ route('admin.daftarBarang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Barang</a></li>
+            <li><a href="{{ route('admin.daftarUser') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">User</a></li>
+            <li><a href="{{ route('admin.daftarCabang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Cabang</a></li>
         </ul>
         @else
 
@@ -156,7 +168,7 @@
             @if ( session()->has('admin') || session()->has('user') )
             <form action="{{ route('logout') }}" method="POST" class="inline">
                 @csrf
-                <button type="submit" class="p-1 hover:text-pink-600 rounded-md text-white mr-5">
+                <button type="submit" class="p-1 hover:text-pink-600 rounded-md text-white mr-5 transition">
                     Logout
                 </button>
             </form> 

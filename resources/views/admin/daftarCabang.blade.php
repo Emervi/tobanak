@@ -72,8 +72,8 @@
             <div class="container mx-auto bg-white p-3 shadow-xl mt-5">
                 <div class="overflow-x-auto">
                     {{-- table daftar barang --}}
-                    <table class="min-w-full bg-white border border-gray-200 mt-3">
-                        <thead class="border border-b-black text-left">
+                    <table class="min-w-full bg-white border text-center border-gray-200 mt-3">
+                        <thead class="border border-b-black">
                             <th class="p-2">No</th>
                             <th>Nama cabang</th>
                             <th>Lokasi Cabang</th>
