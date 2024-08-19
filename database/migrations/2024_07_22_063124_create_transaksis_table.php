@@ -21,10 +21,14 @@ class CreateTransaksisTable extends Migration
             $table->double('total_harga');
             $table->double('uang_pembayaran');
             $table->double('kembalian');
+            $table->text('alamat');
+            $table->string('metode_pembayaran');
+            $table->unsignedBigInteger('id_ekspedisi');
             $table->timestamps();
 
             $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
             $table->foreign('id_cabang')->references('id_cabang')->on('cabangs')->onDelete('cascade');
+            $table->foreign('id_ekspedisi')->references('id_ekspedisi')->on('ekspedisis')->onDelete('cascade');
         });
     }
 
