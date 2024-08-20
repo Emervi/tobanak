@@ -20,6 +20,9 @@ class Transaksi extends Model
         'uang_pembayaran',
         'kembalian',
         'id_cabang',
+        'alamat',
+        'metode_pembayaran',
+        'id_ekspedisi',
     ];
 
     public function barang()

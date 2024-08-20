@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class CheckAdmin
 {
@@ -16,15 +15,9 @@ class CheckAdmin
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next)
-    {
-        $admin = session('admin');
-
+    {   
         if ( !session()->has('admin') ){
             return redirect()->route('auth.login');
-        }
-
-        if ($admin->status !== 'admin'){
-            return redirect()->route('homeUser')->with('gagal', 'Anda bukan admin!');
         }
 
         return $next($request);

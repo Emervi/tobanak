@@ -41,7 +41,7 @@
             
             <div class="mb-4">
                 <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                <input id="username" name="username" type="text" value="{{ old('username') }}" autofocus
+                <input id="username" name="username" type="text" value="{{ old('username') }}" autofocus placeholder="Masukan username"
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 sm:text-sm">
                     @error('username')
                     <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -50,7 +50,7 @@
 
             <div class="mb-6">
                 <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                <input id="password" name="password" type="password"
+                <input id="password" name="password" type="password" placeholder="Masukan password"
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 sm:text-sm">
                     @error('password')
                     <p class="text-red-500 text-sm">{{ $message }}</p>
