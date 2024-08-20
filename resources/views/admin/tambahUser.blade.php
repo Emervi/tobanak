@@ -45,7 +45,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="mb-3">
+                                <div class="mb-5">
                                     <label for="email" class="block">Email</label>
                                     <input type="email" name="email" id="email"
                                         value="{{ old('email', $atribut->email) }}"
@@ -55,7 +55,26 @@
                                     @enderror
                                 </div>
 
-                                <div class="mb-5">
+                            </div>
+
+                            {{-- column 2 --}}
+                            <div>
+
+                                <label for="">Status</label>
+                                <div class="flex gap-5 mb-3 bg-gray-300 p-1 shadow rounded-sm w-11/12">
+                                    <div>
+                                        <input type="radio" name="status" id="Admin" value="Admin"
+                                            {{ $atribut->status == 'Admin' ? 'checked' : '' }}>
+                                        <label for="Admin">Admin</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="status" id="Kasir" value="Kasir"
+                                            {{ $atribut->status == 'Kasir' ? 'checked' : '' }}>
+                                        <label for="Kasir">Kasir</label>
+                                    </div>
+                                </div>
+
+                                <div>
                                     <label class="block">Pilih cabang</label>
                                     <select name="id_cabang"
                                         class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
@@ -68,25 +87,6 @@
                                     @error('id_cabang')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror
-                                </div>
-
-                            </div>
-
-                            {{-- column 2 --}}
-                            <div>
-
-                                <label for="">Status</label>
-                                <div class="flex gap-5 mb-5 bg-gray-300 p-1 shadow rounded-sm w-11/12">
-                                    <div>
-                                        <input type="radio" name="status" id="Admin" value="Admin"
-                                            {{ $atribut->status == 'Admin' ? 'checked' : '' }}>
-                                        <label for="Admin">Admin</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name="status" id="Kasir" value="Kasir"
-                                            {{ $atribut->status == 'Kasir' ? 'checked' : '' }}>
-                                        <label for="Kasir">Kasir</label>
-                                    </div>
                                 </div>
 
                             </div>

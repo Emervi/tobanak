@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UserRequest;
 use App\Models\Barang;
 use App\Models\Cabang;
 use App\Models\Ekspedisis;
@@ -96,7 +97,7 @@ class AdminController extends Controller
     }
 
     // store user
-    public function storeUser(Request $request)
+    public function storeUser(UserRequest $request)
     {
         User::create([
             'id_cabang' => $request->id_cabang,
@@ -172,7 +173,6 @@ class AdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'status' => $request->status,
-            'password' => Hash::make('password'),
         ]);
 
         return redirect()->route(('admin.daftarUser'))->with('success', 'User berhasil diupdate!');
