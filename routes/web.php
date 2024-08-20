@@ -69,11 +69,22 @@ Route::middleware('admin')->group(function () {
     Route::get('/admin/dashboard/user', [AdminController::class, 'daftarUser'])->name('admin.daftarUser');
     // cari user
     Route::post('/admin/dashboard/user', [AdminController::class, 'cariUser']);
+    
+    // halaman tambah user
+    Route::get('/admin/dashboard/user/tambahUser', [AdminController::class, 'tambahUser'])->name('admin.tambahUser');
+    // store user
+    Route::post('/admin/dashboard/user/tambahUser', [AdminController::class, 'storeUser']);
+
+    // halaman ubah password user
+    Route::get('/admin/dashboard/user/{id_user}/ubahPassword', [AdminController::class, 'ubahPassword'])->name('admin.ubahPassword');
+    // update password user
+    Route::put('/updatePassword/{id_user}', [AdminController::class, 'updatePassword'])->name('admin.updatePassword');
 
     // halaman update user
     Route::get('/admin/dashboard/user/{id_user}/editUser', [AdminController::class, 'editUser'])->name('admin.editUser');
     // update user
     Route::put('/admin/dashboard/user/{id_user}', [AdminController::class, 'updateUser'])->name('admin.updateUser');
+    
     // hapus user
     Route::delete('/admin/dashboard/user/{id_user}', [AdminController::class, 'destroyUser'])->name('admin.hapusUser');
     // \ADMIN.USER

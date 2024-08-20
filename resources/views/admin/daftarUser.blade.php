@@ -9,12 +9,20 @@
 
         <h1 class="text-2xl font-bold m-3 text-center flex-1">Daftar User</h1>
 
-        <div class="flex items-center">
+        {{-- tombol kembali dan tambah --}}
+        <div class="flex items-start justify-between mb-2">
 
             <a href="{{ route('admin.dashboard') }}"
                 class="text-pink-400 p-2 bg-white border border-pink-400 rounded-md hover:text-white hover:bg-pink-400">
                 <i class="fas fa-arrow-left mr-1"></i>
                 Kembali
+            </a>
+
+
+            <a href="{{ route('admin.tambahUser') }}"
+                class="text-green-500 text-center p-2 bg-white border border-green-500 rounded-md hover:text-white hover:bg-green-600">
+                <i class="fas fa-plus mr-1"></i>
+                Tambah User
             </a>
 
         </div>
@@ -89,7 +97,13 @@
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->status }}</td>
-                                    <td>{{ $user->nama_cabang }}</td>
+                                    <td>
+                                        @empty($user->nama_cabang)
+                                            Online
+                                        @else
+                                            {{ $user->nama_cabang }}
+                                        @endempty
+                                    </td>
                                     <td class="flex justify-evenly items-center my-2">
                                         <a href="{{ route('admin.editUser', [$user->id_user]) }}"
                                             class="text-blue-600 w-20 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600">
