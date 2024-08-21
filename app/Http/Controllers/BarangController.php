@@ -28,12 +28,12 @@ class BarangController extends Controller
         ->latest('barangs.updated_at')
         ->get();
 
-        $barangSiap = Barang::where('distribusi', 'Siap kirim')
+        $barangSiap = Barang::whereIn('distribusi', ['Siap kirim', 'Ditarik'])
         ->latest()
         ->get();
 
         $barangTerproses = Barang::join('cabangs', 'cabangs.id_cabang', '=', 'barangs.id_cabang')
-        ->where('distribusi', '!=', 'Siap kirim')
+        ->whereNotIn('distribusi', ['Siap kirim', 'Ditarik'])
         ->latest('barangs.created_at')
         ->get();
 
@@ -336,7 +336,7 @@ class BarangController extends Controller
             Barang::where('id_barang', $id_barang)
             ->update([
                 'id_cabang' => $checkbox ? null : $barang->id_cabang,
-                'distribusi' => $checkbox ? 'Siap kirim' : $barang->distribusi,
+                'distribusi' => $checkbox ? 'Ditarik' : $barang->distribusi,
             ]);
 
         }

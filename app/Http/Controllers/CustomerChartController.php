@@ -12,7 +12,7 @@ class CustomerChartController extends Controller
 {
     public function index()
     {
-        $userId = session('user')->id_user;
+        $userId = session('customer')->id_user;
         $keranjang = Keranjang::where('id_user', $userId)->with('barang')->get();
 
         // Hitung total harga
@@ -32,7 +32,7 @@ class CustomerChartController extends Controller
         ]);
 
         // Mendapatkan ID pengguna yang sedang login
-        $idUser = session('user')->id_user;
+        $idUser = session('customer')->id_user;
         $idBarang = $request->input('id_barang');
 
         Barang::where('id_barang', $idBarang)
