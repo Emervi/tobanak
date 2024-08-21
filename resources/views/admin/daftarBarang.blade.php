@@ -8,7 +8,7 @@
 
         <h1 class="text-2xl font-bold text-center">Daftar Barang</h1>
 
-        {{-- tombol kembali, tambah, dan distribusi --}}
+        {{-- tombol kembali dan tambah --}}
         <div class="flex items-start justify-between mb-2">
 
             <a href="{{ route('admin.dashboard') }}"

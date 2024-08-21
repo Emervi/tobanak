@@ -21,7 +21,7 @@ class CreateTransaksisTable extends Migration
             $table->double('total_harga');
             $table->double('uang_pembayaran');
             $table->double('kembalian');
-            $table->text('alamat');
+            $table->text('alamat')->nullable();
             $table->string('metode_pembayaran');
             $table->unsignedBigInteger('id_ekspedisi');
             $table->timestamps();

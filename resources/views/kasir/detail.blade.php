@@ -5,7 +5,7 @@
 @section('body')
 <div class="mt-8 ml-10">
     <div class="flex items-center mb-4">
-        <a href="{{ route('homeUser') }}" class="border border-pink-500 text-pink-500 hover:text-white hover:bg-pink-500 px-4 py-2 rounded">Kembali</a>
+        <a href="{{ route('homeKasir') }}" class="border border-pink-500 text-pink-500 hover:text-white hover:bg-pink-500 px-4 py-2 rounded">Kembali</a>
     </div>
     <div class="relative flex flex-col md:flex-row items-start md:items-center bg-white p-8 rounded-lg shadow-lg max-w-sm md:max-w-3xl mx-auto">
         @if($barang->diskon > 0)

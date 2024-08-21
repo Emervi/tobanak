@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BarangController;
@@ -14,6 +13,7 @@ use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DistribusiController;
 use App\Http\Controllers\EkspedisiController;
+use App\Http\Controllers\KasirController;
 use App\Http\Controllers\TestController;
 
 /*
@@ -48,7 +48,7 @@ Route::middleware('admin')->group(function () {
 
     // route untuk get harga 
     Route::post('/get-harga', [BarangController::class, 'getHarga'])->name('get.harga');
-    
+
     // halaman tambah barang
     Route::get('/admin/dashboard/barang/tambahBarang', [BarangController::class, 'tambahBarang'])->name('admin.tambahBarang');
     // halaman update barang
@@ -72,11 +72,22 @@ Route::middleware('admin')->group(function () {
     Route::get('/admin/dashboard/user', [AdminController::class, 'daftarUser'])->name('admin.daftarUser');
     // cari user
     Route::post('/admin/dashboard/user', [AdminController::class, 'cariUser']);
+    
+    // halaman tambah user
+    Route::get('/admin/dashboard/user/tambahUser', [AdminController::class, 'tambahUser'])->name('admin.tambahUser');
+    // store user
+    Route::post('/admin/dashboard/user/tambahUser', [AdminController::class, 'storeUser']);
+
+    // halaman ubah password user
+    Route::get('/admin/dashboard/user/{id_user}/ubahPassword', [AdminController::class, 'ubahPassword'])->name('admin.ubahPassword');
+    // update password user
+    Route::put('/updatePassword/{id_user}', [AdminController::class, 'updatePassword'])->name('admin.updatePassword');
 
     // halaman update user
     Route::get('/admin/dashboard/user/{id_user}/editUser', [AdminController::class, 'editUser'])->name('admin.editUser');
     // update user
     Route::put('/admin/dashboard/user/{id_user}', [AdminController::class, 'updateUser'])->name('admin.updateUser');
+    
     // hapus user
     Route::delete('/admin/dashboard/user/{id_user}', [AdminController::class, 'destroyUser'])->name('admin.hapusUser');
     // \ADMIN.USER
@@ -138,6 +149,41 @@ Route::middleware('admin')->group(function () {
 
 // \ADMIN
 
+// Halaman Kasir
+Route::middleware('kasir')->group(function () {
+    Route::get('/home', [KasirController::class, 'homeKasir'])->name('homeKasir');
+
+
+    Route::get('/keranjang', [KeranjangController::class, 'index'])->name('keranjang');
+    Route::post('/keranjang/tambah', [KeranjangController::class, 'tambah'])->name('keranjang.tambah');
+    Route::post('/keranjang/kurangi', [KeranjangController::class, 'kurangi'])->name('keranjang.kurangi');
+    Route::post('/keranjang/hapus', [KeranjangController::class, 'hapus'])->name('keranjang.hapus');
+
+
+    Route::get('/checkout', [TransaksiController::class, 'checkout'])->name('transaksi.checkout');
+    Route::post('/proses-checkout', [TransaksiController::class, 'prosesCheckout'])->name('transaksi.prosesCheckout');
+
+    Route::get('/detail-produk/{id_barang}', [KasirController::class, 'show'])->name('detailProduk');
+
+    Route::get('/kasir/pesananBerhasil', [KasirController::class, 'notifikasiBerhasil'])->name('kasir.pesananBerhasil');
+
+
+    Route::get('/distribusi', [DistribusiController::class, 'index'])->name('distribusi');
+    Route::post('/distribusi/update-status/{id_barang}', [DistribusiController::class, 'updateStatus'])->name('distribusi.updateStatus');
+});
+// Penutup Halaman Kasir
+
+// PELANGGAN
+Route::middleware('pelanggan')->group(function () {
+
+    Route::get('/pelanggan/home', function () {
+        return view('pelanggan.home');
+    })->name('pelanggan.home');
+    
+});
+// \PELANGGAN
+
+// GUEST
 Route::middleware('cek_session_null')->group(function () {
 
     // landing page
@@ -157,31 +203,7 @@ Route::middleware('cek_session_null')->group(function () {
     // \REGISTER
 
 });
-
-// Halaman User
-Route::middleware('user')->group(function () {
-    Route::get('/home', [UserController::class, 'homeUser'])->name('homeUser');
-
-
-    Route::get('/keranjang', [KeranjangController::class, 'index'])->name('keranjang');
-    Route::post('/keranjang/tambah', [KeranjangController::class, 'tambah'])->name('keranjang.tambah');
-    Route::post('/keranjang/kurangi', [KeranjangController::class, 'kurangi'])->name('keranjang.kurangi');
-    Route::post('/keranjang/hapus', [KeranjangController::class, 'hapus'])->name('keranjang.hapus');
-
-
-    Route::get('/checkout', [TransaksiController::class, 'checkout'])->name('transaksi.checkout');
-    Route::post('/proses-checkout', [TransaksiController::class, 'prosesCheckout'])->name('transaksi.prosesCheckout');
-
-    Route::get('/detail-produk/{id_barang}', [UserController::class, 'show'])->name('detailProduk');
-
-    Route::get('/user/pesananBerhasil', [UserController::class, 'notifikasiBerhasil'])->name('user.pesananBerhasil');
-    
-    
-    Route::get('/distribusi', [DistribusiController::class, 'index'])->name('distribusi');
-    Route::post('/distribusi/update-status/{id_barang}', [DistribusiController::class, 'updateStatus'])->name('distribusi.updateStatus');
-
-    // Penutup Halaman User
-
+// \GUEST
 
     // Halaman untuk Customer (tampilan)
     Route::get('/customer/home', [CustomerController::class, 'index'])->name('customer.home');
@@ -194,8 +216,6 @@ Route::middleware('user')->group(function () {
 
     Route::get('/customer/checkout', [CustomerCoController::class, 'index'])->name('customer.checkout');
     Route::post('/customer/checkout/update', [CustomerCoController::class, 'updateEkspedisi'])->name('update.ekspedisi');
-
-});
 
 // LOGOUT
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
