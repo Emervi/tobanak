@@ -219,5 +219,5 @@ Route::middleware('cek_session_null')->group(function () {
 // \GUEST
 
 // LOGOUT
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // \LOGOUT

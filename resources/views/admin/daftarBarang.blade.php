@@ -53,7 +53,8 @@
                         <h2 class="text-center text-2xl font-bold mb-6">Distribusikan Barang</h2>
 
                         <div class="flex justify-between p-2">
-                            <button type="button" id="checkSemuaDistribusi" class="bg-green-400 hover:bg-green-500 px-4 py-2 rounded-lg">
+                            <button type="button" id="checkSemuaDistribusi"
+                                class="bg-green-400 hover:bg-green-500 px-4 py-2 rounded-lg">
                                 <i class="fas fa-check-circle"></i>
                                 Pilih semua
                             </button>
@@ -73,7 +74,7 @@
                                         <input type="hidden" name="id_barangs[]" value="{{ $barangReady->id_barang }}">
 
                                         <input type="checkbox" name="checkboxs[{{ $barangReady->id_barang }}]"
-                                            id="checkbox{{ $barangReady->id_barang }}" value="1" class="size-4 peer hidden">
+                                            id="checkbox{{ $barangReady->id_barang }}" value="1" class="peer hidden">
 
                                         <label for="checkbox{{ $barangReady->id_barang }}"
                                             class="flex p-2 gap-3 w-full cursor-pointer peer-checked:bg-gray-300">
@@ -82,7 +83,14 @@
                                             <div>
                                                 <p>Nama barang : {{ $barangReady->nama_barang }}</p>
                                                 <p>Harga : Rp. {{ number_format($barangReady->harga, 0, ',', '.') }}</p>
-                                                <p>Status : {{ $barangReady->distribusi }}</p>
+                                                <p>
+                                                    Status :
+                                                    @if ($barangReady->distribusi === 'Siap kirim')
+                                                        👍{{ $barangReady->distribusi }}👍
+                                                    @elseif ($barangReady->distribusi === 'Ditarik')
+                                                        🚚{{ $barangReady->distribusi }}🚚
+                                                    @endif
+                                                </p>
                                             </div>
                                         </label>
 
@@ -143,7 +151,8 @@
                         <h2 class="text-center text-2xl font-bold mb-6">Tarik Barang</h2>
 
                         <div class="flex justify-between p-2">
-                            <button type="button" id="checkSemuaTarik" class="bg-green-400 hover:bg-green-500 px-4 py-2 rounded-lg">
+                            <button type="button" id="checkSemuaTarik"
+                                class="bg-green-400 hover:bg-green-500 px-4 py-2 rounded-lg">
                                 <i class="fas fa-check-circle"></i>
                                 Pilih semua
                             </button>
@@ -168,21 +177,19 @@
 
                                         <label for="checkbox{{ $barangProses->id_barang }}"
                                             class="flex p-2 gap-3 w-full cursor-pointer peer-checked:bg-gray-300">
-                                            <img src="{{ asset('images/' . $barangProses->foto_barang) }}" alt="foto barang"
-                                                id="fotoBarang" class="size-20">
+                                            <img src="{{ asset('images/' . $barangProses->foto_barang) }}"
+                                                alt="foto barang" id="fotoBarang" class="size-20">
                                             <div>
                                                 <p>Nama barang : {{ $barangProses->nama_barang }}</p>
                                                 <p>Cabang : {{ $barangProses->nama_cabang }}</p>
                                                 <p>
-                                                    Status : 
+                                                    Status :
                                                     @if ($barangProses->distribusi === 'Diterima')
                                                         ✔{{ $barangProses->distribusi }}✔
                                                     @elseif ($barangProses->distribusi === 'Ditolak')
                                                         💥{{ $barangProses->distribusi }}💥
                                                     @elseif ($barangProses->distribusi === 'Dikirim')
-                                                        🚚{{ $barangProses->distribusi }}🚚
-                                                    @else
-                                                        👍{{ $barangProses->distribusi }}👍
+                                                        🚛{{ $barangProses->distribusi }}🚛
                                                     @endif
                                                 </p>
                                             </div>
@@ -342,6 +349,8 @@
                                         @elseif ($barang->distribusi === 'Ditolak')
                                             💥{{ $barang->distribusi }}💥
                                         @elseif ($barang->distribusi === 'Dikirim')
+                                            🚛{{ $barang->distribusi }}🚛
+                                        @elseif ($barang->distribusi === 'Ditarik')
                                             🚚{{ $barang->distribusi }}🚚
                                         @else
                                             👍{{ $barang->distribusi }}👍
@@ -409,15 +418,15 @@
     <script>
         $(document).ready(function() {
 
-          $('#checkSemuaDistribusi').on('click', function() {
-            $('#formDistribusi input[type="checkbox"]').prop('checked', true);
-          });
+            $('#checkSemuaDistribusi').on('click', function() {
+                $('#formDistribusi input[type="checkbox"]').prop('checked', true);
+            });
 
-          $('#checkSemuaTarik').on('click', function() {
-            $('#formTarik input[type="checkbox"]').prop('checked', true);
-          });
+            $('#checkSemuaTarik').on('click', function() {
+                $('#formTarik input[type="checkbox"]').prop('checked', true);
+            });
 
         });
-      </script>
+    </script>
 
 @endsection

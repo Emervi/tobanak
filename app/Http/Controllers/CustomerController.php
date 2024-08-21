@@ -13,8 +13,8 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        $id_user = session('user')->id_user;
-        $cabang_user = session('user')->id_cabang;
+        $id_user = session('customer')->id_user;
+        $cabang_user = 1;
         $cabangs = Cabang::where('id_cabang', $cabang_user)->first();
 
         $totalJumlah = Keranjang::where('id_user', $id_user)

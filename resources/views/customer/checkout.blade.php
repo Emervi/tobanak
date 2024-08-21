@@ -63,6 +63,45 @@
                             <p class="text-right">Rp. {{ number_format($keranjang->barang->harga, 0, ',', '.') }}</p>
                             <p class="text-right">Jumlah: {{ $keranjang->kuantitas }}</p>
                         </div>
+
+                        <p id="selected-ekspedisi" class="text-gray-600 mb-2">
+                            Nama Ekspedisi: {{ $ekspedisi->nama_ekspedisi ?? 'Pilih pengiriman' }}
+                        </p>
+                        <p id="selected-ekspedisi" class="text-gray-600 mb-2">
+                            Estimasi Diterima : {{ $ekspedisi->estimasi_pengiriman ?? 'Pilih pengiriman' }} hari
+                        </p>
+                        <div class="flex justify-between mb-4">
+                            <span class="font-semibold">        
+                                {{ $ekspedisi->jenis_pengiriman ?? '' }}
+                            </span>
+                            <span class="font-semibold">
+                                Harga : {{ number_format($ekspedisi->harga_ekspedisi ?? '', 0, ',','.') }}
+                            </span>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Order Summary -->
+            <div class="flex-none w-80 p-4 rounded-lg relative">
+                <div class="flex flex-col h-full max-h-42">
+                    <div class="font-semibold text-xl text-red-500 mb-4">Total Pembayaran</div>
+                    <hr class="mb-4">
+                    <!-- Order Details -->
+                    <div class="overflow-x-auto mb-4">
+                        <div class="scroll-content">
+                            <ul class="space-y-2 max-h-28">
+                                @foreach ($keranjangs as $nota)    
+                                    <li class="flex justify-between border-b border-gray-200 pb-2">
+                                        <span class="font-semibold">{{ $nota->barang->nama_barang }}</span>
+                                        <span>x{{ $nota->kuantitas }}</span>
+                                        <span>Rp {{ number_format($nota->barang->harga * $nota->kuantitas, 0, ',', '.') }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
                 @endforeach
             </div>
@@ -225,6 +264,7 @@
                 </form>
             </div>
         </div>
+    </div>
 
         <div x-show="isOpenEkspedisi" x-cloak
             class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
@@ -238,8 +278,9 @@
                         @foreach ($ekspedisis as $ekspedisi)
                             <div>
                                 <input type="radio" name="id_ekspedisi" id="ekspedisi{{ $ekspedisi->id_ekspedisi }}"
-                                    value="{{ $ekspedisi->id_ekspedisi }}" class="peer hidden"
-                                    {{ session('selected_ekspedisi') == $ekspedisi->id_ekspedisi ? 'checked' : '' }}>
+
+                                    value="{{ $ekspedisi->id_ekspedisi }}" class="peer hidden" {{ session('selected_ekspedisi') == $ekspedisi->id_ekspedisi ? 'checked' : '' }}>
+
                                 <label for="ekspedisi{{ $ekspedisi->id_ekspedisi }}"
                                     class="flex justify-between items-center border rounded-lg p-3 cursor-pointer peer-checked:bg-gray-300">
 
@@ -273,6 +314,7 @@
                 </form>
             </div>
         </div>
+    </div>
 
 
     </div>
