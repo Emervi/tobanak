@@ -33,25 +33,6 @@
             </div>
         </div>
 
-        {{-- <div class=" min-w-full mb-4">
-            <h1 class="font-bold text-2xl text-rose-800">Checkout</h1>
-        </div>
-        <!-- Customer Information Section -->
-        <div class="bg-white p-4 rounded shadow-sm mb-2 border-b border-t border-rose-500">
-            <h1 class="text-red-500 font-semibold ml-4 mb-3 text-xl"><i class="fa-solid fa-location-dot mr-2"></i> Alamat
-                Pengiriman</h1>
-            <div class="flex justify-between items-center">
-                <div class="">
-                    <p class="font-semibold">Audy Firkah Nuryana (+62) 85863729828</p>
-                    <p>jl babakansari rt 6 rw 14 Kiaracondong Bandung, KOTA BANDUNG - KIARACONDONG, JAWA BARAT, ID 40281</p>
-                </div>
-                <div>
-                    <button @click="isOpenAddress = true"
-                        class="text-red-500 font-semibold hover:text-rose-700">Ubah</button>
-                </div>
-            </div>
-        </div> --}}
-
         <!-- Ordered Products Section -->
     <div class="bg-white p-4 rounded shadow-sm mb-2">
         <h3 class="font-semibold text-lg mb-2">Produk Dipesan</h3>
@@ -192,15 +173,12 @@
             </div>
         </div>
 
-
-
         <!-- Terms and Conditions -->
         <div class="text-center mt-4 mb-2 text-gray-500 text-sm">
             Copyright 2024 &copy; Audy Firkah & Janitra Alvito
         </div>
 
-
-        {{-- modals untuk alamat --}}
+{{-- modals untuk alamat --}}
     <div x-show="isOpenAddress" x-cloak class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
             <div class="flex justify-between min-w-full">
@@ -285,7 +263,7 @@
                 </form>
             </div>
         </div>
-
+        
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>

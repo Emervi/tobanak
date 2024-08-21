@@ -12,10 +12,9 @@ use Illuminate\Support\Facades\Redis;
 class CustomerCoController extends Controller
 {
     public function index() {
-
-        // $keranjang = Keranjang::with('barang')->where('id_customer', session('user')->id_user);
-
+    
         $ekspedisis = Ekspedisis::all();
+        
         $selectedEkspedisiId = session('selected_ekspedisi');
 
         $idCustomer = session('customer')->id_user;
@@ -31,6 +30,7 @@ class CustomerCoController extends Controller
         // Kirim data ke view
         return view('customer.checkout', compact('ekspedisis', 'selectedEkspedisiId', 'keranjangs', 'totalHarga'));
     }
+    
 
 
     public function updateEkspedisi(Request $request) {
@@ -66,5 +66,5 @@ class CustomerCoController extends Controller
         session()->forget('alamat_baru');
         return back()->with('success', 'mengganti menjadi alamat asli');
     }
-    
+
 }

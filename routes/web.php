@@ -185,7 +185,13 @@ Route::middleware('customer')->group(function () {
     Route::post('/customer/keranjang/hapus', [CustomerChartController::class, 'hapus'])->name('customerKeranjang.hapus');
 
     Route::get('/customer/checkout', [CustomerCoController::class, 'index'])->name('customer.checkout');
-    Route::post('/customer/checkout/update', [CustomerCoController::class, 'updateEkspedisi'])->name('update.ekspedisi');
+    Route::post('/customer/checkout/update-ekspedisi', [CustomerCoController::class, 'updateEkspedisi'])->name('update.ekspedisi');
+
+    
+    Route::post('/update-alamat', [CustomerCoController::class, 'updateAlamat'])->name('update.alamat');
+    Route::post('/reset-address', [CustomerCoController::class, 'resetAlamat'])->name('reset.alamat');
+
+
     
     Route::post('/update-alamat', [CustomerCoController::class, 'updateAlamat'])->name('update.alamat');
     Route::post('/reset-address', [CustomerCoController::class, 'resetAlamat'])->name('reset.alamat');
