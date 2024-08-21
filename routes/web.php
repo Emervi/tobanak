@@ -193,6 +193,9 @@ Route::middleware('customer')->group(function () {
 
 
     
+    Route::post('/update-alamat', [CustomerCoController::class, 'updateAlamat'])->name('update.alamat');
+    Route::post('/reset-address', [CustomerCoController::class, 'resetAlamat'])->name('reset.alamat');
+    
 });
 // \CUSTOMER
 

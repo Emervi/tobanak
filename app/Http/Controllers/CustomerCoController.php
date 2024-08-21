@@ -16,7 +16,7 @@ class CustomerCoController extends Controller
         $ekspedisis = Ekspedisis::all();
         
         $selectedEkspedisiId = session('selected_ekspedisi');
-        
+
         $idCustomer = session('customer')->id_user;
         
         $keranjangs = Keranjang::with('barang')
