@@ -74,7 +74,7 @@ class LoginController extends Controller
 
         session()->forget('admin');
         session()->forget('kasir');
-        session()->forget('pelanggan');
+        session()->forget('customer');
 
         // session()->flush();
         

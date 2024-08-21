@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Ekspedisis;
 use App\Models\Keranjang;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
@@ -17,13 +18,19 @@ class CustomerCoController extends Controller
         $ekspedisis = Ekspedisis::all();
         $selectedEkspedisiId = session('selected_ekspedisi');
 
-        // $totalHarga = $keranjang->sum(function($item){
-        //     return $item->barang->harga * $item->kuantitas;
-        // });
+        Carbon::setLocale('id');
 
-        // return view('customer.checkout', compact('keranjang', 'ekspedisis', 'totalHarga'));
+        foreach( $ekspedisis as $ekspedisi ){
 
-        return view('customer.checkout', compact('ekspedisis', 'selectedEkspedisiId'));
+            if( $ekspedisi->estimasi_pengiriman > 1 ){
+                $tanggalEstimasi[] = Carbon::now()->translatedFormat('d') . ' - ' . Carbon::now()->addDays($ekspedisi->estimasi_pengiriman - 1)->translatedFormat('d F');
+            }else{
+                $tanggalEstimasi[] = Carbon::now()->translatedFormat('d F');
+            }
+            
+        }
+
+        return view('customer.checkout', compact('ekspedisis', 'selectedEkspedisiId', 'tanggalEstimasi'));
     }
 
 

@@ -143,7 +143,7 @@ class BarangSeeder extends Seeder
             'Sedang',
             15,
             0,
-            'Dikirim'
+            'Ditarik'
         );
 
         isiBarang(
@@ -167,7 +167,7 @@ class BarangSeeder extends Seeder
             'Tipis',
             99,
             0,
-            'Diterima'
+            'Ditarik'
         );
 
         // Barang::create([
