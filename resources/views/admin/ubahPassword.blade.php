@@ -27,7 +27,7 @@
 
                                 <div class="mb-3">
                                     <label for="password_awal" class="block">Password sebelumnya</label>
-                                    <input type="password" name="password_awal" id="password_awal"
+                                    <input type="password" name="password_awal" id="password_awal" placeholder="Masukan password sebelumnya"
                                         @error('password_awal')
                                             value=""
                                         @else
@@ -41,7 +41,7 @@
 
                                 <div class="mb-3">
                                     <label for="password_baru" class="block">Password baru</label>
-                                    <input type="password" name="password_baru" id="password_baru"
+                                    <input type="password" name="password_baru" id="password_baru" placeholder="Masukan password baru"
                                         class="bg-gray-300 p-1 shadow rounded-sm w-full focus:outline-none">
                                     @error('password_baru')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
@@ -50,7 +50,7 @@
 
                                 <div class="mb-5">
                                     <label for="password_konfirmasi" class="block">Konfirmasi password</label>
-                                    <input type="password" name="password_konfirmasi" id="password_konfirmasi"
+                                    <input type="password" name="password_konfirmasi" id="password_konfirmasi" placeholder="Masukan konfirmasi password"
                                         class="bg-gray-300 p-1 shadow rounded-sm w-full focus:outline-none">
                                     @error('password_konfirmasi')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit User')
+@section('title', isset($user) ? 'Edit User' : 'Tambah User')
 
 @section('body')
 
@@ -29,6 +29,7 @@
                                     <label for="username" class="block">Username</label>
                                     <input type="text" name="username" id="username"
                                         value="{{ old('username', $atribut->username) }}"
+                                        placeholder="Masukan username"
                                         class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                                     @error('username')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
@@ -39,6 +40,7 @@
                                     <label for="name" class="block">Nama</label>
                                     <input type="text" name="name" id="name"
                                         value="{{ old('name', $atribut->name) }}"
+                                        placeholder="Masukan nama lengkap"
                                         class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                                     @error('name')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
@@ -49,6 +51,7 @@
                                     <label for="email" class="block">Email</label>
                                     <input type="email" name="email" id="email"
                                         value="{{ old('email', $atribut->email) }}"
+                                        placeholder="Masukan email"
                                         class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                                     @error('email')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
@@ -139,7 +142,7 @@
                             <div class="mb-3">
                                 <label for="username" class="block">Username</label>
                                 <input type="text" name="username" id="username" value="{{ old('username') }}"
-                                    class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                    placeholder="Masukan username" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                                 @error('username')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror
@@ -148,7 +151,7 @@
                             <div class="mb-3">
                                 <label for="name" class="block">Nama</label>
                                 <input type="text" name="name" id="name" value="{{ old('name') }}"
-                                    class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                    placeholder="Masukan nama lengkap" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                                 @error('name')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror
@@ -157,7 +160,7 @@
                             <div class="mb-3">
                                 <label for="email" class="block">Email</label>
                                 <input type="email" name="email" id="email" value="{{ old('email') }}"
-                                    class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                    placeholder="Masukan email" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                                 @error('email')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror
@@ -205,7 +208,7 @@
                             <div class="mb-3">
                                 <label for="password" class="block">Password</label>
                                 <input type="password" name="password" id="password"
-                                    class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                    placeholder="Masukan password" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                                 @error('password')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror
@@ -214,7 +217,7 @@
                             <div class="mb-3">
                                 <label for="password2" class="block">Konfirmasi password</label>
                                 <input type="password" name="password2" id="password2"
-                                    class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                    placeholder="Masukan konfirmasi password" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
                                 @error('password2')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror
