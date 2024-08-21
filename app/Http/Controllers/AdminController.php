@@ -58,7 +58,7 @@ class AdminController extends Controller
     {
         $perPage = 5;
 
-        $users = User::join('cabangs', 'users.id_cabang', '=', 'cabangs.id_cabang')
+        $users = User::leftJoin('cabangs', 'users.id_cabang', '=', 'cabangs.id_cabang')
         ->select('users.*', 'cabangs.nama_cabang')
         ->paginate($perPage);
 

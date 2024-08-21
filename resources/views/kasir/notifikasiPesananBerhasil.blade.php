@@ -68,7 +68,7 @@
         </div>
         <div class="flex justify-between mt-10">
             <a href="#" class="bg-yellow-500 text-gray-900 px-3 py-1 rounded-lg shadow hover:bg-yellow-600 text-sm"><i class="fa-solid fa-print"></i> Print</a>
-            <a href="{{ route('homeUser') }}" class="bg-blue-500 text-white px-3 py-1 rounded-lg shadow hover:bg-blue-700 text-sm"><i class="fa-solid fa-house"></i> Beranda</a>
+            <a href="{{ route('homeKasir') }}" class="bg-blue-500 text-white px-3 py-1 rounded-lg shadow hover:bg-blue-700 text-sm"><i class="fa-solid fa-house"></i> Beranda</a>
         </div>
     </div>
 </div>

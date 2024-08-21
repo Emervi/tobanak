@@ -12,15 +12,15 @@ class KeranjangController extends Controller
     // Menampilkan keranjang pengguna
     public function index()
     {
-        $userId = session('user')->id_user;
-        $keranjang = Keranjang::where('id_user', $userId)->with('barang')->get();
+        $id_kasir = session('kasir')->id_user;
+        $keranjang = Keranjang::where('id_user', $id_kasir)->with('barang')->get();
 
         // Hitung total harga
         $totalHarga = $keranjang->sum(function ($item) {
             return $item->barang->harga * $item->kuantitas;
         });
 
-        return view('user.keranjang', compact('keranjang', 'totalHarga'));
+        return view('kasir.keranjang', compact('keranjang', 'totalHarga'));
     }
 
     // Menambahkan barang ke keranjang
@@ -32,15 +32,15 @@ class KeranjangController extends Controller
         ]);
 
         // Mendapatkan ID pengguna yang sedang login
-        $idUser = session('user')->id_user;
-        $idBarang = $request->input('id_barang');
+        $id_kasir = session('kasir')->id_user;
+        $id_barang = $request->input('id_barang');
 
-        Barang::where('id_barang', $idBarang)
+        Barang::where('id_barang', $id_barang)
             ->decrement('stok_barang', 1);
 
         // Cek apakah barang sudah ada di keranjang
-        $keranjang = Keranjang::where('id_user', $idUser)
-            ->where('id_barang', $idBarang)
+        $keranjang = Keranjang::where('id_user', $id_kasir)
+            ->where('id_barang', $id_barang)
             ->first();
 
         if ($keranjang) {
@@ -50,18 +50,18 @@ class KeranjangController extends Controller
         } else {
             // Jika barang belum ada, tambahkan ke keranjang
             Keranjang::create([
-                'id_user' => $idUser,
-                'id_barang' => $idBarang,
+                'id_user' => $id_kasir,
+                'id_barang' => $id_barang,
                 'kuantitas' => 1,
             ]);
         }
 
-        $totalJumlah = Keranjang::where('id_user', $idUser)->sum('kuantitas');
+        $totalJumlah = Keranjang::where('id_user', $id_kasir)->sum('kuantitas');
         session(['totalJumlah' => $totalJumlah]);
 
         return response()->json([
             'success' => true,
-            'stok_barang' => Barang::where('id_barang', $idBarang)->value('stok_barang'),
+            'stok_barang' => Barang::where('id_barang', $id_barang)->value('stok_barang'),
             'totalJumlah' => $totalJumlah,
         ]);
     }
@@ -74,11 +74,11 @@ class KeranjangController extends Controller
             'id_keranjang' => 'required|exists:keranjangs,id_keranjang',
         ]);
 
-        $idBarang = $request->input('id_barang');
+        $id_barang = $request->input('id_barang');
         $kuantitas = $request->input('kuantitas');
         $idKeranjang = $request->input('id_keranjang');
         Keranjang::where('id_keranjang', $idKeranjang)->delete();
-        Barang::where('id_barang', $idBarang)
+        Barang::where('id_barang', $id_barang)
         ->increment('stok_barang', $kuantitas);
 
         return redirect()->back()->with('success', 'Barang berhasil dihapus dari keranjang!');
@@ -87,14 +87,14 @@ class KeranjangController extends Controller
     // Mengupdate kuantitas barang di keranjang
     public function kurangi(Request $request)
     {
-        $idBarang = $request->input('id_barang');
-        $idKeranjang = $request->input('id_keranjang');
-        $keranjang = Keranjang::findOrFail($idKeranjang);
+        $id_barang = $request->input('id_barang');
+        $id_keranjang = $request->input('id_keranjang');
+        $keranjang = Keranjang::findOrFail($id_keranjang);
 
         if ($keranjang->kuantitas > 1) {
             $keranjang->kuantitas -= 1;
             $keranjang->save();
-            Barang::where('id_barang', $idBarang)
+            Barang::where('id_barang', $id_barang)
             ->increment('stok_barang', 1);
 
             $totalJumlah = Session::get('totalJumlah', 0);

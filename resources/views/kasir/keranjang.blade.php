@@ -34,7 +34,7 @@
         @endif
 
         <div class="flex justify-between items-center mb-4">
-            <form action="{{ route('homeUser') }}" method="GET">
+            <form action="{{ route('homeKasir') }}" method="GET">
                 <button class="border border-pink-500 text-pink-500 hover:text-white hover:bg-pink-500 px-4 py-2 rounded">Kembali</button>
             </form>
             <h2 class="text-2xl font-bold">Keranjang</h2>

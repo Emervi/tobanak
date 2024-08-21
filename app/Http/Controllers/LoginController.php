@@ -38,15 +38,22 @@ class LoginController extends Controller
 
             $user = Auth::user();
 
-            if ($user->status === 'admin') {
+            if ($user->status === 'Admin') {
 
                 session(['admin' => $user]);
                 return redirect()->intended(route('admin.dashboard'));
 
             }
 
-            session(['user' => $user]);
-            return redirect()->intended(route('homeUser'));
+            if ($user->status === 'Kasir') {
+
+                session(['kasir' => $user]);
+                return redirect()->intended(route('homeKasir'));
+
+            }
+
+            session(['pelanggan' => $user]);
+            return redirect()->intended(route('pelanggan.home'));
         }
 
         return redirect()->back()->with([
@@ -54,12 +61,13 @@ class LoginController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
         Auth::logout();
 
-        session()->forget('user');
         session()->forget('admin');
+        session()->forget('kasir');
+        session()->forget('pelanggan');
 
         // session()->flush();
         

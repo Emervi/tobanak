@@ -15,7 +15,7 @@ class DistribusiController extends Controller
         ->where('distribusi', 'Dikirim')
         ->get();
 
-        return view('user.distribusi', compact('barangs'));
+        return view('kasir.distribusi', compact('barangs'));
     }
 
     public function updateStatus(Request $request, $id_barang) {

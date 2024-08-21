@@ -18,12 +18,12 @@ class TransaksiController extends Controller
     // Menampilkan halaman checkout
     public function checkout()
     {
-        $keranjang = Keranjang::where('id_user', session('user')->id_user)->get();
+        $keranjang = Keranjang::where('id_user', session('kasir')->id_user)->get();
         $totalHarga = $keranjang->sum(function ($item) {
             return $item->barang->harga * $item->kuantitas;
         });
 
-        return view('user.checkout', compact('keranjang', 'totalHarga'));
+        return view('kasir.checkout', compact('keranjang', 'totalHarga'));
     }
 
     // Proses checkout dan bayar
@@ -33,7 +33,7 @@ class TransaksiController extends Controller
             'uang_pembayaran' => 'required',
         ]);
 
-        $keranjang = Keranjang::where('id_user', session('user')->id_user)->get();
+        $keranjang = Keranjang::where('id_user', session('kasir')->id_user)->get();
         $totalHarga = $keranjang->sum(function ($item) {
             return $item->kuantitas * $item->barang->harga;
         });
@@ -51,11 +51,14 @@ class TransaksiController extends Controller
             // Membuat transaksi baru
             $transaksi = Transaksi::create([
                 'tanggal' => Carbon::now()->toDateString(),
-                'id_user' => session('user')->id_user,
+                'id_user' => session('kasir')->id_user,
                 'total_harga' => $totalHarga,
                 'uang_pembayaran' => $uangPembayaran,
                 'kembalian' => $kembalian,
-                'id_cabang' => 1,
+                'id_cabang' => session('kasir')->id_cabang,
+                'alamat' => session('kasir')->alamat,
+                'metode_pembayaran' => 'Cash',
+                'id_ekspedisi' => 1,
             ]);
 
             $transaksiId = $transaksi->id_transaksi;
@@ -71,7 +74,7 @@ class TransaksiController extends Controller
             }
 
             // Hapus keranjang setelah checkout
-            Keranjang::where('id_user', session('user')->id_user)->delete();
+            Keranjang::where('id_user', session('kasir')->id_user)->delete();
         });
 
         Session::forget('keranjang');
@@ -83,7 +86,7 @@ class TransaksiController extends Controller
             'uangPembayaran' => $uangPembayaran, // Uang pembayaran
         ]);
 
-        return redirect()->route('user.pesananBerhasil');
+        return redirect()->route('kasir.pesananBerhasil');
     }
 
 

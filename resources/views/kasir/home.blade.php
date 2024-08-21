@@ -19,7 +19,7 @@
 
 <div class="mb-4">
     <h1 class="text-xl font-bold m-3">Selamat Datang di {{ $cabangs->nama_cabang }}!!</h1>
-    <form method="GET" action="{{ route('homeUser') }}">
+    <form method="GET" action="{{ route('homeKasir') }}">
         <select name="filter" class="ml-10 block bg-white text-gray-700 py-2 px-10 shadow-md border border-gray-200 rounded" onchange="this.form.submit()">
             <option value="">Semua Kategori</option>
             @foreach($kategori as $category)

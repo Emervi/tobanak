@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
             'name' => 'User Transmart',
             'email' => 'userTransmart@user.com',
             'status' => 'Pelanggan',
-            'id_cabang' => 1,
+            // 'id_cabang' => 1,
             'alamat' => 'Jl. Olahraga',
             'no_telp' => '0821-2140-5050',
         ]);
@@ -55,7 +55,7 @@ class UserSeeder extends Seeder
             'name' => 'User Griya',
             'email' => 'userGriya@user.com',
             'status' => 'Pelanggan',
-            'id_cabang' => 2,
+            // 'id_cabang' => 2,
             'alamat' => 'Jl. Permata Bumi',
             'no_telp' => '0831-5029-2031',
         ]);

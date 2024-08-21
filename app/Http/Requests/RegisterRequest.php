@@ -24,12 +24,13 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'id_cabang' => ['required'],
             'username' => ['required', 'unique:users,username', 'min:6'],
             'name' => ['required', 'string', 'max:35'],
             'email' => ['required', 'unique:users,email', 'email'],
+            'no_telp' => ['required'],
             'password' => ['required', 'min:8'],
             'password2' => ['required', 'same:password'],
+            'alamat' => ['required'],
         ];
     }
 
@@ -41,7 +42,6 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'id_cabang.required' => 'Cabang wajib diisi.',
             'username.required' => 'Username wajib diisi.',
             'username.unique' => 'Username sudah terdaftar.',
             'username.min' => 'Username harus memiliki minimal 6 karakter.',
@@ -51,10 +51,12 @@ class RegisterRequest extends FormRequest
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Email harus valid.',
             'email.unique' => 'Email sudah terdaftar.',
+            'no_telp.required' => 'Nomor telepon wajib diisi.',
             'password.required' => 'Password wajib diisi.',
             'password.min' => 'Password minimal harus 8 karakter.',
             'password2.required' => 'Konfirmasi password wajib diisi.',
             'password2.same' => 'Password dan konfirmasi password tidak cocok.',
+            'alamat.required' => 'Alamat wajib diisi.',
         ];
     }
 }

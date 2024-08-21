@@ -6,31 +6,30 @@ use App\Models\Barang;
 use App\Models\Cabang;
 use App\Models\Keranjang;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class KasirController extends Controller
 {
 
-    public function homeUser(Request $request)
+    public function homeKasir(Request $request)
     {
 
-        $id_user = session('user')->id_user;
-        $cabang_user = session('user')->id_cabang;
-        $cabangs = Cabang::where('id_cabang', $cabang_user)->first();
+        $id_kasir = session('kasir')->id_user;
+        $cabang_kasir = session('kasir')->id_cabang;
+        $cabangs = Cabang::where('id_cabang', $cabang_kasir)->first();
 
 
-        $totalJumlah = Keranjang::where('id_user', $id_user)
-            ->sum('kuantitas');
+        $totalJumlah = Keranjang::where('id_user', $id_kasir)
+        ->sum('kuantitas');
 
 
         $filter = $request->query('filter');
-        $kategori = Barang::where('id_cabang', $cabang_user)
+        $kategori = Barang::where('id_cabang', $cabang_kasir)
         ->where('distribusi', 'Diterima')
         ->distinct()
         ->pluck('kategori_barang');
 
 
-        $query = Barang::where('id_cabang', $cabang_user)
+        $query = Barang::where('id_cabang', $cabang_kasir)
             ->where('distribusi', 'Diterima');
 
         if ($filter) {
@@ -66,22 +65,22 @@ class UserController extends Controller
 
        
 
-        return view('user.home', compact('barangs', 'kategori', 'totalJumlah', 'cabangs'));
+        return view('kasir.home', compact('barangs', 'kategori', 'totalJumlah', 'cabangs'));
     }
 
     public function keranjang()
     {
-        return view('user.keranjang');
+        return view('kasir.keranjang');
     }
 
     public function show($id_barang)
     {
-        $id_user = session('user')->id_user;
+        $id_kasir = session('kasir')->id_user;
 
         $barang = Barang::where('id_barang', $id_barang)->firstOrFail();
 
-        $totalJumlah = Keranjang::where('id_user', $id_user)
-            ->sum('kuantitas');
+        $totalJumlah = Keranjang::where('id_user', $id_kasir)
+        ->sum('kuantitas');
 
         $bahan = $barang->bahan;
 
@@ -106,7 +105,7 @@ class UserController extends Controller
 
         $barang->harga_asli = $hargaJual;
 
-        return view('user.detail', compact('barang', 'totalJumlah'));
+        return view('kasir.detail', compact('barang', 'totalJumlah'));
     }
 
     // Penutup Halaman User
@@ -114,10 +113,10 @@ class UserController extends Controller
     // notifikasi pesanan berhasil
     public function notifikasiBerhasil()
     {
-        $cabang_user = session('user')->id_cabang;
-        $cabangs = Cabang::where('id_cabang', $cabang_user)->first();
+        $cabang_kasir = session('kasir')->id_cabang;
+        $cabangs = Cabang::where('id_cabang', $cabang_kasir)->first();
 
-        return view('user.notifikasiPesananBerhasil', compact('cabangs'));
+        return view('kasir.notifikasiPesananBerhasil', compact('cabangs'));
     }
     // \notifikasi pesanan berhasil
 }
