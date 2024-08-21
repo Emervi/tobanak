@@ -162,8 +162,8 @@
                 <a href="{{ route('admin.dashboard') }}">
                     <img src="{{ asset('images/tobanak.png') }}" class="w-10 h-10">
                 </a>
-            @elseif (session()->has('pelanggan'))
-                <a href="{{ route('pelanggan.home') }}">
+            @elseif (session()->has('customer'))
+                <a href="{{ route('customer.home') }}">
                     <img src="{{ asset('images/tobanak.png') }}" class="w-10 h-10">
                 </a>
             @else
@@ -187,9 +187,9 @@
             <li><a href="{{ route('admin.daftarTransaksi') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Transaksi</a></li>
             <li><a href="{{ route('admin.daftarEkspedisi') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Ekspedisi</a></li>
         </ul>
-        @elseif ( session()->has('pelanggan') )
+        @elseif ( session()->has('customer') )
         <ul class="flex justify-between gap-7">
-            <li><a href="{{ route('pelanggan.home') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Home</a></li>
+            <li><a href="{{ route('customer.home') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Home</a></li>
         </ul>
         @else
 
@@ -198,7 +198,7 @@
 
         <div>
 
-            @if ( session()->has('admin') || session()->has('kasir') || session()->has('pelanggan') )
+            @if ( session()->has('admin') || session()->has('kasir') || session()->has('customer') )
             <form action="{{ route('logout') }}" method="POST" class="inline">
                 @csrf
                 <button type="submit" class="p-1 hover:text-pink-600 rounded-md text-white mr-5 transition">
