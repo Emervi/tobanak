@@ -173,15 +173,22 @@ Route::middleware('kasir')->group(function () {
 });
 // Penutup Halaman Kasir
 
-// PELANGGAN
-Route::middleware('pelanggan')->group(function () {
+// CUSTOMER
+Route::middleware('customer')->group(function () {
 
-    Route::get('/pelanggan/home', function () {
-        return view('pelanggan.home');
-    })->name('pelanggan.home');
+    Route::get('/customer/home', [CustomerController::class, 'index'])->name('customer.home');
+    Route::get('/customer/detail-produk/{id_barang}', [CustomerController::class, 'show'])->name('customer.detail');
+
+    Route::get('/customer/keranjang', [CustomerChartController::class, 'index'])->name('customer.keranjang');
+    Route::post('/customer/keranjang/tambah', [CustomerChartController::class, 'tambah'])->name('customerKeranjang.tambah');
+    Route::post('/customer/keranjang/kurangi', [CustomerChartController::class, 'kurangi'])->name('customerKeranjang.kurangi');
+    Route::post('/customer/keranjang/hapus', [CustomerChartController::class, 'hapus'])->name('customerKeranjang.hapus');
+
+    Route::get('/customer/checkout', [CustomerCoController::class, 'index'])->name('customer.checkout');
+    Route::post('/customer/checkout/update', [CustomerCoController::class, 'updateEkspedisi'])->name('update.ekspedisi');
     
 });
-// \PELANGGAN
+// \CUSTOMER
 
 // GUEST
 Route::middleware('cek_session_null')->group(function () {
@@ -204,18 +211,6 @@ Route::middleware('cek_session_null')->group(function () {
 
 });
 // \GUEST
-
-    // Halaman untuk Customer (tampilan)
-    Route::get('/customer/home', [CustomerController::class, 'index'])->name('customer.home');
-    Route::get('/customer/detail-produk/{id_barang}', [CustomerController::class, 'show'])->name('customer.detail');
-
-    Route::get('/customer/keranjang', [CustomerChartController::class, 'index'])->name('customer.keranjang');
-    Route::post('/customer/keranjang/tambah', [CustomerChartController::class, 'tambah'])->name('customerKeranjang.tambah');
-    Route::post('/customer/keranjang/kurangi', [CustomerChartController::class, 'kurangi'])->name('customerKeranjang.kurangi');
-    Route::post('/customer/keranjang/hapus', [CustomerChartController::class, 'hapus'])->name('customerKeranjang.hapus');
-
-    Route::get('/customer/checkout', [CustomerCoController::class, 'index'])->name('customer.checkout');
-    Route::post('/customer/checkout/update', [CustomerCoController::class, 'updateEkspedisi'])->name('update.ekspedisi');
 
 // LOGOUT
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');

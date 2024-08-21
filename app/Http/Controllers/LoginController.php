@@ -52,8 +52,15 @@ class LoginController extends Controller
 
             }
 
-            session(['pelanggan' => $user]);
-            return redirect()->intended(route('pelanggan.home'));
+            if ($user->status === 'Pelanggan'){
+                session(['customer' => $user]);
+                return redirect()->intended(route('customer.home'));
+            }
+            
+            return redirect()->back()->with([
+                'error' => 'Status tidak ditemukan!'
+            ]);
+
         }
 
         return redirect()->back()->with([

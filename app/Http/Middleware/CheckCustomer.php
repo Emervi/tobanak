@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class CheckPelanggan
+class CheckCustomer
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class CheckPelanggan
      */
     public function handle(Request $request, Closure $next)
     {
-        if ( !session()->has('pelanggan') ){
+        if ( !session()->has('customer') ){
             return redirect()->route('auth.login');
         }
 
