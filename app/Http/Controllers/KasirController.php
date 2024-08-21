@@ -108,7 +108,7 @@ class KasirController extends Controller
         return view('kasir.detail', compact('barang', 'totalJumlah'));
     }
 
-    // Penutup Halaman User
+    // Penutup Halaman Kasir
 
     // notifikasi pesanan berhasil
     public function notifikasiBerhasil()
