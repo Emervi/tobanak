@@ -23,6 +23,10 @@ class Barang extends Model
         'distribusi'
     ];
 
+    public function cabang() {
+        return $this->belongsTo(Cabang::class, 'id_cabang', 'id_cabang');
+    }
+
     public function transaksi()
     {
         return $this->hasMany(Transaksi::class, 'id_barang', 'id_barang');
