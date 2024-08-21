@@ -19,7 +19,7 @@
 
 <div class="mb-4">
     <h1 class="text-xl font-bold m-3">Selamat Datang di {{ $cabangs->nama_cabang }}!!</h1>
-    <form method="GET" action="{{ route('homeUser') }}">
+    <form method="GET" action="{{ route('customer.home') }}">
         <select name="filter" class="ml-10 block bg-white text-gray-700 py-2 px-10 shadow-md border border-gray-200 rounded" onchange="this.form.submit()">
             <option value="">Semua Kategori</option>
             @foreach($kategori as $category)
@@ -60,7 +60,7 @@
                 @else
                     <span class="text-gray-600 font-bold text-lg">Rp {{ number_format($barang->harga, 0, ',', '.') }}</span>
                 @endif
-                <form class="add-form-keranjang" action="{{ route('keranjang.tambah') }}" method="POST">
+                <form class="add-form-keranjang" action="{{ route('customerKeranjang.tambah') }}" method="POST">
                     @csrf
                     <input type="hidden" name="id_barang" value="{{ $barang->id_barang }}">
                     <button type="submit" class="bg-blue-400 text-white px-4 py-2 rounded-full hover:bg-blue-700 add-button" data-id="{{ $barang->id_barang }}" {{ $barang->stok_barang <= 0 ? 'disabled' : '' }}>
