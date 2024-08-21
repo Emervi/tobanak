@@ -187,6 +187,9 @@ Route::middleware('customer')->group(function () {
     Route::get('/customer/checkout', [CustomerCoController::class, 'index'])->name('customer.checkout');
     Route::post('/customer/checkout/update', [CustomerCoController::class, 'updateEkspedisi'])->name('update.ekspedisi');
     
+    Route::post('/update-alamat', [CustomerCoController::class, 'updateAlamat'])->name('update.alamat');
+    Route::post('/reset-address', [CustomerCoController::class, 'resetAlamat'])->name('reset.alamat');
+    
 });
 // \CUSTOMER
 
