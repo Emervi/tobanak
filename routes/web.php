@@ -6,6 +6,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CabangController;
+use App\Http\Controllers\CustomerChartController;
+use App\Http\Controllers\CustomerCoController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\TransaksiController;
@@ -178,8 +181,22 @@ Route::middleware('user')->group(function () {
     Route::post('/distribusi/update-status/{id_barang}', [DistribusiController::class, 'updateStatus'])->name('distribusi.updateStatus');
 
     // Penutup Halaman User
+
+
+    // Halaman untuk Customer (tampilan)
+    Route::get('/customer/home', [CustomerController::class, 'index'])->name('customer.home');
+    Route::get('/customer/detail-produk/{id_barang}', [CustomerController::class, 'show'])->name('customer.detail');
+
+    Route::get('/customer/keranjang', [CustomerChartController::class, 'index'])->name('customer.keranjang');
+    Route::post('/customer/keranjang/tambah', [CustomerChartController::class, 'tambah'])->name('customerKeranjang.tambah');
+    Route::post('/customer/keranjang/kurangi', [CustomerChartController::class, 'kurangi'])->name('customerKeranjang.kurangi');
+    Route::post('/customer/keranjang/hapus', [CustomerChartController::class, 'hapus'])->name('customerKeranjang.hapus');
+
+    Route::get('/customer/checkout', [CustomerCoController::class, 'index'])->name('customer.checkout');
+    Route::post('/customer/checkout/update', [CustomerCoController::class, 'updateEkspedisi'])->name('update.ekspedisi');
+
 });
 
 // LOGOUT
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 // \LOGOUT

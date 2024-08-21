@@ -113,6 +113,32 @@
         }
     
     </style>
+    <style>
+        .scroll-container {
+            /* Container styling */
+            max-height: 200px; /* Adjust the height as needed */
+            overflow: hidden;
+            position: relative;
+        }
+    
+        .scroll-content {
+            max-height: 100%;
+            overflow-y: scroll;
+            padding-right: 15px; /* Ensure there's space for the scrollbar */
+        }
+    
+        /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+        .scroll-content::-webkit-scrollbar {
+            width: 0;
+            background: transparent; /* optional */
+        }
+    
+        /* Hide scrollbar for Firefox */
+        .scroll-content {
+            scrollbar-width: none; /* Firefox */
+        }
+    </style>
+
     @yield('style')
     <script>
         function confirmDelete(event) {
