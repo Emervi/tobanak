@@ -108,7 +108,6 @@
                                     @else
                                         <p>Ekspedisi belum di pilih</p>
                                     @endif
-
                                 </span>
                             </div>
                         </div>
