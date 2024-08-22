@@ -20,6 +20,9 @@ class TransaksiFactory extends Factory
             'uang_pembayaran' => rand(300000, 800000),
             'kembalian' => rand(1, 100000),
             'id_cabang' => rand(1,2),
+            'alamat' => 'Jl. olahraga',
+            'metode_pembayaran' => 'COD',
+            'id_ekspedisi' => rand(1, 5),
         ];
     }
 }

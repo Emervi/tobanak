@@ -24,6 +24,7 @@ class CreateTransaksisTable extends Migration
             $table->text('alamat')->nullable();
             $table->string('metode_pembayaran');
             $table->unsignedBigInteger('id_ekspedisi');
+            $table->enum('status', ['Diproses', 'Dikemas', 'Dikirim', 'Selesai', 'Dibatalkan']);
             $table->timestamps();
 
             $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
