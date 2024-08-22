@@ -226,6 +226,7 @@
                         <!-- Ekspedisi Reguler -->
                         @foreach ($ekspedisis as $ekspedisi)
                             <div>
+                                {{-- @dd(session('selected_ekspedisi')) --}}
                                 <input type="radio" name="id_ekspedisi" id="ekspedisi{{ $ekspedisi->id_ekspedisi }}"
                                     value="{{ $ekspedisi->id_ekspedisi }}" class="peer hidden"
                                     {{ session('selected_ekspedisi') == $ekspedisi->id_ekspedisi ? 'checked' : '' }}>

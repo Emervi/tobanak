@@ -11,8 +11,12 @@ use Illuminate\Support\Facades\Redis;
 
 class CustomerCoController extends Controller
 {
-    public function index() {
-    
+    public function index() 
+    {
+        session()->forget('selected_ekspedisi');
+
+        // dd(session('selected_ekspedisi'));
+
         $ekspedisis = Ekspedisis::all();
         
         $selectedEkspedisiId = session('selected_ekspedisi', $ekspedisis->first()->id_ekspedisi ?? null);
@@ -26,6 +30,9 @@ class CustomerCoController extends Controller
         $totalHarga = $keranjangs->sum(function($keranjang){
             return $keranjang->barang->harga * $keranjang->kuantitas;
         });
+
+
+        // dd(session('selected_ekspedisi'));
     
         // Kirim data ke view
         return view('customer.checkout', compact('ekspedisis', 'selectedEkspedisiId', 'keranjangs', 'totalHarga'));
