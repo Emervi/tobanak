@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\BarangTransaksi;
 use App\Models\Cabang;
 use App\Models\Keranjang;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -113,6 +115,50 @@ class CustomerController extends Controller
         return view('user.notifikasiPesananBerhasil', compact('cabangs'));
     }
     // \notifikasi pesanan berhasil
+
+
+
+
+
+    public function pesananSaya(Request $request)
+    {
+        $id_customer = session('customer')->id_user;
+
+        $transaksis = Transaksi::where('id_user', $id_customer)
+            ->whereIn('status', ['diproses', 'dikirim'])
+            ->get();
+
+        $transaksiId = $transaksis->pluck('id_transaksi')->toArray(); 
+
+        $barangs = BarangTransaksi::whereIn('barang_transaksis.id_transaksi', $transaksiId)
+            ->join('barangs', 'barang_transaksis.id_barang', '=', 'barangs.id_barang')
+            ->join('transaksis', 'barang_transaksis.id_transaksi', '=', 'transaksis.id_transaksi')
+            ->join('ekspedisis', 'transaksis.id_ekspedisi', '=', 'ekspedisis.id_ekspedisi')
+            ->join('cabangs', 'barangs.id_cabang', '=', 'cabangs.id_cabang')
+            ->select('barang_transaksis.*', 'barangs.*', 'transaksis.total_harga', 
+                    'transaksis.metode_pembayaran',  'ekspedisis.*', 'cabangs.*') 
+            ->get();
+
+
+        // dd($barangs);
+
+        return view('customer.pesanan-saya', compact('transaksis', 'barangs'));
+    }
+
+
+
+    public function konfirmasiPesanan(Request $request)
+    {
+        
+
+        $transaksi = Transaksi::where('id_transaksi');
+        $transaksi->status == 'Diterima';
+        $transaksi->save();
+
+        return redirect()->back()->with('success', 'barang telah diterima');
+    }
+
+
 }
 
 
