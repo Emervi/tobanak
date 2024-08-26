@@ -17,7 +17,7 @@ class CreateTransaksisTable extends Migration
             $table->id('id_transaksi');
             $table->date('tanggal');
             $table->unsignedBigInteger('id_user'); // Kolom untuk foreign key
-            $table->unsignedBigInteger('id_cabang'); // Kolom untuk foreign key
+            $table->unsignedBigInteger('id_cabang')->nullable(); // Kolom untuk foreign key
             $table->double('total_harga');
             $table->double('uang_pembayaran');
             $table->double('kembalian');
