@@ -29,6 +29,11 @@ class Transaksi extends Model
     {
         return $this->belongsTo(Barang::class, 'id_barang', 'id_barang');
     }
+
+    public function barangTransaksi()
+    {
+        return $this->hasMany(BarangTransaksi::class, ' id_transaksi', 'id_transaksi');
+    }
   
     // public function user()
     // {

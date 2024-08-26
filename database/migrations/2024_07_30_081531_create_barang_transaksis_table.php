@@ -17,6 +17,7 @@ class CreateBarangTransaksisTable extends Migration
             $table->unsignedBigInteger('id_transaksi');
             $table->unsignedBigInteger('id_barang');
             $table->integer('kuantitas');
+            $table->enum('status', ['Diproses', 'Dikemas', 'Dikirim', 'Selesai', 'Dibatalkan']);
             $table->double('total_harga_barang');
             $table->timestamps();
 
