@@ -102,11 +102,13 @@
                                         @endif
                                     </td>
                                     <td class="flex justify-evenly items-center my-3">
+
                                         <a href="{{ route('admin.editEkspedisi', [$ekspedisi->id_ekspedisi]) }}"    
                                             class="text-blue-600 w-20 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600">
                                             <i class="fas fa-pen mr-1"></i>
                                             Edit
                                         </a>
+
                                         <form action="{{ route('admin.hapusEkspedisi', [$ekspedisi->id_ekspedisi]) }}"
                                             method="POST">
                                             @csrf
@@ -118,6 +120,7 @@
                                                 Hapus
                                             </button>
                                         </form>
+                                        
                                     </td>
                                 </tr>
                             @endforeach

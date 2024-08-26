@@ -170,6 +170,11 @@ Route::middleware('kasir')->group(function () {
 
     Route::get('/distribusi', [DistribusiController::class, 'index'])->name('distribusi');
     Route::post('/distribusi/update-status/{id_barang}', [DistribusiController::class, 'updateStatus'])->name('distribusi.updateStatus');
+
+    Route::get('/kasir/pesanan', [KasirController::class, 'daftarPesanan'])->name('kasir.daftarPesanan');
+    Route::get('/kasir/pesanan/{id_transaksi}/detail', [KasirController::class, 'detailPesanan'])->name('kasir.detailPesanan');
+    Route::put('/kasir/pesanan/kirimkanBarang/{id_transaksi}', [KasirController::class, 'kirimBarang'])->name('kasir.kirimBarang');
+    Route::put('/kasir/pesanan/batalkanBarang/{id_transaksi}', [KasirController::class, 'batalBarang'])->name('kasir.batalBarang');
 });
 // Penutup Halaman Kasir
 

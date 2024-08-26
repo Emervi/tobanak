@@ -17,14 +17,14 @@ class CreateTransaksisTable extends Migration
             $table->id('id_transaksi');
             $table->date('tanggal');
             $table->unsignedBigInteger('id_user'); // Kolom untuk foreign key
-            $table->unsignedBigInteger('id_cabang'); // Kolom untuk foreign key
+            $table->unsignedBigInteger('id_cabang')->nullable(); // Kolom untuk foreign key
             $table->double('total_harga');
             $table->double('uang_pembayaran');
             $table->double('kembalian');
             $table->text('alamat')->nullable();
-            $table->string('metode_pembayaran');
+            $table->enum('metode_pembayaran', ['COD', 'Transfer']);
             $table->unsignedBigInteger('id_ekspedisi');
-            $table->enum('status', ['Diproses', 'Dikemas', 'Dikirim', 'Selesai', 'Dibatalkan']);
+            $table->enum('status', ['Diproses', 'Dikirim', 'Selesai', 'Dibatalkan']);
             $table->timestamps();
 
             $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
