@@ -59,15 +59,29 @@
                 </div>
                 <hr class="my-3">
                 <div class="w-full items-end text-end">
-                    <p class="text-gray-800 my-3">total harga : <span class="text-lg text-rose-500 font-semibold">Rp. {{ number_format($barang->total_harga, 0, ',', '.') }}</span></p>
-
+                    <p class="text-gray-800 my-3">total harga : <span class="text-lg text-rose-500 font-semibold">Rp. {{ number_format($barang->harga * $barang->kuantitas + $barang->harga_ekspedisi, 0, ',', '.') }}</span></p>
                     @if ($barang->status === 'Dikirim')
+                    <form action="{{ route('customer.konfirmasiPesanan') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="id_transaksi" value="{{ $barang->id_transaksi }}">
+                        <input type="hidden" name="id_barang" value="{{ $barang->id_barang }}">
+                        <input type="hidden" name="kuantitas" value="{{ $barang->kuantitas }}">
+                        <input type="hidden" name="total_harga_barang" value="{{ $barang->total_harga_barang }}">
                         <button class="border border-pink-500 text-pink-500 hover:text-white hover:bg-pink-500 px-4 py-2 rounded">Terima</button>    
-                    @elseif ($barang->status === 'Diproses')
+                    </form>
+                @elseif ($barang->status === 'Diproses')
+                    <form action="{{ route('customer.batalPesanan') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="id_transaksi" value="{{ $barang->id_transaksi }}">
+                        <input type="hidden" name="id_barang" value="{{ $barang->id_barang }}">
+                        <input type="hidden" name="kuantitas" value="{{ $barang->kuantitas }}">
+                        <input type="hidden" name="total_harga_barang" value="{{ $barang->total_harga_barang }}">
                         <button class="bg-pink-400 text-white px-4 py-2 rounded">Batal</button>    
-                    @else
-                        <button class=" bg-gray-200 text-white px-4 py-2 rounded" disabled>Selesai</button>                        
-                    @endif
+                    </form>
+                @else
+                    <button class="bg-gray-200 text-white px-4 py-2 rounded" disabled>Selesai</button>                        
+                @endif
+                
                 </div>
             </div>
         @endforeach
