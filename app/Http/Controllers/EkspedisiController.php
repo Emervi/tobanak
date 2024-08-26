@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Ekspedisis;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class EkspedisiController extends Controller
 {
     // halaman ekspedisi
     public function daftarEkspedisi()
     {
+        $columnEkspedisis = Schema::getColumnListing('ekspedisis');
+
         $ekspedisis = Ekspedisis::latest()
         ->get();
 
-        return view('admin.daftarEkspedisi', compact('ekspedisis'));
+        return view('admin.daftarEkspedisi', compact('ekspedisis', 'columnEkspedisis'));
     }
 
     // cari ekspedisi
@@ -30,7 +33,9 @@ class EkspedisiController extends Controller
     // halaman tambah ekspedisi
     public function tambahEkspedisi()
     {
+
         return view('admin.tambahEkspedisi');
+
     }
 
     // store ekspedisi

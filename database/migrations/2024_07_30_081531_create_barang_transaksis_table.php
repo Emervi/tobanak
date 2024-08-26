@@ -19,6 +19,7 @@ class CreateBarangTransaksisTable extends Migration
             $table->integer('kuantitas');
             $table->enum('status', ['Diproses', 'Dikemas', 'Dikirim', 'Selesai', 'Dibatalkan']);
             $table->double('total_harga_barang');
+            $table->enum('status_barang', ['Diproses', 'Dikirim', 'Diterima', 'Dibatalkan']);
             $table->timestamps();
 
             $table->foreign('id_transaksi')->references('id_transaksi')->on('transaksis')->onDelete('cascade');

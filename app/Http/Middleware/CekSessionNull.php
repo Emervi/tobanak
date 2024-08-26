@@ -21,7 +21,7 @@ class CekSessionNull
         }
 
         if ( session()->has('kasir') ){
-            return redirect()->route('homeUser')->with('gagal', 'Anda masih login!');
+            return redirect()->route('homeKasir')->with('gagal', 'Anda masih login!');
         }
 
         if ( session()->has('customer') ){
