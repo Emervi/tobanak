@@ -131,7 +131,7 @@
                 </li>
                 <li class="hover:bg-gray-700">
                     <a href="{{ route('kasir.daftarPesanan') }}" class="flex items-center px-4 py-2">
-                        <i class="fas fa-box mr-2"></i> Pesanan
+                        <i class="fa-brands fa-shopify mr-2"></i> Pesanan
                     </a>
                 </li>
             </ul>
@@ -165,24 +165,6 @@
                 <li class="hover:bg-gray-700">
                     <a href="{{ route('admin.daftarEkspedisi') }}" class="flex items-center px-4 py-2">
                         <i class="fas fa-shipping-fast mr-2"></i> Ekspedisi
-                    </a>
-                </li>
-            </ul>
-            @elseif (session()->has('customer'))
-            <ul class="mt-10">
-                <li class="hover:bg-gray-700">
-                    <a href="{{ route('customer.home') }}" class="flex items-center px-4 py-2">
-                        <i class="fas fa-home mr-2"></i> Home
-                    </a>
-                </li>
-                <li class="hover:bg-gray-700">
-                    <a href="{{ route('customer.keranjang') }}" class="flex items-center px-4 py-2">
-                        <i class="fas fa-shopping-cart mr-2"></i> Keranjang
-                    </a>
-                </li>
-                <li class="hover:bg-gray-700">
-                    <a href="{{ route('customer.pesanan') }}" class="flex items-center px-4 py-2">
-                        <i class="fas fa-clipboard-list mr-2"></i> Pesanan Saya
                     </a>
                 </li>
             </ul>

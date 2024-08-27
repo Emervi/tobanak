@@ -72,7 +72,7 @@ class CustomerController extends Controller
 
     public function show($id_barang)
     {
-        $id_user = session('user')->id_user;
+        $id_user = session('customer')->id_user;
 
         $barang = Barang::where('id_barang', $id_barang)->firstOrFail();
 
@@ -102,7 +102,12 @@ class CustomerController extends Controller
 
         $barang->harga_asli = $hargaJual;
 
-        return view('customer.detail', compact('barang', 'totalJumlah'));
+        $rekomendasiBarang = Barang::where('kategori_barang', $barang->kategori_barang)
+                            ->where('id_barang', '!=', $barang->id_barang)
+                            ->limit(3)
+                            ->get();
+
+        return view('customer.detail', compact('barang', 'totalJumlah', 'rekomendasiBarang'));
     }
 
     // Penutup Halaman User
@@ -110,7 +115,7 @@ class CustomerController extends Controller
     // notifikasi pesanan berhasil
     public function notifikasiBerhasil()
     {
-        $cabang_user = session('user')->id_cabang;
+        $cabang_user = session('customer')->id_cabang;
         $cabangs = Cabang::where('id_cabang', $cabang_user)->first();
 
         return view('user.notifikasiPesananBerhasil', compact('cabangs'));

@@ -48,7 +48,7 @@
                         </thead>
                         <tbody>
                             @foreach ($pesanans as $index => $pesanan)
-                                <tr class="odd:bg-gray-200 hover:bg-gray-300">
+                                <tr class="odd:bg-gray-100 hover:bg-gray-200">
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $pesanan->username }}</td>
                                     <td>{{ $tanggal[$index] }}</td>

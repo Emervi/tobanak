@@ -51,20 +51,20 @@
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white border border-gray-200 mt-3">
                         <thead class="border border-b-black text-left">
-                            <tr>
-                                <th class="p-2">No</th>
+                            <tr >
+                                <th class="">No</th>
                                 <th class="p-2">Foto barang</th>
                                 <th class="p-2">Nama barang</th>
                                 <th class="p-2">Stok barang</th>
-                                <th class="p-2">Kategori</th>
-                                <th class="p-2">Bahan</th>
-                                <th class="w-1/12">Harga</th>
-                                <th class="w-2/6">Deskripsi barang</th>
-                                <th class="w-1/12">Status distribusi</th>
+                                <th class="p-3">Kategori</th>
+                                <th class="p-3">Bahan</th>
+                                <th class="w-1/6">Harga</th>
+                                <th class="w-1/3">Deskripsi barang</th>
+                                <th class="w-1/6">Status distribusi</th>
                                 <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="text-left">
                             @foreach ($barangs as $index => $barang)
                                 <tr class="odd:bg-gray-200">
                                     <td class="p-3">{{ $index + 1 }}</td>
