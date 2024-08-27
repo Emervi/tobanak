@@ -208,7 +208,7 @@ class TransaksiController extends Controller
         $transaksi->alamat = $request->alamat;
         $transaksi->metode_pembayaran = $request->metode_pembayaran;
         $transaksi->id_ekspedisi = $request->id_ekspedisi;
-        $transaksi->status = 'Diproses';
+        $transaksi->status_barang = 'Diproses';
 
         
 
@@ -235,7 +235,7 @@ class TransaksiController extends Controller
                 'id_transaksi' => $transaksi->id_transaksi,
                 'id_barang' => $keranjang->id_barang,
                 'kuantitas' => $keranjang->kuantitas,
-                'status' => 'Diproses',
+                'status_barang' => 'Diproses',
                 'total_harga_barang' => $keranjang->kuantitas * $keranjang->barang->harga,
             ]);
         }

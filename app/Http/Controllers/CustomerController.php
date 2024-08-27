@@ -126,7 +126,7 @@ class CustomerController extends Controller
         $id_customer = session('customer')->id_user;
 
         $transaksis = Transaksi::where('id_user', $id_customer)
-            ->whereIn('status', ['diproses', 'dikirim', 'selesai'])
+            ->whereIn('status_barang', ['diproses', 'dikirim', 'selesai'])
             ->latest()
             ->get();
 
@@ -164,18 +164,18 @@ class CustomerController extends Controller
     $transaksi = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
     ->where('id_barang', $request->id_barang)
     ->update([
-        'status' => 'Selesai',
+        'status_barang' => 'Selesai',
         'kuantitas' => $request->kuantitas,
         'total_harga_barang' => $request->total_harga_barang,
     ]);
 
     $updated = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
-                ->where('status', 'Diproses')
+                ->where('status_barang', 'Diproses')
                 ->exists();
 
     if(!$updated){
         Transaksi::where('id_transaksi', $request->id_transaksi)
-                    ->update(['status' => 'Selesai']);
+                    ->update(['status_barang' => 'Selesai']);
     }
 
 
@@ -194,18 +194,18 @@ public function batalPesanan(Request $request)
     $transaksi = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
     ->where('id_barang', $request->id_barang)
     ->update([
-        'status' => 'Dibatalkan',
+        'status_barang' => 'Dibatalkan',
         'kuantitas' => $request->kuantitas,
         'total_harga_barang' => $request->total_harga_barang,
     ]);
 
     $updated = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
-                ->where('status', 'Diproses')
+                ->where('status_barang', 'Diproses')
                 ->exists();
 
     if(!$updated){
         Transaksi::where('id_transaksi', $request->id_transaksi)
-                    ->update(['status' => 'Selesai']);
+                    ->update(['status_barang' => 'Selesai']);
     }
 
     // $transaksi = BarangTransaksi::create([
