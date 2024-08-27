@@ -126,7 +126,7 @@ class CustomerController extends Controller
         $id_customer = session('customer')->id_user;
 
         $transaksis = Transaksi::where('id_user', $id_customer)
-            ->whereIn('status_barang', ['diproses', 'dikirim', 'selesai'])
+            ->whereIn('status', ['diproses', 'dikirim', 'selesai'])
             ->latest()
             ->get();
 
@@ -139,6 +139,7 @@ class CustomerController extends Controller
             ->join('cabangs', 'barangs.id_cabang', '=', 'cabangs.id_cabang')
             ->select('barang_transaksis.*', 'barangs.*', 'transaksis.total_harga', 
                     'transaksis.metode_pembayaran',  'ekspedisis.*', 'cabangs.*') 
+            ->orderBy('transaksis.created_at', 'desc')
             ->get();
 
 
@@ -175,7 +176,7 @@ class CustomerController extends Controller
 
     if(!$updated){
         Transaksi::where('id_transaksi', $request->id_transaksi)
-                    ->update(['status_barang' => 'Selesai']);
+                    ->update(['status' => 'Selesai']);
     }
 
 
@@ -205,7 +206,7 @@ public function batalPesanan(Request $request)
 
     if(!$updated){
         Transaksi::where('id_transaksi', $request->id_transaksi)
-                    ->update(['status_barang' => 'Selesai']);
+                    ->update(['status' => 'Selesai']);
     }
 
     // $transaksi = BarangTransaksi::create([
