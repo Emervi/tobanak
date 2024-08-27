@@ -30,7 +30,7 @@
                             {{ Carbon::now()->translatedFormat('d F') }}
                         @endif  
 
-                        | <span class="text-lg font-semibold text-rose-600">{{ $barang->status }}</span>
+                        | <span class="text-lg font-semibold text-rose-600">{{ $barang->status_barang }}</span>
                     </div>
                 </div>
                 <hr class="my-3">
@@ -60,7 +60,7 @@
                 <hr class="my-3">
                 <div class="w-full items-end text-end">
                     <p class="text-gray-800 my-3">total harga : <span class="text-lg text-rose-500 font-semibold">Rp. {{ number_format($barang->harga * $barang->kuantitas + $barang->harga_ekspedisi, 0, ',', '.') }}</span></p>
-                    @if ($barang->status === 'Dikirim')
+                    @if ($barang->status_barang === 'Dikirim')
                     <form action="{{ route('customer.konfirmasiPesanan') }}" method="POST">
                         @csrf
                         <input type="hidden" name="id_transaksi" value="{{ $barang->id_transaksi }}">
@@ -69,7 +69,7 @@
                         <input type="hidden" name="total_harga_barang" value="{{ $barang->total_harga_barang }}">
                         <button class="border border-pink-500 text-pink-500 hover:text-white hover:bg-pink-500 px-4 py-2 rounded">Terima</button>    
                     </form>
-                @elseif ($barang->status === 'Diproses')
+                @elseif ($barang->status_barang === 'Diproses')
                     <form action="{{ route('customer.batalPesanan') }}" method="POST">
                         @csrf
                         <input type="hidden" name="id_transaksi" value="{{ $barang->id_transaksi }}">

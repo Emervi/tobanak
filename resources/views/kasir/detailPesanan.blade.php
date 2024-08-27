@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'Detail Pesanan')
 
-@section('body')
+@section('content')
 
     <div class="mt-8">
 
@@ -54,10 +54,10 @@
                                 <div class="flex w-full md:w-2/3 gap-2 mb-3">
                                     <img src="{{ asset('images/' . $detail->foto_barang) }}" alt="foto barang"
                                         class="w-28 h-28 object-cover rounded-lg">
-                                    <div class="font-semibold">
-                                        <h2 class="text-lg">Nama barang : {{ $detail->nama_barang }}</h2>
-                                        <p>Bahan : {{ $detail->bahan }}</p>
-                                        <p>x{{ $detail->kuantitas }}</p>
+                                    <div class="">
+                                        <h2 class="text-lg font-semibold">{{ $detail->nama_barang }}</h2>
+                                        <p class="text-sm">Bahan : {{ $detail->bahan }}</p>
+                                        <p class="text-sm">x{{ $detail->kuantitas }}</p>
                                     </div>
                                 </div>
 
@@ -73,7 +73,7 @@
 
                                     <div class="flex flex-col items-end">
                                         <span>Total Pesanan :</span>
-                                        <span class="text-rose-500 text-xl">Rp.
+                                        <span class="text-rose-500 text-xl font-semibold">Rp.
                                             {{ number_format($detail->total_harga_barang, 0, ',', '.') }}
                                         </span>
                                     </div>
