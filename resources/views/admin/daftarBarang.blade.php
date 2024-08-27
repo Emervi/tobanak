@@ -6,10 +6,8 @@
 
     <div x-data="{ isOpenDis: false, isOpenTar: false }" class="w-11/12 mx-auto mt-5 mb-12">
 
-        <h1 class="text-2xl font-bold text-center">Daftar Barang</h1>
-
         {{-- tombol kembali dan tambah --}}
-        <div class="flex items-start justify-between mb-2">
+        <div class="flex items-start justify-between mb-2 mt-7">
 
             <a href="{{ route('admin.dashboard') }}"
                 class="text-pink-400 p-2 bg-white border border-pink-400 rounded-md hover:text-white hover:bg-pink-400">
@@ -77,7 +75,7 @@
                                             id="checkbox{{ $barangReady->id_barang }}" value="1" class="peer hidden">
 
                                         <label for="checkbox{{ $barangReady->id_barang }}"
-                                            class="flex p-2 gap-3 w-full cursor-pointer peer-checked:bg-gray-300">
+                                            class="flex p-2 gap-3 w-full cursor-pointer peer-checked:bg-gray-300 rounded-md">
                                             <img src="{{ asset('images/' . $barangReady->foto_barang) }}" alt="foto barang"
                                                 id="fotoBarang" class="size-20">
                                             <div>
@@ -176,7 +174,7 @@
                                             class="size-4 peer hidden">
 
                                         <label for="checkbox{{ $barangProses->id_barang }}"
-                                            class="flex p-2 gap-3 w-full cursor-pointer peer-checked:bg-gray-300">
+                                            class="flex p-2 gap-3 w-full cursor-pointer peer-checked:bg-gray-300 rounded-md">
                                             <img src="{{ asset('images/' . $barangProses->foto_barang) }}"
                                                 alt="foto barang" id="fotoBarang" class="size-20">
                                             <div>
@@ -221,7 +219,7 @@
         </div>
 
         {{-- container table --}}
-        <div class="mt-7">
+        <div class="mt-7 w-full mx-auto flex flex-col">
             {{-- fitur pencarian barang --}}
             <div class="flex justify-between items-center">
 
@@ -298,7 +296,7 @@
 
             </div>
 
-            <div class="container mx-auto bg-white p-3 shadow-xl mt-5">
+            <div class="container w-full bg-white p-3 shadow-xl mt-5 rounded-xl">
                 <div class="overflow-x-auto">
 
                     <h2 class="text-center font-bold text-2xl">
@@ -308,15 +306,9 @@
                     <table class="min-w-full bg-white border border-gray-200 mt-3">
                         <thead class="border border-b-black ">
                             <th class="p-2">No</th>
-                            <th class="p-2">Foto barang</th>
-                            <th class="p-2">Nama barang</th>
-                            <th class="p-2">Stok barang</th>
-                            <th class="p-2">Kategori</th>
-                            <th class="p-2">Bahan</th>
-                            <th class="p-2 w-1/12">Harga</th>
-                            <th class="p-2 w-2/6">Deskripsi barang</th>
-                            <th class="p-2 w-1/12">Cabang</th>
-                            <th class="p-2 w-2/12 text-center">Status distribusi</th>
+                            @foreach ( $columnBarangs as $th )
+                            <th class="p-2">{{ $th }}</th>    
+                            @endforeach
                             <th class="p-2 text-center">Aksi</th>
                         </thead>
                         <tbody>
@@ -356,7 +348,7 @@
                                             👍{{ $barang->distribusi }}👍
                                         @endif
                                     </td>
-                                    <td class="flex justify-evenly items-center mt-4 mx-2 gap-2">
+                                    <td class="flex justify-center items-center mt-4 mx-2 gap-2">
 
                                         {{-- Tombol edit --}}
                                         <a href="{{ route('admin.editBarang', [$barang->id_barang]) }}"

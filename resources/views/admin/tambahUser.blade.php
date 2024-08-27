@@ -9,7 +9,7 @@
 
         @isset($user)
             {{-- Jika $user ada maka akan muncul form edit --}}
-            <div class="bg-white shadow-2xl font-medium p-2 mb-10">
+            <div class="bg-white shadow-2xl font-medium p-2 mb-10 rounded-lg">
 
                 <h2 class="text-center font-bold text-xl">Edit User</h2>
 
@@ -26,33 +26,30 @@
                             <div>
 
                                 <div class="mb-3">
-                                    <label for="username" class="block">Username</label>
+                                    <label for="username" class="block">{{ $columnUsers['username'] }}</label>
                                     <input type="text" name="username" id="username"
-                                        value="{{ old('username', $atribut->username) }}"
-                                        placeholder="Masukan username"
-                                        class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                        value="{{ old('username', $atribut->username) }}" placeholder="Masukan username"
+                                        class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     @error('username')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="name" class="block">Nama</label>
+                                    <label for="name" class="block">{{ $columnUsers['name'] }}</label>
                                     <input type="text" name="name" id="name"
-                                        value="{{ old('name', $atribut->name) }}"
-                                        placeholder="Masukan nama lengkap"
-                                        class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                        value="{{ old('name', $atribut->name) }}" placeholder="Masukan nama lengkap"
+                                        class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     @error('name')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror
                                 </div>
 
                                 <div class="mb-5">
-                                    <label for="email" class="block">Email</label>
+                                    <label for="email" class="block">{{ $columnUsers['email'] }}</label>
                                     <input type="email" name="email" id="email"
-                                        value="{{ old('email', $atribut->email) }}"
-                                        placeholder="Masukan email"
-                                        class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                        value="{{ old('email', $atribut->email) }}" placeholder="Masukan email"
+                                        class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     @error('email')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror
@@ -63,8 +60,8 @@
                             {{-- column 2 --}}
                             <div>
 
-                                <label for="">Status</label>
-                                <div class="flex gap-5 mb-3 bg-gray-300 p-1 shadow rounded-sm w-11/12">
+                                <label for="">{{ $columnUsers['status'] }}</label>
+                                <div class="flex gap-5 mb-3 p-1 shadow rounded-md w-11/12 border border-gray-300">
                                     <div>
                                         <input type="radio" name="status" id="Admin" value="Admin"
                                             {{ $atribut->status == 'Admin' ? 'checked' : '' }}>
@@ -78,9 +75,9 @@
                                 </div>
 
                                 <div>
-                                    <label class="block">Pilih cabang</label>
+                                    <label class="block">{{ $columnUsers['id_cabang'] }}</label>
                                     <select name="id_cabang"
-                                        class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                    class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                         @foreach ($cabangs as $cabang)
                                             <option value="{{ $cabang->id_cabang }}"
                                                 {{ old('id_cabang', $atribut->id_cabang) == $cabang->id_cabang ? 'selected' : '' }}>
@@ -125,7 +122,7 @@
             </div>
         @else
             {{-- Jika $user tidak ada maka akan muncul form input --}}
-            <div class="bg-white shadow-2xl font-medium p-2 mb-10">
+            <div class="bg-white shadow-2xl font-medium p-2 mb-10 rounded-lg">
 
                 <h2 class="text-center font-bold text-xl">Tambah User</h2>
 
@@ -140,35 +137,38 @@
                         <div>
 
                             <div class="mb-3">
-                                <label for="username" class="block">Username</label>
+                                <label for="username" class="block">{{ $columnUsers['username'] }}</label>
                                 <input type="text" name="username" id="username" value="{{ old('username') }}"
-                                    placeholder="Masukan username" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                    placeholder="Masukan username"
+                                    class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                 @error('username')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label for="name" class="block">Nama</label>
+                                <label for="name" class="block">{{ $columnUsers['name'] }}</label>
                                 <input type="text" name="name" id="name" value="{{ old('name') }}"
-                                    placeholder="Masukan nama lengkap" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                    placeholder="Masukan nama lengkap"
+                                    class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                 @error('name')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label for="email" class="block">Email</label>
+                                <label for="email" class="block">{{ $columnUsers['email'] }}</label>
                                 <input type="email" name="email" id="email" value="{{ old('email') }}"
-                                    placeholder="Masukan email" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                    placeholder="Masukan email"
+                                    class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                 @error('email')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="mb-5">
-                                <label class="block">Pilih cabang</label>
-                                <select name="id_cabang" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                <label class="block">{{ $columnUsers['id_cabang'] }}</label>
+                                <select name="id_cabang" class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     <option value="" disabled selected>Pilih cabang</option>
                                     @foreach ($cabangs as $cabang)
                                         <option value="{{ $cabang->id_cabang }}"
@@ -185,7 +185,7 @@
                                     <label for="no_telp" class="block">Nomor telepon</label>
                                     <input type="text" name="no_telp" id="no_telp" oninput="formatNomorTelepon(this)"
                                         maxlength="14" value="{{ old('no_telp') }}"
-                                        class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                        class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     @error('no_telp')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror
@@ -194,7 +194,7 @@
                             {{-- <div>
                                     <label for="alamat" class="block">Alamat</label>
                                     <textarea name="alamat" id="alamat" placeholder="Masukan alamat"
-                                        class="bg-gray-300 p-1 shadow rounded-sm w-full resize-none h-24 focus:outline-none">{{ old('alamat') }}</textarea>
+                                        class="p-1 shadow rounded-md w-full resize-none h-24 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">{{ old('alamat') }}</textarea>
                                     @error('alamat')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror
@@ -206,26 +206,27 @@
                         <div>
 
                             <div class="mb-3">
-                                <label for="password" class="block">Password</label>
-                                <input type="password" name="password" id="password"
-                                    placeholder="Masukan password" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                <label for="password" class="block">{{ $columnUsers['password'] }}</label>
+                                <input type="password" name="password" id="password" placeholder="Masukan password"
+                                    class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                 @error('password')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label for="password2" class="block">Konfirmasi password</label>
+                                <label for="password2" class="block">Konfirmasi {{ $columnUsers['password'] }}</label>
                                 <input type="password" name="password2" id="password2"
-                                    placeholder="Masukan konfirmasi password" class="bg-gray-300 p-1 shadow rounded-sm w-11/12 focus:outline-none">
+                                    placeholder="Masukan konfirmasi password"
+                                    class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                 @error('password2')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label>Status</label>
-                                <div class="flex gap-5 bg-gray-300 p-1 shadow rounded-sm w-11/12">
+                                <label>{{ $columnUsers['status'] }}</label>
+                                <div class="flex gap-5 p-1 shadow rounded-md w-11/12 border border-gray-300">
 
                                     <div>
                                         <input type="radio" name="status" id="Admin" value="Admin"

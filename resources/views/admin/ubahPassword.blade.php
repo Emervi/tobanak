@@ -9,7 +9,7 @@
 
         @isset($user)
             {{-- Jika $user ada maka akan muncul form edit --}}
-            <div class="bg-white shadow-2xl font-medium p-2 mb-10">
+            <div class="bg-white shadow-2xl font-medium p-2 mb-10 rounded-lg">
 
                 <h2 class="text-center font-bold text-xl">Ubah Password</h2>
 
@@ -28,12 +28,7 @@
                                 <div class="mb-3">
                                     <label for="password_awal" class="block">Password sebelumnya</label>
                                     <input type="password" name="password_awal" id="password_awal" placeholder="Masukan password sebelumnya"
-                                        @error('password_awal')
-                                            value=""
-                                        @else
-                                            value="{{ old('password_awal') }}"
-                                        @enderror
-                                        class="bg-gray-300 p-1 shadow rounded-sm w-full focus:outline-none">
+                                        class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     @error('password_awal')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror
@@ -42,7 +37,7 @@
                                 <div class="mb-3">
                                     <label for="password_baru" class="block">Password baru</label>
                                     <input type="password" name="password_baru" id="password_baru" placeholder="Masukan password baru"
-                                        class="bg-gray-300 p-1 shadow rounded-sm w-full focus:outline-none">
+                                        class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     @error('password_baru')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror
@@ -51,7 +46,7 @@
                                 <div class="mb-5">
                                     <label for="password_konfirmasi" class="block">Konfirmasi password</label>
                                     <input type="password" name="password_konfirmasi" id="password_konfirmasi" placeholder="Masukan konfirmasi password"
-                                        class="bg-gray-300 p-1 shadow rounded-sm w-full focus:outline-none">
+                                        class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     @error('password_konfirmasi')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror

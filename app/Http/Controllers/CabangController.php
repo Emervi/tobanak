@@ -6,12 +6,25 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CabangRequest;
 use App\Models\Cabang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class CabangController extends Controller
 {
     // halaman cabang
     public function daftarCabang()
     {
+        $columns = Schema::getColumnListing('cabangs');
+
+        $length = count($columns);
+        foreach ($columns as $index => $col) {
+
+            
+            if ($index == 0) continue;
+            $columnCabangs[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
+            if ($index == $length - 3) break;
+
+        }
+
         $perPage = 5;
 
         $cabangs = Cabang::latest()->paginate($perPage);
@@ -19,7 +32,7 @@ class CabangController extends Controller
         $currentPage = $cabangs->currentPage();
         $offset = ($currentPage - 1) * $perPage;
 
-        return view('admin.daftarCabang', compact('cabangs', 'offset'));
+        return view('admin.daftarCabang', compact('cabangs', 'offset', 'columnCabangs'));
     }
 
     // cari cabang
@@ -37,7 +50,19 @@ class CabangController extends Controller
     // halaman tambah cabang
     public function tambahCabang()
     {
-        return view('admin.tambahCabang');
+        $columns = Schema::getColumnListing('cabangs');
+
+        $length = count($columns);
+        foreach ($columns as $index => $col) {
+
+            
+            if ($index == 0) continue;
+            $columnCabangs[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
+            if ($index == $length - 3) break;
+
+        }
+
+        return view('admin.tambahCabang', compact('columnCabangs'));
     }
 
     // store cabang
@@ -56,10 +81,22 @@ class CabangController extends Controller
     // edit cabang
     public function editCabang($id_cabang)
     {
+        $columns = Schema::getColumnListing('cabangs');
+
+        $length = count($columns);
+        foreach ($columns as $index => $col) {
+
+            
+            if ($index == 0) continue;
+            $columnCabangs[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
+            if ($index == $length - 3) break;
+
+        }
+
         $cabang = Cabang::where('id_cabang', $id_cabang)
         ->get();
 
-        return view('admin.tambahCabang', compact('cabang'));
+        return view('admin.tambahCabang', compact('cabang', 'columnCabangs'));
     }
 
     // update cabang

@@ -12,10 +12,19 @@ class EkspedisiController extends Controller
     // halaman ekspedisi
     public function daftarEkspedisi()
     {
-        $columnEkspedisis = Schema::getColumnListing('ekspedisis');
+        $columns = Schema::getColumnListing('ekspedisis');
+
+        foreach ($columns as $index => $col) {
+
+            if ($index == 0) continue;
+            $columnEkspedisis[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
+            if ($index == 4) break;
+
+        }
 
         $ekspedisis = Ekspedisis::latest()
-        ->get();
+            ->get();
+
 
         return view('admin.daftarEkspedisi', compact('ekspedisis', 'columnEkspedisis'));
     }
@@ -25,7 +34,7 @@ class EkspedisiController extends Controller
     {
         $query = $request->keyword_ekspedisi;
         $ekspedisis = Ekspedisis::where('nama_ekspedisi', 'LIKE', "%$query%")
-        ->get();
+            ->get();
 
         return view('admin.daftarEkspedisi', compact('ekspedisis'));
     }
@@ -33,9 +42,17 @@ class EkspedisiController extends Controller
     // halaman tambah ekspedisi
     public function tambahEkspedisi()
     {
+        $columns = Schema::getColumnListing('ekspedisis');
 
-        return view('admin.tambahEkspedisi');
+        foreach ($columns as $index => $col) {
 
+            if ($index == 0) continue;
+            $columnEkspedisis[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
+            if ($index == 4) break;
+
+        }
+
+        return view('admin.tambahEkspedisi', compact('columnEkspedisis'));
     }
 
     // store ekspedisi
@@ -69,10 +86,20 @@ class EkspedisiController extends Controller
     // edit ekspedisi
     public function editEkspedisi($id_ekspedisi)
     {
-        $ekspedisi = Ekspedisis::where('id_ekspedisi', $id_ekspedisi)
-        ->get();
+        $columns = Schema::getColumnListing('ekspedisis');
 
-        return view('admin.tambahEkspedisi', compact('ekspedisi'));
+        foreach ($columns as $index => $col) {
+
+            if ($index == 0) continue;
+            $columnEkspedisis[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
+            if ($index == 4) break;
+
+        }
+
+        $ekspedisi = Ekspedisis::where('id_ekspedisi', $id_ekspedisi)
+            ->get();
+
+        return view('admin.tambahEkspedisi', compact('ekspedisi', 'columnEkspedisis'));
     }
 
     // update ekspedisi
@@ -94,12 +121,12 @@ class EkspedisiController extends Controller
         ]);
 
         Ekspedisis::where('id_ekspedisi', $id_ekspedisi)
-        ->update([
-            'nama_ekspedisi' => $request->nama_ekspedisi,
-            'jenis_pengiriman' => $request->jenis_pengiriman,
-            'harga_ekspedisi' => $request->harga_ekspedisi,
-            'estimasi_pengiriman' => $request->estimasi_pengiriman,
-        ]);
+            ->update([
+                'nama_ekspedisi' => $request->nama_ekspedisi,
+                'jenis_pengiriman' => $request->jenis_pengiriman,
+                'harga_ekspedisi' => $request->harga_ekspedisi,
+                'estimasi_pengiriman' => $request->estimasi_pengiriman,
+            ]);
 
         return redirect()->route(('admin.daftarEkspedisi'))->with('success', 'Ekspedisi berhasil diupdate!');
     }
@@ -108,7 +135,7 @@ class EkspedisiController extends Controller
     public function destroyEkspedisi($id_ekspedisi)
     {
         Ekspedisis::where('id_ekspedisi', $id_ekspedisi)
-        ->delete();
+            ->delete();
 
         return redirect()->back()->with('success', 'Ekspedisi berhasil dihapus!');
     }

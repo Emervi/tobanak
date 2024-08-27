@@ -16,6 +16,9 @@
     {{-- Javascript --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    {{-- Chart.js --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         /* Chrome, Safari, Edge, Opera */
         input[type="number"]::-webkit-outer-spin-button,

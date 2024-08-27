@@ -4,10 +4,13 @@
 
 @section('body')
 
+    @php
+        use Carbon\Carbon;
+        Carbon::setLocale('id');
+    @endphp
+
     {{-- tombol kembali --}}
     <div class="w-11/12 mx-auto mt-10 mb-12">
-
-        <h1 class="text-2xl font-bold m-3 text-center flex-1">Daftar Transaksi</h1>
 
         <div class="flex items-center">
 
@@ -19,7 +22,7 @@
 
         </div>
 
-        <div class="mt-7">
+        <div class="mt-7 w-full mx-auto flex flex-col">
             {{-- notifikasi CRUD barang dan fitur pencarian barang --}}
             <div class="flex justify-between items-center">
 
@@ -64,35 +67,35 @@
 
             </div>
 
-            <div class="container mx-auto bg-white p-3 shadow-xl mt-5">
+            <div class="container w-full bg-white p-3 shadow-xl mt-5 rounded-xl">
+
+                <h1 class="text-2xl font-bold text-center">Daftar Transaksi</h1>
+
                 <div class="overflow-x-auto">
                     {{-- table daftar barang --}}
                     <table class="w-full bg-white border border-gray-200 mt-3 text-center">
                         <thead class="border border-b-black">
                             <th class="p-2">No</th>
-                            <th>Tanggal</th>
-                            <th>Nama user</th>
-                            <th>Uang pembayaran</th>
-                            <th>Total harga</th>
-                            <th>Kembalian</th>
-                            <th>Cabang</th>
-                            <th class="text-center w-1/4">Aksi</th>
+                            @foreach ($columnTransaksis as $th)
+                                <th class="py-1">{{ $th }}</th>
+                            @endforeach
+                            <th class="text-center">Aksi</th>
                         </thead>
                         <tbody>
                             @foreach ($transaksis as $index => $transaksi)
                                 <tr class="odd:bg-gray-200 hover:bg-gray-300">
                                     @if ($offset > -1)
-                                        <td class="p-3">{{ $offset + $index + 1 }}</td>
+                                        <td>{{ $offset + $index + 1 }}</td>
                                     @else
-                                        <td class="p-3">{{ $index + 1 }}</td>
+                                        <td>{{ $index + 1 }}</td>
                                     @endif
-                                    <td>{{ Carbon\Carbon::parse($transaksi->tanggal)->format('m-d-Y') }}</td>
-                                    <td>{{ $transaksi->name }}</td>
+                                    <td>{{ Carbon::parse($transaksi->tanggal)->translatedFormat('l m F Y') }}</td>
+                                    <td>{{ $transaksi->username }}</td>
                                     <td>Rp. {{ number_format($transaksi->uang_pembayaran, 0, ',', '.') }}</td>
                                     <td>Rp. {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
                                     <td>Rp. {{ number_format($transaksi->kembalian, 0, ',', '.') }}</td>
                                     <td>{{ $transaksi->nama_cabang }}</td>
-                                    <td class="flex justify-evenly items-center my-2">
+                                    <td class="flex justify-center items-center my-2 gap-2">
                                         <a href="{{ route('admin.detailTransaksi', [$transaksi->id_transaksi]) }}"
                                             class="text-yellow-500 w-36 py-1 bg-white border border-yellow-500 rounded-md text-center hover:text-white hover:bg-yellow-500">
                                             <i class="fas fa-eye mr-1"></i>

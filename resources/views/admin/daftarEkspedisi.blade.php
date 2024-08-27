@@ -4,15 +4,13 @@
 
 @section('body')
 
-@php
-    use \Carbon\Carbon;
-    Carbon::setLocale('id');
-@endphp
+    @php
+        use Carbon\Carbon;
+        Carbon::setLocale('id');
+    @endphp
 
     {{-- tombol kembali dan tambah --}}
     <div class="w-11/12 mx-auto mt-10 mb-12">
-
-        <h1 class="text-2xl font-bold ml-10 text-center">Daftar Ekspedisi</h1>
 
         <div class="flex items-center justify-between">
 
@@ -29,7 +27,7 @@
             </a>
         </div>
 
-        <div class="mt-7">
+        <div class="mt-7 w-5/6 mx-auto flex flex-col">
             {{-- fitur pencarian ekspedisi --}}
             <div class="flex justify-between items-center">
 
@@ -74,36 +72,41 @@
 
             </div>
 
-            <div class="container mx-auto bg-white p-3 shadow-xl mt-5">
+            <div class="container w-full bg-white p-3 shadow-xl mt-5 rounded-xl">
+
+                <h1 class="text-2xl font-bold text-center">Daftar Ekspedisi</h1>
+
                 <div class="overflow-x-auto">
                     {{-- table daftar barang --}}
-                    <table class="min-w-full bg-white border text-center border-gray-200 mt-3">
+                    <table class="min-w-full w-min bg-white border text-center border-gray-200 mt-3">
                         <thead class="border border-b-black">
                             <th class="p-2">No</th>
-                            <th>Nama ekspedisi</th>
-                            <th>Jenis pengiriman</th>
-                            <th>Harga ekspedisi</th>
-                            <th>Estimasi pengiriman</th>
-                            <th class="text-center">Aksi</th>
+                            @foreach ($columnEkspedisis as $th)
+                                <th class="py-1">{{ $th }}</th>
+                            @endforeach
+                            <th class="p-2">Aksi</th>
                         </thead>
                         <tbody>
                             @foreach ($ekspedisis as $index => $ekspedisi)
                                 <tr class="odd:bg-gray-200 hover:bg-gray-300">
-                                    <td class="p-3">{{ $index + 1 }}</td>
+                                    <td>{{ $index + 1 }}</td>
                                     <td>{{ $ekspedisi->nama_ekspedisi }}</td>
                                     <td>{{ $ekspedisi->jenis_pengiriman }}</td>
-                                    <td class="px-2">Rp. {{ number_format($ekspedisi->harga_ekspedisi, 0, ',', '.') }}</td>
+                                    <td class="px-2">Rp. {{ number_format($ekspedisi->harga_ekspedisi, 0, ',', '.') }}
+                                    </td>
                                     <td>
                                         <p>{{ $ekspedisi->estimasi_pengiriman }} hari</p>
-                                        {{ Carbon::now()->translatedFormat('d') }}
-                                        @if ( $ekspedisi->estimasi_pengiriman > 1 )
-                                        - 
-                                        {{ Carbon::now()->addDays($ekspedisi->estimasi_pengiriman - 1)->translatedFormat('d F') }}
+                                        @if ($ekspedisi->estimasi_pengiriman > 1)
+                                            {{ Carbon::now()->translatedFormat('d F') }}
+                                            -
+                                            {{ Carbon::now()->addDays($ekspedisi->estimasi_pengiriman - 1)->translatedFormat('d F') }}
+                                        @else
+                                            {{ Carbon::now()->translatedFormat('d F') }}
                                         @endif
                                     </td>
-                                    <td class="flex justify-evenly items-center my-3">
+                                    <td class="flex justify-center items-center my-2 gap-2">
 
-                                        <a href="{{ route('admin.editEkspedisi', [$ekspedisi->id_ekspedisi]) }}"    
+                                        <a href="{{ route('admin.editEkspedisi', [$ekspedisi->id_ekspedisi]) }}"
                                             class="text-blue-600 w-20 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600">
                                             <i class="fas fa-pen mr-1"></i>
                                             Edit
@@ -120,7 +123,7 @@
                                                 Hapus
                                             </button>
                                         </form>
-                                        
+
                                     </td>
                                 </tr>
                             @endforeach
@@ -128,7 +131,8 @@
                             {{-- cek apakah hasil yang dicari ada --}}
                             @if (empty($ekspedisi->nama_ekspedisi))
                                 <tr>
-                                    <td colspan="9" class="text-center font-bold text-xl p-3">Ekspedisi tidak ditemukan</td>
+                                    <td colspan="9" class="text-center font-bold text-xl p-3">Ekspedisi tidak ditemukan
+                                    </td>
                                 </tr>
                             @endif
                         </tbody>

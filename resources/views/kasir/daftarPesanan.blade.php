@@ -31,20 +31,20 @@
 
             </div>
 
-            <div class="container mx-auto bg-white p-3 shadow-xl rounded-xl">
+            <div class="container mx-auto w-2/3 bg-white p-3 shadow-xl rounded-xl">
 
                 <h1 class="text-2xl font-bold text-center">Pesanan Pelanggan</h1>
 
                 <div class="overflow-x-auto">
                     {{-- table daftar barang --}}
-                    <table class="w-11/12 mx-auto bg-white border border-gray-200 mt-3 text-center">
+                    <table class="min-w-full bg-white border border-gray-200 mt-3 text-center">
                         <thead class="border border-b-gray-900">
-                            <th class="p-2">No</th>
-                            <th class="p-2">Nama pelanggan</th>
-                            <th class="p-2">Tanggal</th>
-                            <th class="p-2">Total harga</th>
-                            <th class="p-2">Jumlah barang</th>
-                            <th class="text-center w-1/4">Aksi</th>
+                            <th class="p-2 w-1/12">No</th>
+                            <th class="p-2 w-2/12">Nama pelanggan</th>
+                            <th class="p-2 w-1/12">Tanggal</th>
+                            <th class="p-2 w-2/12">Total harga</th>
+                            <th class="p-2 w-2/12">Jumlah barang</th>
+                            <th class="p-2 w-1/12">Aksi</th>
                         </thead>
                         <tbody>
                             @foreach ($pesanans as $index => $pesanan)
@@ -56,40 +56,47 @@
                                     <td>{{ $jumlahBarang[$index] }}</td>
                                     <td class="flex justify-evenly items-center my-3 flex-col gap-2">
 
-                                        <div class="flex flex-col">
-                                            <div>
-                                            <a href="{{ route('kasir.detailPesanan', [$pesanan->id_transaksi]) }}"
-                                                class="text-yellow-500 w-full py-1 bg-white border border-yellow-500 rounded-md text-center hover:text-white hover:bg-yellow-500">
-                                                <i class="fas fa-eye mr-1"></i>
-                                                Detail Pesanan
-                                            </a>
+                                        <div>
+                                            <button type="button" id="btnDropdown{{ $index }}"
+                                                onclick="dropdownPesanan('dropdownLink{{ $index }}', 'btnDropdown{{ $index }}')"
+                                                class="hover:bg-gray-400 px-2 rounded-full p-1">
+                                                <i class="fas fa-bars text-xl"></i>
+                                            </button>
 
-                                            <form action="{{ route('kasir.kirimBarang', [$pesanan->id_transaksi]) }}"
-                                                method="POST" class="w-full">
-                                                @csrf
-                                                @method('put')
-                                                <button
-                                                    class="text-green-600 py-1 w-full bg-white border border-green-600 rounded-md hover:text-white hover:bg-green-600"
-                                                    id="btnKonfirmasi">
-                                                    <i class="fas fa-truck mr-1"></i>
-                                                    Konfirmasi
-                                                </button>
-                                            </form>
+                                            <div id="dropdownLink{{ $index }}" class="flex-col gap-1 hidden bg-gray-400 p-1 rounded-b rounded-tr absolute">
+                                                <a href="{{ route('kasir.detailPesanan', [$pesanan->id_transaksi]) }}"
+                                                    class="text-yellow-500 w-full py-1 px-2 bg-white border border-yellow-500 rounded-md text-center hover:text-white hover:bg-yellow-500">
+                                                    <i class="fas fa-eye mr-1"></i>
+                                                    Detail Pesanan
+                                                </a>
 
-                                            <form action="{{ route('kasir.batalBarang', [$pesanan->id_transaksi]) }}"
-                                                method="POST" class="w-full">
-                                                @csrf
-                                                @method('put')
-                                                <button
-                                                    class="text-red-600 py-1 w-full bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600"
-                                                    id="btnBatal">
-                                                    <i class="fas fa-times mr-1"></i>
-                                                    Batalkan
-                                                </button>
-                                            </form>
+                                                <form action="{{ route('kasir.kirimBarang', [$pesanan->id_transaksi]) }}"
+                                                    method="POST" class="w-full">
+                                                    @csrf
+                                                    @method('put')
+                                                    <button
+                                                        class="text-green-600 py-1 w-full bg-white border border-green-600 rounded-md hover:text-white hover:bg-green-600"
+                                                        id="btnKonfirmasi">
+                                                        <i class="fas fa-truck mr-1"></i>
+                                                        Konfirmasi
+                                                    </button>
+                                                </form>
+
+                                                <form action="{{ route('kasir.batalBarang', [$pesanan->id_transaksi]) }}"
+                                                    method="POST" class="w-full">
+                                                    @csrf
+                                                    @method('put')
+                                                    <button
+                                                        class="text-red-600 py-1 w-full bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600"
+                                                        id="btnBatal">
+                                                        <i class="fas fa-times mr-1"></i>
+                                                        Batalkan
+                                                    </button>
+                                                </form>
+
+                                            </div>
 
                                         </div>
-
                                     </td>
                                 </tr>
                             @endforeach
@@ -111,7 +118,27 @@
 
     </div>
 
-    <script></script>
+    <script>
+        function dropdownPesanan(idDropdownLink, idBtnDropdown) {
+            const dropdownLink = document.getElementById(idDropdownLink);
+            const btnDropdown = document.getElementById(idBtnDropdown);
+
+            btnDropdown.classList.toggle('rounded-b');
+            btnDropdown.classList.toggle('bg-gray-400');
+            btnDropdown.classList.toggle('px-4');
+
+            dropdownLink.classList.toggle('flex');
+            dropdownLink.classList.toggle('hidden');
+
+            if (!dropdownLink.classList.contains('hidden')) {
+                dropdownLink.classList.remove('scale-95', 'opacity-0');
+                dropdownLink.classList.add('scale-100', 'opacity-100');
+            } else {
+                dropdownLink.classList.remove('scale-100', 'opacity-100');
+                dropdownLink.classList.add('scale-95', 'opacity-0');
+            }
+        }
+    </script>
 
     {{-- <script>
         let btnKonfirmasi = document.getElementById('btnKonfirmasi');
