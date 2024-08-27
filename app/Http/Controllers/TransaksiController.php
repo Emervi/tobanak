@@ -208,7 +208,7 @@ class TransaksiController extends Controller
         $transaksi->alamat = $request->alamat;
         $transaksi->metode_pembayaran = $request->metode_pembayaran;
         $transaksi->id_ekspedisi = $request->id_ekspedisi;
-        $transaksi->status_barang = 'Diproses';
+        $transaksi->status = 'Diproses';
 
         
 
