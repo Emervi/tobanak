@@ -206,7 +206,7 @@
 
                     <div class="mb-4">
                         <label for="no_telp" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
-                        <input type="text" id="no_telp" name="no_telp" class="mt-1 block w-full pl-3 pr-8 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 sm:text-sm" required>
+                        <input type="text" id="no_telp" oninput="formatNomorTelepon(this)" maxlength="14" name="no_telp" class="mt-1 block w-full pl-3 pr-8 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 sm:text-sm" required>
                     </div>
                 </div>
 
@@ -278,6 +278,13 @@
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 <script>
     function selectEkspedisi(namaEkspedisi, hargaEkspedisi, jenis) {}
+</script>
+<script>
+    function formatNomorTelepon(input){
+        const digits = input.value.replace(/\D/g, '');
+        const terFormat = digits.match(/.{1,4}/g)?.join('-') || '';
+        input.value = terFormat;
+    }
 </script>
 
 @endsection

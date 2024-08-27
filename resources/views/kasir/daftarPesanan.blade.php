@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'Pesanan Pelanggan')
 
-@section('body')
+@section('content')
 
     {{-- tombol kembali --}}
     <div class="w-11/12 mx-auto mt-10 mb-12">

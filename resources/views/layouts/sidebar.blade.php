@@ -129,6 +129,11 @@
                         <i class="fas fa-truck mr-2"></i> Distribusi
                     </a>
                 </li>
+                <li class="hover:bg-gray-700">
+                    <a href="{{ route('kasir.daftarPesanan') }}" class="flex items-center px-4 py-2">
+                        <i class="fas fa-box mr-2"></i> Pesanan
+                    </a>
+                </li>
             </ul>
             @elseif (session()->has('admin'))
             <ul class="mt-10">

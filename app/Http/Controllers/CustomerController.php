@@ -126,7 +126,7 @@ class CustomerController extends Controller
         $id_customer = session('customer')->id_user;
 
         $transaksis = Transaksi::where('id_user', $id_customer)
-            ->whereIn('status_barang', ['diproses', 'dikirim', 'selesai'])
+            ->whereIn('status', ['diproses', 'dikirim', 'selesai'])
             ->latest()
             ->get();
 
