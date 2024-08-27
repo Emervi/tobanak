@@ -7,8 +7,6 @@
     {{-- tombol kembali dan tambah --}}
     <div class="w-11/12 mx-auto mt-10 mb-12">
 
-        <h1 class="text-2xl font-bold ml-10 text-center">Daftar Cabang</h1>
-
         <div class="flex items-center justify-between">
 
             <a href="{{ route('admin.dashboard') }}"
@@ -24,7 +22,7 @@
             </a>
         </div>
 
-        <div class="mt-7">
+        <div class="mt-7 w-2/3 mx-auto flex flex-col">
             {{-- fitur pencarian cabang --}}
             <div class="flex justify-between items-center">
 
@@ -69,31 +67,33 @@
 
             </div>
 
-            <div class="container mx-auto bg-white p-3 shadow-xl mt-5">
+            <div class="container w-full bg-white p-3 shadow-xl mt-5 rounded-xl">
+
+                <h1 class="text-2xl font-bold text-center">Daftar Cabang</h1>
+
                 <div class="overflow-x-auto">
                     {{-- table daftar barang --}}
                     <table class="min-w-full bg-white border text-center border-gray-200 mt-3">
                         <thead class="border border-b-black">
                             <th class="p-2">No</th>
-                            <th>Nama cabang</th>
-                            <th>Lokasi Cabang</th>
-                            <th>Kota</th>
-                            <th>Email</th>
+                            @foreach ( $columnCabangs as $th )
+                            <th class="py-1">{{ $th }}</th>    
+                            @endforeach
                             <th class="text-center">Aksi</th>
                         </thead>
                         <tbody>
                             @foreach ($cabangs as $index => $cabang)
                                 <tr class="odd:bg-gray-200 hover:bg-gray-300">
                                     @if ($offset > -1)
-                                        <td class="p-3">{{ $offset + $index + 1 }}</td>
+                                        <td>{{ $offset + $index + 1 }}</td>
                                     @else
-                                        <td class="p-3">{{ $index + 1 }}</td>
+                                        <td>{{ $index + 1 }}</td>
                                     @endif
                                     <td>{{ $cabang->nama_cabang }}</td>
                                     <td>{{ $cabang->lokasi_cabang }}</td>
                                     <td>{{ $cabang->kota_cabang }}</td>
                                     <td>{{ $cabang->email_cabang }}</td>
-                                    <td class="flex justify-evenly items-center my-3">
+                                    <td class="flex justify-center items-center my-2 gap-2">
                                         <a href="{{ route('admin.editCabang', [$cabang->id_cabang]) }}"
                                             class="text-blue-600 w-20 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600">
                                             <i class="fas fa-pen mr-1"></i>

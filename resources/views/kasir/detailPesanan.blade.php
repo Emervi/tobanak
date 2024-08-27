@@ -25,13 +25,13 @@
             {{-- bagian tengah container --}}
             <div class=" grid grid-cols-3 gap-3 h-min">
 
-                <div class="p-3 font-medium bg-gray-100 rounded-md shadow-lg h-min min-h-24 overflow-clip">
+                <div class="p-3 font-medium text-sm bg-gray-100 rounded-md shadow-lg h-min min-h-24 overflow-clip">
                     <p>Nama pelanggan : {{ $dataTambahan->username }}</p>
                     <p>Metode pembayaran : {{ $dataTambahan->metode_pembayaran }}</p>
                     <p>Alamat tujuan : {{ $dataTambahan->alamat }}</p>
 
                     <div class="mt-3 border-t border-gray-400">
-                        <p class="text-sm text-gray-500">Konfirmasi sebelum tanggal: {{ $batasKirim }}</p>
+                        <p class="text-sm text-gray-500">Konfirmasi sebelum tanggal : {{ $batasKirim }}</p>
                     </div>
 
                 </div>

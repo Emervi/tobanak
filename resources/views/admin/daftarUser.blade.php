@@ -7,8 +7,6 @@
     {{-- tombol kembali --}}
     <div class="w-11/12 mx-auto mt-10 mb-12">
 
-        <h1 class="text-2xl font-bold m-3 text-center flex-1">Daftar User</h1>
-
         {{-- tombol kembali dan tambah --}}
         <div class="flex items-start justify-between mb-2">
 
@@ -27,7 +25,7 @@
 
         </div>
 
-        <div class="mt-7">
+        <div class="mt-7 w-10/12 mx-auto flex flex-col">
             {{-- notifikasi CRUD barang dan fitur pencarian barang --}}
             <div class="flex justify-between items-center w-1/3">
 
@@ -40,7 +38,7 @@
                             class="text-orange-400 py-1.5 px-2 bg-white border border-orange-400 rounded-md hover:text-white hover:bg-orange-400">
                             <i class="fas fa-search"></i>
                         </button>
-                        <input type="text" name="keyword_user" placeholder="Masukan nama lengkap user"
+                        <input type="text" name="keyword_user" placeholder="Masukan username"
                             class="bg-white w-full p-1 shadow rounded-sm focus:outline-none">
                     </div>
 
@@ -72,29 +70,30 @@
 
             </div>
 
-            <div class="container mx-auto bg-white p-3 shadow-xl mt-5">
+            <div class="container w-full bg-white p-3 shadow-xl mt-5 rounded-xl">
+
+                <h1 class="text-2xl font-bold text-center">Daftar User</h1>
+
                 <div class="overflow-x-auto">
                     {{-- table daftar barang --}}
-                    <table class="w-full bg-white border border-gray-200 mt-3 text-center">
+                    <table class="min-w-full bg-white border border-gray-200 mt-3 text-center">
                         <thead class="border border-b-black">
                             <th class="p-2">No</th>
-                            <th>Username</th>
-                            <th>Nama lengkap</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Cabang</th>
-                            <th class="text-center w-1/6">Aksi</th>
+                            @foreach ( $columnUsers as $th )
+                            <th class="py-1">{{ $th }}</th>    
+                            @endforeach
+                            <th class="text-center">Aksi</th>
                         </thead>
                         <tbody>
                             @foreach ($users as $index => $user)
                                 <tr class="odd:bg-gray-200 hover:bg-gray-300">
                                     @if ($offset > -1)
-                                        <td class="p-3">{{ $offset + $index + 1 }}</td>
+                                        <td>{{ $offset + $index + 1 }}</td>
                                     @else
-                                        <td class="p-3">{{ $index + 1 }}</td>
+                                        <td>{{ $index + 1 }}</td>
                                     @endif
                                     <td>{{ $user->username }}</td>
-                                    <td>{{ $user->name }}</td>
+                                    <td>{{ ucwords($user->name) }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->status }}</td>
                                     <td>
@@ -104,7 +103,7 @@
                                             {{ $user->nama_cabang }}
                                         @endempty
                                     </td>
-                                    <td class="flex justify-evenly items-center my-2">
+                                    <td class="flex justify-center items-center my-2 gap-2">
                                         <a href="{{ route('admin.editUser', [$user->id_user]) }}"
                                             class="text-blue-600 w-20 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600">
                                             <i class="fas fa-pen mr-1"></i>

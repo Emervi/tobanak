@@ -10,6 +10,7 @@ use App\Models\BarangTransaksi;
 use App\Models\Transaksi;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 
 
@@ -95,18 +96,35 @@ class TransaksiController extends Controller
     // Daftar transaksi
     public function daftarTransaksi()
     {
+        $columns = Schema::getColumnListing('transaksis');
+
+        $length = count($columns);
+        foreach ($columns as $index => $col) {
+
+            
+            if ($index == 0) continue;
+            $columnTransaksis[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
+            if ($index == $length - 7) break;
+
+        }
+
+        $columnTransaksis['id_user'] = 'Username';
+        $columnTransaksis['id_cabang'] = 'Cabang';
+
+        // dd($columnTransaksis, $length - 3);
+
         $perPage = 5;
 
         $transaksis = Transaksi::join('users', 'transaksis.id_user', '=', 'users.id_user')
         ->join('cabangs', 'transaksis.id_cabang', '=', 'cabangs.id_cabang')
-        ->select('transaksis.*', 'users.name', 'cabangs.nama_cabang')
+        ->select('transaksis.*', 'users.username', 'cabangs.nama_cabang')
         ->latest()
         ->paginate($perPage);
 
         $currentPage = $transaksis->currentPage();
         $offset = ($currentPage - 1) * $perPage;
 
-        return view('admin.daftarTransaksi', compact('transaksis', 'offset'));
+        return view('admin.daftarTransaksi', compact('transaksis', 'offset', 'columnTransaksis'));
     }
 
     // Cari transaksi
@@ -135,6 +153,19 @@ class TransaksiController extends Controller
     // detail transaksi
     public function detailTransaksi($id_transaksi)
     {
+        $columns = Schema::getColumnListing('barang_transaksis');
+
+        $length = count($columns);
+        foreach ($columns as $index => $col) {
+
+            
+            if ($index == 0) continue;
+            $columnBarangTransaksis[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
+            if ($index == $length - 3) break;
+
+        }
+        $columnBarangTransaksis['id_barang'] = 'Nama Barang';
+        
         $detailTransaksi = BarangTransaksi::join('barangs', 'barang_transaksis.id_barang', '=', 'barangs.id_barang')
             ->join('transaksis', 'barang_transaksis.id_transaksi', '=', 'transaksis.id_transaksi')
             ->select('barang_transaksis.*', 'barangs.nama_barang')
@@ -146,7 +177,7 @@ class TransaksiController extends Controller
             ->first()
             ->total_harga;
 
-        return view('admin.detailTransaksi', compact('detailTransaksi', 'totalHarga'));
+        return view('admin.detailTransaksi', compact('detailTransaksi', 'totalHarga', 'columnBarangTransaksis'));
     }
 
     public function storeCustomer(Request $request)

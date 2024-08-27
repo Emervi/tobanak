@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
     {
         User::factory()->create([
             'username' => 'admin1',
-            'name' => 'Admin Transmart',
+            'name' => 'Admin transmart',
             'email' => 'adminTransmart@admin.com',
             'status' => 'Admin',
             'id_cabang' => 1,
@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
 
         User::factory()->create([
             'username' => 'pelanggan1',
-            'name' => 'User Transmart',
+            'name' => 'Pelanggan transmart',
             'email' => 'userTransmart@user.com',
             'status' => 'Pelanggan',
             // 'id_cabang' => 1,
@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
 
         User::factory()->create([
             'username' => 'kasir1',
-            'name' => 'Kasir Transmart',
+            'name' => 'Kasir transmart',
             'email' => 'kasirTransmart@kasir.com',
             'status' => 'Kasir',
             'id_cabang' => 1,
@@ -44,7 +44,7 @@ class UserSeeder extends Seeder
 
         User::factory()->create([
             'username' => 'admin2',
-            'name' => 'Admin Griya',
+            'name' => 'Admin griya',
             'email' => 'adminGriya@admin.com',
             'status' => 'Admin',
             'id_cabang' => 2,
@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
 
         User::factory()->create([
             'username' => 'user2',
-            'name' => 'User Griya',
+            'name' => 'Pelanggan griya',
             'email' => 'userGriya@user.com',
             'status' => 'Pelanggan',
             // 'id_cabang' => 2,
@@ -62,7 +62,7 @@ class UserSeeder extends Seeder
 
         User::factory()->create([
             'username' => 'kasir2',
-            'name' => 'Kasir Griya',
+            'name' => 'Kasir griya',
             'email' => 'kasirGriya@kasir.com',
             'status' => 'Kasir',
             'id_cabang' => 2,
