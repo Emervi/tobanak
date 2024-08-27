@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'Daftar Barang')
 
-@section('body')
+@section('content')
 
     <div x-data="{ isOpenDis: false, isOpenTar: false }" class="w-11/12 mx-auto mt-5 mb-12">
 

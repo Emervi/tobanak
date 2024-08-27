@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'Dashboard Admin')
 
-@section('body')
+@section('content')
 
 <div class="mt-9 mx-3">
     <h1 class="text-3xl font-bold m-3">Dashboard</h1>

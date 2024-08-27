@@ -194,6 +194,7 @@
         <ul class="flex justify-between gap-7">
             <li><a href="{{ route('customer.home') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Home</a></li>
             <li><a href="{{ route('customer.keranjang') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Keranjang</a></li>
+            <li><a href="{{ route('customer.pesanan') }}" class="text-white p-1 hover:text-pink-600 hover:border-b hover:border-pink-500 transition">Pesanan Saya</a></li>
         </ul>
         @else
 

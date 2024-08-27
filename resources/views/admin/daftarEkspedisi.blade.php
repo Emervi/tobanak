@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'Daftar Ekspedisi')
 
-@section('body')
+@section('content')
 
     @php
         use Carbon\Carbon;

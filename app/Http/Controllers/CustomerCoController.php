@@ -13,7 +13,7 @@ class CustomerCoController extends Controller
 {
     public function index() 
     {
-        session()->forget('selected_ekspedisi');
+        // session()->forget('selected_ekspedisi');
 
         // dd(session('selected_ekspedisi'));
 

@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'Keranjang')
 
-@section('body')
+@section('content')
 <div class="flex flex-col md:flex-row mt-8 mx-4 md:mx-10">
     <!-- Daftar Produk di Keranjang -->
     <div class="md:w-7/12 p-4">
