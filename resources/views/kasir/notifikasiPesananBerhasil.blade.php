@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'Notifikasi Berhasil')
 
-@section('body')
+@section('content')
 <div class="container mx-auto p-4">
 
     <!-- Notifikasi Berhasil -->

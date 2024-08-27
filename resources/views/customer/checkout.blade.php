@@ -49,7 +49,6 @@
         
         <div class="bg-white p-4 rounded shadow-sm mb-2">
             <h3 class="font-semibold text-lg mb-2">Produk Dipesan</h3>
-            <div class="overflow-x-auto max-h-64">
                 @foreach($keranjangs as $keranjang)
                     <div class="flex items-center mb-2 border-b border-gray-100 pb-3">
                         <div class="flex-shrink-0 bg-gray-200 rounded-lg items-center text-center p-2">
@@ -72,7 +71,6 @@
                         </div>
                     </div>
                 @endforeach
-            </div>
         </div>
     
         <div class="bg-white p-4 rounded shadow-md">
@@ -203,12 +201,12 @@
                 <div class="flex justify-between">
                     <div class="mb-4">
                         <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                        <input type="text" id="name" name="name" class="mt-1 block w-full px-8 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 sm:text-sm" required>
+                        <input type="text" id="name" name="name" class="mt-1 block w-full pl-3 pr-8 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 sm:text-sm" required>
                     </div>
 
                     <div class="mb-4">
                         <label for="no_telp" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
-                        <input type="text" id="no_telp" name="no_telp" class="mt-1 block w-full px-8 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 sm:text-sm" required>
+                        <input type="text" id="no_telp" name="no_telp" class="mt-1 block w-full pl-3 pr-8 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-pink-400 sm:text-sm" required>
                     </div>
                 </div>
 

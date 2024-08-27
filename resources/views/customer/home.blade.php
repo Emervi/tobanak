@@ -87,7 +87,8 @@
         function updateUI() {
             $('.stok-barang').each(function() {
                 var stok = parseInt($(this).text().replace('Stok: ', ''));
-                var button = $(this).closest('.flex').find('button.add-button');
+                var idBarang = $(this).data('id');
+                var button = $('button.add-button[data-id="' + idBarang + '"]');
                 
                 if (stok <= 0) {
                     button.removeClass('bg-blue-400 hover:bg-blue-700').addClass('bg-gray-400').prop('disabled', true);
@@ -108,12 +109,18 @@
                 method: form.attr('method'),
                 data: formData,
                 success: function(response) {
+                    console.log('Response:', response); // Debugging respons dari server
+
                     if (response.success) {
                         var totalJumlah = response.totalJumlah;
                         var stokBaru = response.stok_barang;
                         var idBarang = form.find('input[name="id_barang"]').val();
 
-                        $('.stok-barang[data-id="' + idBarang + '"]').text('Stok: ' + stokBaru);
+                        console.log('Stok Baru:', stokBaru);
+
+                        // Update stok di UI
+                        var stokElement = $('.stok-barang[data-id="' + idBarang + '"]');
+                        stokElement.text('Stok: ' + stokBaru);
 
                         // Update tombol tambah berdasarkan stok
                         updateUI();
@@ -128,6 +135,7 @@
                         alert('Gagal memasukkan ke keranjang');
                     }
                 },
+
                 error: function(xhr) {
                     alert('Error: ' + xhr.statusText);
                 }
@@ -138,5 +146,6 @@
         updateUI();
     });
 </script>
+
 
 @endsection

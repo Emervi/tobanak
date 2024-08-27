@@ -192,12 +192,15 @@ Route::middleware('customer')->group(function () {
     Route::get('/customer/checkout', [CustomerCoController::class, 'index'])->name('customer.checkout');
     Route::post('/customer/checkout/update-ekspedisi', [CustomerCoController::class, 'updateEkspedisi'])->name('update.ekspedisi');
 // Rute di web.php
-    Route::post('/proses-checkout', [TransaksiController::class, 'storeCustomer'])->name('customer.prosesCheckout');
+    Route::post('/customer/proses-checkout', [TransaksiController::class, 'storeCustomer'])->name('customer.prosesCheckout');
 
     // web.php
 
     Route::get('/pesanan-saya', [CustomerController::class, 'pesananSaya'])->name('customer.pesanan');
-    Route::post('/pesanan-saya/{id}',[CustomerController::class, 'konfirmasiPesanan'])->name('customer.konfirmasi');
+// Routes for customer order confirmation and cancellation
+Route::post('/konfirmasi-pesanan', [CustomerController::class, 'konfirmasiPesanan'])->name('customer.konfirmasiPesanan');
+Route::post('/batal-pesanan', [CustomerController::class, 'batalPesanan'])->name('customer.batalPesanan');
+
     
     Route::post('/update-alamat', [CustomerCoController::class, 'updateAlamat'])->name('update.alamat');
     Route::post('/reset-address', [CustomerCoController::class, 'resetAlamat'])->name('reset.alamat');

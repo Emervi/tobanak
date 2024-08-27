@@ -7,6 +7,7 @@ use App\Models\BarangTransaksi;
 use App\Models\Cabang;
 use App\Models\Keranjang;
 use App\Models\Transaksi;
+use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -125,7 +126,8 @@ class CustomerController extends Controller
         $id_customer = session('customer')->id_user;
 
         $transaksis = Transaksi::where('id_user', $id_customer)
-            ->whereIn('status', ['diproses', 'dikirim'])
+            ->whereIn('status', ['diproses', 'dikirim', 'selesai'])
+            ->latest()
             ->get();
 
         $transaksiId = $transaksis->pluck('id_transaksi')->toArray(); 
@@ -140,6 +142,9 @@ class CustomerController extends Controller
             ->get();
 
 
+        
+
+
         // dd($barangs);
 
         return view('customer.pesanan-saya', compact('transaksis', 'barangs'));
@@ -148,15 +153,88 @@ class CustomerController extends Controller
 
 
     public function konfirmasiPesanan(Request $request)
-    {
-        
+{
+    $request->validate([
+        'id_transaksi' => 'required',
+        'id_barang' => 'required',
+        'kuantitas' => 'required|numeric',
+        'total_harga_barang' => 'required|numeric',
+    ]);
 
-        $transaksi = Transaksi::where('id_transaksi');
-        $transaksi->status == 'Diterima';
-        $transaksi->save();
+    $transaksi = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
+    ->where('id_barang', $request->id_barang)
+    ->update([
+        'status' => 'Selesai',
+        'kuantitas' => $request->kuantitas,
+        'total_harga_barang' => $request->total_harga_barang,
+    ]);
 
-        return redirect()->back()->with('success', 'barang telah diterima');
+    $updated = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
+                ->where('status', 'Diproses')
+                ->exists();
+
+    if(!$updated){
+        Transaksi::where('id_transaksi', $request->id_transaksi)
+                    ->update(['status' => 'Selesai']);
     }
+
+
+    return redirect()->back()->with('error', 'Transaksi tidak ditemukan');
+}
+
+public function batalPesanan(Request $request)
+{
+    $request->validate([
+        'id_transaksi' => 'required',
+        'id_barang' => 'required',
+        'kuantitas' => 'required|numeric',
+        'total_harga_barang' => 'required|numeric',
+    ]);
+
+    $transaksi = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
+    ->where('id_barang', $request->id_barang)
+    ->update([
+        'status' => 'Dibatalkan',
+        'kuantitas' => $request->kuantitas,
+        'total_harga_barang' => $request->total_harga_barang,
+    ]);
+
+    $updated = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
+                ->where('status', 'Diproses')
+                ->exists();
+
+    if(!$updated){
+        Transaksi::where('id_transaksi', $request->id_transaksi)
+                    ->update(['status' => 'Selesai']);
+    }
+
+    // $transaksi = BarangTransaksi::create([
+    //     'id_transaksi' => $request->id_transaksi,
+    //     'id_barang' => $request->id_barang,
+    //     'status' => 'Dikirim',
+    //     'kuantitas' => $request->kuantitas,
+    //     'total_harga_barang' => $request->total_harga_barang,
+    // ]);
+
+    if($transaksi){
+        $barang = Barang::where('id_barang', $request->id_barang)->first();
+        if($barang){
+            $barang->stok_barang += intval($request->kuantitas);
+            $barang->save();
+        }
+
+        // dd($barang->stok_barang);
+
+    }
+
+    // dd($transaksi);
+
+
+    return redirect()->back()->with('error', 'Transaksi tidak ditemukan');
+}
+
+
+
 
 
 }

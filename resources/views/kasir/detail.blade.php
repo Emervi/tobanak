@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'Detail Produk')
 
-@section('body')
+@section('content')
 <div class="mt-8 ml-10">
     <div class="flex items-center mb-4">
         <a href="{{ route('homeKasir') }}" class="border border-pink-500 text-pink-500 hover:text-white hover:bg-pink-500 px-4 py-2 rounded">Kembali</a>

@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'Home')
 
-@section('body')
+@section('content')
 
 @if(session('success'))
     <div class="z-10 fixed top-4 right-4 bg-green-700 border border-green-800 text-white px-4 py-3 rounded shadow-lg transition-transform transform-gpu duration-300 ease-in-out" role="alert">

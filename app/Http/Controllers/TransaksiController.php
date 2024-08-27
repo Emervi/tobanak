@@ -214,8 +214,16 @@ class TransaksiController extends Controller
         // Clear the cart
         Keranjang::where('id_user', session('customer')->id_user)->delete();
 
+        if($transaksi){
+            $barang = Barang::where('id_barang', $request->id_barang)->first();
+            if($barang){
+                $barang->stok_barang -= intval($request->kuantitas);
+                $barang->save();
+            }
+        }
+
         // Redirect to the transaction success page
-        return redirect()->route('customer.home');
+        return redirect()->route('customer.pesanan');
     }
 
 }

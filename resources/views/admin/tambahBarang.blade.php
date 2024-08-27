@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', isset($barang) ? 'Update Barang' : 'Tambah Barang')
 
@@ -19,7 +19,7 @@
     </style>
 @endsection
 
-@section('body')
+@section('content')
 
     {{-- tombol kembali dan tambah --}}
     <div class="w-2/3 md:w-1/2 mx-auto mt-10">
