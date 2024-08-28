@@ -144,6 +144,13 @@ class CustomerController extends Controller
             ->join('cabangs', 'barangs.id_cabang', '=', 'cabangs.id_cabang')
             ->select('barang_transaksis.*', 'barangs.*', 'transaksis.total_harga', 
                     'transaksis.metode_pembayaran',  'ekspedisis.*', 'cabangs.*') 
+            ->orderByRaw("
+            CASE 
+                WHEN barang_transaksis.status_barang = 'dikirim' THEN 0
+                WHEN barang_transaksis.status_barang = 'diproses' THEN 1
+                ELSE 2 
+            END
+            ")
             ->orderBy('transaksis.created_at', 'desc')
             ->get();
 
@@ -170,23 +177,27 @@ class CustomerController extends Controller
     $transaksi = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
     ->where('id_barang', $request->id_barang)
     ->update([
-        'status_barang' => 'Selesai',
+        'status_barang' => 'diterima',
         'kuantitas' => $request->kuantitas,
         'total_harga_barang' => $request->total_harga_barang,
     ]);
 
-    $updated = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
-                ->where('status_barang', 'Diproses')
-                ->exists();
+    if($transaksi) {
+        $updated = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
+                    ->where('status_barang', 'Diproses')
+                    ->exists();
 
-    if(!$updated){
-        Transaksi::where('id_transaksi', $request->id_transaksi)
-                    ->update(['status' => 'Selesai']);
+        if(!$updated){
+            Transaksi::where('id_transaksi', $request->id_transaksi)
+                        ->update(['status' => 'Selesai']);
+        }
+
+        return redirect()->back()->with('success', 'Pesanan berhasil dikonfirmasi.');
     }
-
 
     return redirect()->back()->with('error', 'Transaksi tidak ditemukan');
 }
+
 
 public function batalPesanan(Request $request)
 {

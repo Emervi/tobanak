@@ -11,6 +11,11 @@
 {{-- flexbox atas --}}
 <div class="min-w-full flex flex-wrap gap-1 flex-col justify-evenly sm:flex-row md:flex-row">
 
+    <div class="container">
+        <canvas id="penjualanChart"></canvas>
+    </div>
+
+
     <a href="{{ route('admin.daftarUser') }}" class="flex w-1/6 flex-col justify-between bg-sky-400 shadow-md p-3 mt-10 rounded-xl hover:bg-sky-500 text-white hover:text-gray-900 transition transform hover:-translate-y-1 hover:scale-105 duration-300 ease-in-out">
         <h2 class=" font-bold text-xl text-center overflow-hidden">Daftar Pelanggan</h2>
         <div class=" font-medium text-5xl flex flex-col md:flex-row justify-evenly items-center mt-3">
@@ -94,5 +99,38 @@
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('penjualanChart').getContext('2d');
+    var penjualanChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {!! json_encode($transaksi->pluck('date')) !!},
+            datasets: [{
+                label: 'Total Penjualan',
+                data: {!! json_encode($transaksi->pluck('total')) !!},
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0,2)',
+                fill: true,
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'tanggal',
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'total_penjualan',
+                    }
+                }
+            }
+        }
+    });
+</script>
 
 @endsection
