@@ -42,6 +42,11 @@ class AdminController extends Controller
 
         $name = session('admin')->name;
 
+
+        $transaksi = Transaksi::selectRaw('DATE(created_at) as date, SUM(total_harga) as total')
+                    ->groupBy('date')
+                    ->get();
+
         return view('admin.dashboard', [
             'jumlahBarang' => $jumlahBarang,
             'jumlahUser' => $jumlahUser,
@@ -54,6 +59,7 @@ class AdminController extends Controller
             'name' => $name,
             'jumlahPendapatan' => $jumlahPendapatan,
             'data' => $jumlahTransaksi,
+            'transaksi' => $transaksi,
         ]);
     }
 
