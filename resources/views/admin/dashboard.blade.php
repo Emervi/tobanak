@@ -110,7 +110,7 @@
                 label: 'Total Penjualan',
                 data: {!! json_encode($transaksi->pluck('total')) !!},
                 borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0,2)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 fill: true,
             }]
         },

@@ -28,7 +28,13 @@ class CustomerController extends Controller
             ->distinct()
             ->pluck('kategori_barang');
 
-        $query = Barang::where('distribusi', 'Diterima');
+        $query = Barang::where('distribusi', 'Diterima')
+                ->orderByRaw("
+                    CASE 
+                        WHEN stok_barang >= 1 THEN 0
+                        ELSE 1 
+                    END
+                ");
 
         if ($filter) {
             $query->where('kategori_barang', $filter);
@@ -104,6 +110,7 @@ class CustomerController extends Controller
 
         $rekomendasiBarang = Barang::where('kategori_barang', $barang->kategori_barang)
                             ->where('id_barang', '!=', $barang->id_barang)
+                            ->where('stok_barang', '>=', 1)
                             ->limit(3)
                             ->get();
 
@@ -127,41 +134,47 @@ class CustomerController extends Controller
 
 
     public function pesananSaya(Request $request)
-    {
-        $id_customer = session('customer')->id_user;
+{
+    // Ambil id_customer dari session
+    $id_customer = session('customer')->id_user;
 
-        $transaksis = Transaksi::where('id_user', $id_customer)
-            ->whereIn('status', ['diproses', 'dikirim', 'selesai'])
-            ->latest()
-            ->get();
+    // Ambil parameter status dari request
+    $status = $request->query('status');
 
-        $transaksiId = $transaksis->pluck('id_transaksi')->toArray(); 
+    // Ambil transaksi berdasarkan status
+    $transaksis = Transaksi::where('id_user', $id_customer)
+        ->whereIn('status', ['diproses', 'dikirim', 'selesai'])
+        ->latest()
+        ->get();
 
-        $barangs = BarangTransaksi::whereIn('barang_transaksis.id_transaksi', $transaksiId)
-            ->join('barangs', 'barang_transaksis.id_barang', '=', 'barangs.id_barang')
-            ->join('transaksis', 'barang_transaksis.id_transaksi', '=', 'transaksis.id_transaksi')
-            ->join('ekspedisis', 'transaksis.id_ekspedisi', '=', 'ekspedisis.id_ekspedisi')
-            ->join('cabangs', 'barangs.id_cabang', '=', 'cabangs.id_cabang')
-            ->select('barang_transaksis.*', 'barangs.*', 'transaksis.total_harga', 
-                    'transaksis.metode_pembayaran',  'ekspedisis.*', 'cabangs.*') 
-            ->orderByRaw("
+    $transaksiId = $transaksis->pluck('id_transaksi')->toArray(); 
+
+    // Ambil barang berdasarkan transaksiId dan filter status
+    $barangs = BarangTransaksi::whereIn('barang_transaksis.id_transaksi', $transaksiId)
+        ->join('barangs', 'barang_transaksis.id_barang', '=', 'barangs.id_barang')
+        ->join('transaksis', 'barang_transaksis.id_transaksi', '=', 'transaksis.id_transaksi')
+        ->join('ekspedisis', 'transaksis.id_ekspedisi', '=', 'ekspedisis.id_ekspedisi')
+        ->join('cabangs', 'barangs.id_cabang', '=', 'cabangs.id_cabang')
+        ->select('barang_transaksis.*', 'barangs.*', 'transaksis.total_harga', 
+                'transaksis.metode_pembayaran', 'ekspedisis.*', 'cabangs.*',
+                'barang_transaksis.created_at as barang_created_at') 
+        ->when($status, function ($query, $status) {
+            return $query->where('barang_transaksis.status_barang', $status);
+        })
+        ->orderByRaw("
             CASE 
                 WHEN barang_transaksis.status_barang = 'dikirim' THEN 0
                 WHEN barang_transaksis.status_barang = 'diproses' THEN 1
-                ELSE 2 
+                ELSE 2
             END
-            ")
-            ->orderBy('transaksis.created_at', 'desc')
-            ->get();
+        ")
+        ->orderBy('transaksis.created_at', 'desc')
+        ->get();
 
+    // Kirim data ke view
+    return view('customer.pesanan-saya', compact('transaksis', 'barangs'));
+}
 
-        
-
-
-        // dd($barangs);
-
-        return view('customer.pesanan-saya', compact('transaksis', 'barangs'));
-    }
 
 
 

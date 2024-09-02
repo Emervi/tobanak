@@ -95,7 +95,7 @@
                         <form class="add-form-keranjang" action="{{ route('customerKeranjang.tambah') }}" method="POST">
                             @csrf
                             <input type="hidden" name="id_barang" value="{{ $barang->id_barang }}">
-                            <button type="submit" class="bg-blue-400 text-white px-4 py-2 rounded-full hover:bg-blue-700 add-button" data-id="{{ $barang->id_barang }}" {{ $barang->stok_barang <= 0 ? 'disabled' : '' }}>
+                            <button type="submit" class="bg-green-400 text-white px-4 py-2 rounded-full hover:bg-green-700 add-button" data-id="{{ $barang->id_barang }}" {{ $barang->stok_barang <= 0 ? 'disabled' : '' }}>
                                 +
                             </button>
                         </form>
@@ -120,7 +120,7 @@
                 var button = $('button[data-id="' + idBarang + '"]');
 
                 if (stok <= 0) {
-                    button.removeClass('bg-green-500 hover:bg-green-700').addClass('bg-gray-400').prop('disabled', true);
+                    button.removeClass('bg-green-500 hover:bg-green-700').addClass('bg-gray-400 cursor-not-allowed').prop('disabled', true);
                 } else {
                     button.prop('disabled', false).removeClass('bg-gray-400').addClass('bg-green-500');
                 }
