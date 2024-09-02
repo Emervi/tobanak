@@ -26,7 +26,7 @@
                             <div class="w-1/2 mx-auto">
 
                                 <div class="mb-3">
-                                    <label for="password_awal" class="block">Password sebelumnya</label>
+                                    <label for="password_awal" class="block">Password Sebelumnya</label>
                                     <input type="password" name="password_awal" id="password_awal" placeholder="Masukan password sebelumnya"
                                         class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     @error('password_awal')
@@ -35,7 +35,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="password_baru" class="block">Password baru</label>
+                                    <label for="password_baru" class="block">Password Baru</label>
                                     <input type="password" name="password_baru" id="password_baru" placeholder="Masukan password baru"
                                         class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     @error('password_baru')
@@ -44,7 +44,7 @@
                                 </div>
 
                                 <div class="mb-5">
-                                    <label for="password_konfirmasi" class="block">Konfirmasi password</label>
+                                    <label for="password_konfirmasi" class="block">Konfirmasi Password</label>
                                     <input type="password" name="password_konfirmasi" id="password_konfirmasi" placeholder="Masukan konfirmasi password"
                                         class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     @error('password_konfirmasi')
@@ -65,7 +65,7 @@
                             <button type="submit"
                                 class="text-green-600 p-2 bg-white border border-green-600 rounded-md hover:text-white hover:bg-green-600">
                                 <i class="fas fa-wrench mr-1"></i>
-                                Ubah Password
+                                Konfirmasi
                             </button>
                         </div>
                     </form>

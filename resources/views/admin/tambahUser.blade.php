@@ -20,13 +20,13 @@
                         @method('put')
 
                         {{-- edit data user --}}
-                        <div class="grid grid-cols-2 gap-5 mt-3">
+                        <div class="grid grid-cols-2 gap-3 mt-3">
 
                             {{-- column 1 --}}
                             <div>
 
                                 <div class="mb-3">
-                                    <label for="username" class="block">{{ $columnUsers['username'] }}</label>
+                                    <label for="username" class="block">Username</label>
                                     <input type="text" name="username" id="username"
                                         value="{{ old('username', $atribut->username) }}" placeholder="Masukan username"
                                         class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
@@ -36,7 +36,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="name" class="block">{{ $columnUsers['name'] }}</label>
+                                    <label for="name" class="block">Nama</label>
                                     <input type="text" name="name" id="name"
                                         value="{{ old('name', $atribut->name) }}" placeholder="Masukan nama lengkap"
                                         class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
@@ -46,7 +46,7 @@
                                 </div>
 
                                 <div class="mb-5">
-                                    <label for="email" class="block">{{ $columnUsers['email'] }}</label>
+                                    <label for="email" class="block">Email</label>
                                     <input type="email" name="email" id="email"
                                         value="{{ old('email', $atribut->email) }}" placeholder="Masukan email"
                                         class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
@@ -58,10 +58,10 @@
                             </div>
 
                             {{-- column 2 --}}
-                            <div>
+                            <div class="ml-5">
 
-                                <label for="">{{ $columnUsers['status'] }}</label>
-                                <div class="flex gap-5 mb-3 p-1 shadow rounded-md w-11/12 border border-gray-300">
+                                <label for="">Status</label>
+                                <div class="flex gap-5 mb-3 p-1 shadow rounded-md w-full border border-gray-300">
                                     <div>
                                         <input type="radio" name="status" id="Admin" value="Admin"
                                             {{ $atribut->status == 'Admin' ? 'checked' : '' }}>
@@ -75,9 +75,9 @@
                                 </div>
 
                                 <div>
-                                    <label class="block">{{ $columnUsers['id_cabang'] }}</label>
+                                    <label class="block">Cabang</label>
                                     <select name="id_cabang"
-                                    class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
+                                    class="p-1 shadow rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                         @foreach ($cabangs as $cabang)
                                             <option value="{{ $cabang->id_cabang }}"
                                                 {{ old('id_cabang', $atribut->id_cabang) == $cabang->id_cabang ? 'selected' : '' }}>
@@ -131,13 +131,13 @@
                     @csrf
 
                     {{-- input data user --}}
-                    <div class="grid grid-cols-2 gap-5 mt-3">
+                    <div class="grid grid-cols-2 gap-3 mt-3">
 
                         {{-- column 1 --}}
                         <div>
 
                             <div class="mb-3">
-                                <label for="username" class="block">{{ $columnUsers['username'] }}</label>
+                                <label for="username" class="block">Username</label>
                                 <input type="text" name="username" id="username" value="{{ old('username') }}"
                                     placeholder="Masukan username"
                                     class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
@@ -147,7 +147,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="name" class="block">{{ $columnUsers['name'] }}</label>
+                                <label for="name" class="block">Nama</label>
                                 <input type="text" name="name" id="name" value="{{ old('name') }}"
                                     placeholder="Masukan nama lengkap"
                                     class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
@@ -157,7 +157,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="email" class="block">{{ $columnUsers['email'] }}</label>
+                                <label for="email" class="block">Email</label>
                                 <input type="email" name="email" id="email" value="{{ old('email') }}"
                                     placeholder="Masukan email"
                                     class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
@@ -167,7 +167,7 @@
                             </div>
 
                             <div class="mb-5">
-                                <label class="block">{{ $columnUsers['id_cabang'] }}</label>
+                                <label class="block">Cabang</label>
                                 <select name="id_cabang" class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     <option value="" disabled selected>Pilih cabang</option>
                                     @foreach ($cabangs as $cabang)
@@ -203,30 +203,30 @@
                         </div>
 
                         {{-- column 2 --}}
-                        <div>
+                        <div class="ml-5">
 
                             <div class="mb-3">
-                                <label for="password" class="block">{{ $columnUsers['password'] }}</label>
+                                <label for="password" class="block">Password</label>
                                 <input type="password" name="password" id="password" placeholder="Masukan password"
-                                    class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
+                                    class="p-1 shadow rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                 @error('password')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label for="password2" class="block">Konfirmasi {{ $columnUsers['password'] }}</label>
+                                <label for="password2" class="block">Konfirmasi Password</label>
                                 <input type="password" name="password2" id="password2"
                                     placeholder="Masukan konfirmasi password"
-                                    class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
+                                    class="p-1 shadow rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                 @error('password2')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label>{{ $columnUsers['status'] }}</label>
-                                <div class="flex gap-5 p-1 shadow rounded-md w-11/12 border border-gray-300">
+                                <label>Status</label>
+                                <div class="flex gap-5 p-1 shadow rounded-md w-full border bg-white border-gray-300">
 
                                     <div>
                                         <input type="radio" name="status" id="Admin" value="Admin"

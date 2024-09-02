@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         
         $this->call(EkspedisiSeeder::class);
         
-        // $this->call(TransaksiSeeder::class);
+        $this->call(TransaksiSeeder::class);
 
     }
 }

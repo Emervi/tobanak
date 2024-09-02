@@ -17,6 +17,13 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
+        /* Chrome, Safari, Edge, Opera */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
         /* Custom animations and styles */
         @keyframes fadeIn {
           from { opacity: 0; }
@@ -197,6 +204,149 @@
         @yield('content')
     </main>
 
+    <script>
+        function formatNumber(value) {
+            // Menghapus semua karakter non-digit
+            value = value.replace(/\D/g, '');
+
+            // Batasi input hingga 100.000.000
+            if (parseInt(value) > 100000000) {
+                value = '100000000';
+            }
+
+            // Format angka sesuai format Indonesia
+            return new Intl.NumberFormat('id-ID').format(value);
+        }
+
+        // Format uang untuk halaman keranjang
+        const formattedInputElement = document.getElementById('formatUang');
+        const hiddenInputElement = document.getElementById('uang_pembayaran');
+
+        formattedInputElement.addEventListener('input', function(e) {
+            let rawValue = e.target.value.replace(/\D/g, ''); // Simpan nilai asli tanpa format
+            
+            // Format angka dan set nilai terformat kembali ke input
+            e.target.value = formatNumber(rawValue);
+
+            // Simpan nilai asli ke elemen hidden input
+            hiddenInputElement.value = rawValue;
+        });
+
+        formattedInputElement.addEventListener('keydown', function(e) {
+            // Allow: backspace, delete, tab, escape, enter, dan .
+            if ([46, 8, 9, 27, 13].indexOf(e.keyCode) !== -1 ||
+                // Allow: Ctrl+A
+                (e.keyCode === 65 && (e.ctrlKey || e.metaKey)) ||
+                // Allow: Ctrl+C
+                (e.keyCode === 67 && (e.ctrlKey || e.metaKey)) ||
+                // Allow: Ctrl+V
+                (e.keyCode === 86 && (e.ctrlKey || e.metaKey)) ||
+                // Allow: Ctrl+X
+                (e.keyCode === 88 && (e.ctrlKey || e.metaKey)) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                // Biarkan event terjadi
+                return;
+            }
+
+            // Cegah jika bukan angka
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) &&
+                (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+        // Cegah input dengan karakter non-digit saat menempel
+        formattedInputElement.addEventListener('paste', function(e) {
+            e.preventDefault();
+            let pastedData = e.clipboardData.getData('text');
+            let formattedData = formatNumber(pastedData.replace(/\D/g, ''));
+            formattedInputElement.value = formattedData;
+            hiddenInputElement.value = pastedData.replace(/\D/g, '');
+        });
+
+        // Saat form disubmit, pastikan nilai di elemen hidden input disiapkan untuk dikirim
+        document.getElementById('myForm').addEventListener('submit', function() {
+            hiddenInputElement.value = formattedInputElement.value.replace(/\D/g, '');
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.2.6/dist/cdn.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.0/dist/alpine.min.js" defer></script>
+
+    {{-- Script Dropdown --}}
+    <script>
+        function dropdownPesanan(idDropdownLink, idBtnDropdown) {
+
+            // Toggle dropdown yang diklik
+            const dropdown = document.getElementById(idDropdownLink);
+            dropdown.classList.toggle('hidden');
+            dropdown.classList.toggle('flex');
+
+            const btnDropdown = document.getElementById(idBtnDropdown);
+            btnDropdown.classList.toggle('rounded-b');
+            btnDropdown.classList.toggle('bg-gray-400');
+            btnDropdown.classList.toggle('px-4');
+
+            // Tutup semua dropdown yang lain
+            const allDropdowns = document.querySelectorAll('[id^="dropdownLink"]');
+            allDropdowns.forEach(function(dropdown) {
+                if (dropdown.id !== idDropdownLink) {
+                    dropdown.classList.add('hidden');
+                    dropdown.classList.remove('flex');
+                }
+            });
+
+            const allButtons = document.querySelectorAll('[id^="btnDropdown"]');
+            allButtons.forEach(function(button) {
+                if (button.id !== idBtnDropdown) {
+                    button.classList.remove('rounded-b');
+                    button.classList.remove('bg-gray-400');
+                    button.classList.remove('px-4');
+                }
+            });
+
+            // Close dropdown if clicked outside
+            document.addEventListener('click', function(e) {
+                // const button = document.getElementById(idBtnDropdown);
+                if (!btnDropdown.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.classList.add('hidden');
+                    dropdown.classList.remove('flex');
+                    btnDropdown.classList.remove('rounded-b');
+                    btnDropdown.classList.remove('bg-gray-400');
+                    btnDropdown.classList.remove('px-4');
+                }
+            });
+
+        }
+    </script>
+    
+    {{-- Animasi Dropdown --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggle = document.getElementById('dropdownToggle');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+
+            dropdownToggle.addEventListener('click', function() {
+                if (dropdownMenu.classList.contains('opacity-0')) {
+                    dropdownMenu.classList.remove('opacity-0', 'scale-y-0');
+                    dropdownMenu.classList.add('opacity-100', 'scale-y-100');
+                } else {
+                    dropdownMenu.classList.remove('opacity-100', 'scale-y-100');
+                    dropdownMenu.classList.add('opacity-0', 'scale-y-0');
+                }
+            });
+
+            // Menutup dropdown jika user mengklik di luar dropdown
+            document.addEventListener('click', function(e) {
+                if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                    dropdownMenu.classList.remove('opacity-100', 'scale-y-100');
+                    dropdownMenu.classList.add('opacity-0', 'scale-y-0');
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>

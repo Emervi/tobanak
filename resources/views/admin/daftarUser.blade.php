@@ -5,27 +5,24 @@
 @section('content')
 
     {{-- tombol kembali --}}
-    <div class="w-11/12 mx-auto mt-10 mb-12">
+    <div class="w-full mx-auto mt-10 mb-12">
 
-        {{-- tombol kembali dan tambah --}}
-        <div class="flex items-start justify-between mb-2">
+        <div class="mt-7 w-11/12 mx-auto flex flex-col">
 
-            <a href="{{ route('admin.dashboard') }}"
-                class="text-pink-400 p-2 bg-white border border-pink-400 rounded-md hover:text-white hover:bg-pink-400">
-                <i class="fas fa-arrow-left mr-1"></i>
-                Kembali
-            </a>
+            {{-- tombol kembali dan tambah --}}
+            <div class="flex items-start justify-between mb-2">
 
+                {{-- div kosong --}}
+                <div></div>
 
-            <a href="{{ route('admin.tambahUser') }}"
-                class="text-green-500 text-center p-2 bg-white border border-green-500 rounded-md hover:text-white hover:bg-green-600">
-                <i class="fas fa-plus mr-1"></i>
-                Tambah User
-            </a>
+                <a href="{{ route('admin.tambahUser') }}"
+                    class="text-green-500 text-center p-2 bg-white border border-green-500 rounded-md hover:text-white hover:bg-green-600">
+                    <i class="fas fa-plus mr-1"></i>
+                    Tambah User
+                </a>
 
-        </div>
+            </div>
 
-        <div class="mt-7 w-10/12 mx-auto flex flex-col">
             {{-- notifikasi CRUD barang dan fitur pencarian barang --}}
             <div class="flex justify-between items-center w-1/3">
 
@@ -70,19 +67,21 @@
 
             </div>
 
-            <div class="container w-full bg-white p-3 shadow-xl mt-5 rounded-xl">
+            <div class="container w-full bg-white p-3 shadow-xl mt-5 rounded-xl relative overflow-hidden">
 
                 <h1 class="text-2xl font-bold text-center">Daftar User</h1>
 
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto overflow-y-clip">
                     {{-- table daftar barang --}}
                     <table class="min-w-full bg-white border border-gray-200 mt-3 text-center">
                         <thead class="border border-b-black">
                             <th class="p-2">No</th>
-                            @foreach ( $columnUsers as $th )
-                            <th class="py-1">{{ $th }}</th>    
-                            @endforeach
-                            <th class="text-center">Aksi</th>
+                            <th class="py-1">Username</th>
+                            <th class="py-1">Nama</th>
+                            <th class="py-1">Email</th>
+                            <th class="py-1">Status</th>
+                            <th class="py-1">Cabang</th>
+                            <th class="text-center w-1/12">Aksi</th>
                         </thead>
                         <tbody>
                             @foreach ($users as $index => $user)
@@ -97,28 +96,58 @@
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->status }}</td>
                                     <td>
-                                        @empty($user->nama_cabang)
+                                        @empty($user->id_cabang)
                                             Online
                                         @else
                                             {{ $user->nama_cabang }}
                                         @endempty
                                     </td>
-                                    <td class="flex justify-center items-center my-2 gap-2">
-                                        <a href="{{ route('admin.editUser', [$user->id_user]) }}"
-                                            class="text-blue-600 w-20 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600">
-                                            <i class="fas fa-pen mr-1"></i>
-                                            Edit
-                                        </a>
-                                        <form action="{{ route('admin.hapusUser', [$user->id_user]) }}" method="POST">
-                                            @csrf
-                                            @method('delete')
-                                            <button
-                                                class="text-red-600 w-20 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600"
-                                                onclick="confirmDelete(event)">
-                                                <i class="fas fa-trash mr-1"></i>
-                                                Hapus
+                                    <td class="flex justify-center my-3">
+
+                                        <div x-data="{ dropdown: false, isActive: false }" @click.away="isActive = false"
+                                            class="relative inline-block">
+                                            <button @click="dropdown = !dropdown; isActive = !isActive"
+                                                :class="isActive ?
+                                                    'bg-gray-400 {{ $loop->last ? 'rounded-t' : 'rounded-b' }}' :
+                                                    ''"
+                                                class="hover:bg-gray-400 px-2 rounded-full p-1">
+                                                <i class="fas fa-bars text-xl"></i>
                                             </button>
-                                        </form>
+
+                                            <div x-show="dropdown" @click.away="dropdown = false"
+                                                x-transition:enter="transition ease-out duration-100"
+                                                x-transition:enter-start="transform opacity-0 scale-95"
+                                                x-transition:enter-end="transform opacity-100 scale-100"
+                                                x-transition:leave="transition ease-in duration-75"
+                                                x-transition:leave-start="transform opacity-100 scale-100"
+                                                x-transition:leave-end="transform opacity-0 scale-95"
+                                                class="origin-top-right p-1 absolute right-0 w-24 shadow-lg bg-gray-400 z-10 {{ $loop->first && $loop->last ? 'rounded-b rounded-tl top-0 w-48' : ($loop->last ? 'bottom-full rounded-t rounded-bl' : 'rounded-b rounded-tl') }}"
+                                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+
+                                                <div class="flex gap-1 {{ $loop->first && $loop->last ? '' : 'flex-col' }}"
+                                                    role="none">
+                                                    <a href="{{ route('admin.editUser', [$user->id_user]) }}"
+                                                        class="text-blue-600 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600 {{ $loop->first && $loop->last ? 'w-1/2' : 'w-full' }}">
+                                                        <i class="fas fa-pen mr-1"></i>
+                                                        Edit
+                                                    </a>
+                                                    <form action="{{ route('admin.hapusUser', [$user->id_user]) }}"
+                                                        method="POST"
+                                                        class="{{ $loop->first && $loop->last ? 'w-1/2' : 'w-full' }}">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button
+                                                            class="text-red-600 w-full py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600"
+                                                            onclick="confirmDelete(event)">
+                                                            <i class="fas fa-trash mr-1"></i>
+                                                            Hapus
+                                                        </button>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
                                     </td>
                                 </tr>
                             @endforeach
