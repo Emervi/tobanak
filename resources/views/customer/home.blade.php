@@ -91,7 +91,7 @@
                 var button = $('button.add-button[data-id="' + idBarang + '"]');
                 
                 if (stok <= 0) {
-                    button.removeClass('bg-blue-400 hover:bg-blue-700').addClass('bg-gray-400').prop('disabled', true);
+                    button.removeClass('bg-blue-400 hover:bg-blue-700').addClass('bg-gray-400 cursor-not-allowed').prop('disabled', true);
                 } else {
                     button.prop('disabled', false).removeClass('bg-gray-400').addClass('bg-blue-400');
                 }

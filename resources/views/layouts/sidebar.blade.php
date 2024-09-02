@@ -203,7 +203,6 @@
     <main class="flex-grow p-6">
         @yield('content')
     </main>
-
     <script>
         function formatNumber(value) {
             // Menghapus semua karakter non-digit

@@ -164,79 +164,60 @@ class TransaksiController extends Controller
     }
 
     public function storeCustomer(Request $request)
-    {
+{
+    $keranjangs = Keranjang::where('id_user', session('customer')->id_user)->get();
+    $totalHargaBarang = $keranjangs->sum(function ($item) {
+        return $item->kuantitas * $item->barang->harga;
+    });
 
-        $keranjangs = Keranjang::where('id_user', session('customer')->id_user)->get();
-        $totalHargaBarang = $keranjangs->sum(function ($item) {
-            return $item->kuantitas * $item->barang->harga;
-        });
+    // Validasi data request
+    $request->validate([
+        'alamat' => 'required',
+        'id_ekspedisi' => 'required',
+        'harga_ekspedisi' => 'required',
+        'metode_pembayaran' => 'required',
+        'barangs' => 'required|array',
+        'kuantitas' => 'required|array',
+    ]);
 
-        // Validate the request data
-        $request->validate([
-            'alamat' => 'required',
-            'id_ekspedisi' => 'required',
-            'harga_ekspedisi' => 'required',
-            'metode_pembayaran' => 'required',
-            'barangs' => 'required|array',
-            'kuantitas' => 'required|array',
+    $totalHarga = $totalHargaBarang + $request->harga_ekspedisi;
+    $uangPembayaran = ($request->metode_pembayaran == 'cod') ? 0 : $totalHarga;
+
+    // Membuat transaksi baru
+    $transaksi = Transaksi::create([
+        'tanggal' => Carbon::now(),
+        'id_user' => session('customer')->id_user,
+        'id_cabang' => null,
+        'total_harga' => $totalHarga,
+        'kembalian' => 0,
+        'alamat' => $request->alamat,
+        'metode_pembayaran' => $request->metode_pembayaran,
+        'id_ekspedisi' => $request->id_ekspedisi,
+        'status' => 'Diproses',
+        'uang_pembayaran' => $uangPembayaran,
+    ]);
+
+    // Menambahkan item ke transaksi
+    foreach ($keranjangs as $keranjang) {
+        BarangTransaksi::create([
+            'id_transaksi' => $transaksi->id_transaksi,
+            'id_barang' => $keranjang->id_barang,
+            'kuantitas' => $keranjang->kuantitas,
+            'status_barang' => 'Diproses',
+            'total_harga_barang' => $keranjang->kuantitas * $keranjang->barang->harga,
         ]);
 
-        // Create a new transaction
-        $transaksi = new Transaksi();
-        $transaksi->tanggal = Carbon::now();
-        $transaksi->id_user = session('customer')->id_user;
-        $transaksi->id_cabang = null;
-        $transaksi->total_harga += $request->harga_ekspedisi;
-        $transaksi->kembalian = 0;
-        $transaksi->alamat = $request->alamat;
-        $transaksi->metode_pembayaran = $request->metode_pembayaran;
-        $transaksi->id_ekspedisi = $request->id_ekspedisi;
-        $transaksi->status = 'Diproses';
-
-
-
-
-
-        // Add items to the transaction
-        foreach ($request->barangs as $index => $barangId) {
-            $barang = Barang::find($barangId);
-            $kuantitas = $request->kuantitas[$index];
-
-            // Update the total price of the transaction
-            $transaksi->total_harga += $barang->harga * $kuantitas;
+        // Update stok barang
+        $barang = $keranjang->barang;
+        if ($barang) {
+            $barang->stok_barang -= $keranjang->kuantitas;
+            $barang->save();
         }
-        if ($request->metode_pembayaran == 'cod') {
-            $transaksi->uang_pembayaran = 0;
-        } else {
-            $transaksi->uang_pembayaran = $transaksi->total_harga;
-        }
-
-        $transaksi->save();
-
-        foreach ($keranjangs as $keranjang) {
-            BarangTransaksi::create([
-                'id_transaksi' => $transaksi->id_transaksi,
-                'id_barang' => $keranjang->id_barang,
-                'kuantitas' => $keranjang->kuantitas,
-                'status_barang' => 'Diproses',
-                'total_harga_barang' => $keranjang->kuantitas * $keranjang->barang->harga,
-            ]);
-        }
-
-
-
-        // Clear the cart
-        Keranjang::where('id_user', session('customer')->id_user)->delete();
-
-        if ($transaksi) {
-            $barang = Barang::where('id_barang', $request->id_barang)->first();
-            if ($barang) {
-                $barang->stok_barang -= intval($request->kuantitas);
-                $barang->save();
-            }
-        }
-
-        // Redirect to the transaction success page
-        return redirect()->route('customer.pesanan');
     }
+
+    // Mengosongkan keranjang
+    Keranjang::where('id_user', session('customer')->id_user)->delete();
+
+    // Redirect ke halaman pesanan customer
+    return redirect()->route('customer.pesanan');
 }
