@@ -94,7 +94,7 @@
         <span class="text-xl font-semibold">Rp {{ number_format($totalHarga, 0, ',', '.') }}</span>
     </div>
     @if ($keranjang->isEmpty())
-        <button class="bg-gray-500 text-white px-4 py-2 rounded-lg w-full" disabled >Checkout</button>
+        <button class="bg-gray-500 text-white px-4 py-2 rounded-lg w-full cursor-not-allowed" disabled >Checkout</button>
     @else
     <form action="{{ route('customer.checkout') }}" method="get">
         <button class="bg-pink-500 text-white hover:bg-pink-600 px-4 py-2 rounded-lg w-full" >Checkout</button>

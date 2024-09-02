@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\BarangTransaksi;
 use App\Models\Ekspedisis;
 use App\Models\Keranjang;
 use Carbon\Carbon;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Redis;
 
 class CustomerCoController extends Controller
 {
-    public function index() 
+    public function index(Request $request) 
     {
         // session()->forget('selected_ekspedisi');
 
@@ -30,7 +31,6 @@ class CustomerCoController extends Controller
         $totalHarga = $keranjangs->sum(function($keranjang){
             return $keranjang->barang->harga * $keranjang->kuantitas;
         });
-
 
         // dd(session('selected_ekspedisi'));
     
