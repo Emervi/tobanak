@@ -12,6 +12,42 @@
 
 <body>
 
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white">
+      <thead>
+        <tr>
+          <th class="py-2 px-4 bg-gray-100 border-b text-left">Header 1</th>
+          <th class="py-2 px-4 bg-gray-100 border-b text-left">Header 2</th>
+          <th class="py-2 px-4 bg-gray-100 border-b text-left">Header 3</th>
+          <th class="py-2 px-4 bg-gray-100 border-b text-left">Header 4</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="py-2 px-4 border-b">Data 1</td>
+          <td class="py-2 px-4 border-b">Data 2</td>
+          <td class="py-2 px-4 border-b">Data 3</td>
+          <td class="py-2 px-4 border-b">Data 4</td>
+        </tr>
+        <tr>
+          <td class="py-2 px-4 border-b">Data 5</td>
+          <td class="py-2 px-4 border-b">Data 6</td>
+          <td class="py-2 px-4 border-b">Data 7</td>
+          <td class="py-2 px-4 border-b">Data 8</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+
+  <div class="relative w-full h-screen">
+    <!-- This is the responsive absolute div -->
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10/12 md:w-8/12 lg:w-6/12 bg-blue-500 p-4">
+        <p class="text-white text-center">This is a responsive absolute div</p>
+    </div>
+</div>
+
+
   <div class="container mx-auto bg-white shadow-md rounded-lg overflow-hidden">
     <table class="min-w-full bg-white divide-y divide-gray-200">
       <thead class="bg-gray-50">

@@ -19,7 +19,7 @@
                         @csrf
                         @method('put')
 
-                        <div class="grid grid-cols-2 gap-5 mt-3">
+                        <div class="grid grid-cols-2 gap-3 mt-3">
 
                             {{-- column 1 --}}
                             <div>
@@ -38,7 +38,7 @@
                                     <label for="jenis_pengiriman" class="block">{{ $columnEkspedisis['jenis_pengiriman'] }}</label>
                                     <select name="jenis_pengiriman" id="jenis_pengiriman"
                                         class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
-                                        <option value="" disabled selected>Pilih jenis pengiriman</option>
+                                        <option value="" disabled selected>Pilih Jenis Pengiriman</option>
                                         <option value="Hemat" {{ old('jenis_pengiriman', $atribut->jenis_pengiriman) == 'Hemat' ? 'selected' : '' }}>
                                             Hemat</option>
                                         <option value="Reguler" {{ old('jenis_pengiriman', $atribut->jenis_pengiriman) == 'Reguler' ? 'selected' : '' }}>
@@ -58,13 +58,13 @@
                             </div>
 
                             {{-- column 2 --}}
-                            <div>
+                            <div class="ml-5">
 
                                 <div class="mb-3">
                                     <label for="estimasi_pengiriman" class="block">{{ $columnEkspedisis['estimasi_pengiriman'] }}(Hari)</label>
                                     <input type="text" name="estimasi_pengiriman" id="estimasi_pengiriman"
                                         value="{{ $atribut->estimasi_pengiriman }}" placeholder="Masukan estimasi pengiriman"
-                                        class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
+                                        class="p-1 shadow rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     @error('estimasi_pengiriman')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror
@@ -74,7 +74,7 @@
                                     <label for="harga_ekspedisi" class="block">{{ $columnEkspedisis['harga_ekspedisi'] }}</label>
                                     <input type="text" name="harga_ekspedisi" id="formatUangEkspedisi"
                                         value="{{ $atribut->harga_ekspedisi }}" placeholder="Masukan harga ekspedisi"
-                                        class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
+                                        class="p-1 shadow rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     <input type="hidden" name="harga_ekspedisi" id="harga_ekspedisi"
                                         value="{{ $atribut->harga_ekspedisi }}">
                                     @error('harga_ekspedisi')
@@ -117,7 +117,7 @@
                     @csrf
 
                     {{-- input selain gambar --}}
-                    <div class="grid grid-cols-2 gap-5 mt-3">
+                    <div class="grid grid-cols-2 gap-3 mt-3">
 
                         {{-- column 1 --}}
                         <div>
@@ -136,7 +136,7 @@
                                 <label for="jenis_pengiriman" class="block">{{ $columnEkspedisis['jenis_pengiriman'] }}</label>
                                 <select name="jenis_pengiriman" id="jenis_pengiriman"
                                 class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
-                                    <option value="" disabled selected>Pilih jenis pengiriman</option>
+                                    <option value="" disabled selected>Pilih Jenis Pengiriman</option>
                                     <option value="Hemat" {{ old('jenis_pengiriman') == 'Hemat' ? 'selected' : '' }}>Hemat
                                     </option>
                                     <option value="Reguler" {{ old('jenis_pengiriman') == 'Reguler' ? 'selected' : '' }}>
@@ -156,13 +156,13 @@
                         </div>
 
                         {{-- column 2 --}}
-                        <div>
+                        <div class="ml-5">
 
                             <div class="mb-3">
                                 <label for="estimasi_pengiriman" class="block">{{ $columnEkspedisis['estimasi_pengiriman'] }}(Hari)</label>
                                 <input type="text" name="estimasi_pengiriman" id="estimasi_pengiriman"
                                     value="{{ old('estimasi_pengiriman') }}" placeholder="Masukan estimasi pengiriman"
-                                    class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
+                                    class="p-1 shadow rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                 @error('estimasi_pengiriman')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror
@@ -172,7 +172,7 @@
                                 <label for="harga_ekspedisi" class="block">{{ $columnEkspedisis['harga_ekspedisi'] }}</label>
                                 <input type="text" name="harga_ekspedisi" id="formatUangEkspedisi"
                                     value="{{ old('harga_ekspedisi') }}" placeholder="Masukan harga ekspedisi"
-                                    class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
+                                    class="p-1 shadow rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                 <input type="hidden" name="harga_ekspedisi" id="harga_ekspedisi"
                                     value="{{ old('harga_ekspedisi') }}">
                                 @error('harga_ekspedisi')

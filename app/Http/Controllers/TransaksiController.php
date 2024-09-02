@@ -47,8 +47,9 @@ class TransaksiController extends Controller
         }
 
         $transaksiId = null;
+        $status = 'Selesai';
 
-        DB::transaction(function () use ($request, $keranjang, $totalHarga, $uangPembayaran, $kembalian, &$transaksiId) {
+        DB::transaction(function () use ($request, $keranjang, $totalHarga, $uangPembayaran, $kembalian, &$transaksiId, $status) {
             // Membuat transaksi baru
             $transaksi = Transaksi::create([
                 'tanggal' => Carbon::now()->toDateString(),
@@ -57,9 +58,10 @@ class TransaksiController extends Controller
                 'uang_pembayaran' => $uangPembayaran,
                 'kembalian' => $kembalian,
                 'id_cabang' => session('kasir')->id_cabang,
-                'alamat' => session('kasir')->alamat,
+                'status' => 'Selesai',
                 'metode_pembayaran' => 'Cash',
-                'id_ekspedisi' => 1,
+                'id_ekspedisi' => null,
+                'alamat' => null,
             ]);
 
             $transaksiId = $transaksi->id_transaksi;
@@ -70,6 +72,7 @@ class TransaksiController extends Controller
                     'id_transaksi' => $transaksi->id_transaksi,
                     'id_barang' => $item->id_barang,
                     'kuantitas' => $item->kuantitas,
+                    'status_barang' => 'Diterima',
                     'total_harga_barang' => $item->kuantitas * $item->barang->harga,
                 ]);
             }
@@ -96,35 +99,18 @@ class TransaksiController extends Controller
     // Daftar transaksi
     public function daftarTransaksi()
     {
-        $columns = Schema::getColumnListing('transaksis');
-
-        $length = count($columns);
-        foreach ($columns as $index => $col) {
-
-            
-            if ($index == 0) continue;
-            $columnTransaksis[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
-            if ($index == $length - 7) break;
-
-        }
-
-        $columnTransaksis['id_user'] = 'Username';
-        $columnTransaksis['id_cabang'] = 'Cabang';
-
-        // dd($columnTransaksis, $length - 3);
-
         $perPage = 5;
 
-        $transaksis = Transaksi::join('users', 'transaksis.id_user', '=', 'users.id_user')
-        ->join('cabangs', 'transaksis.id_cabang', '=', 'cabangs.id_cabang')
-        ->select('transaksis.*', 'users.username', 'cabangs.nama_cabang')
-        ->latest()
-        ->paginate($perPage);
+        $transaksis = Transaksi::leftJoin('users', 'transaksis.id_user', '=', 'users.id_user')
+            ->leftJoin('cabangs', 'transaksis.id_cabang', '=', 'cabangs.id_cabang')
+            ->select('transaksis.*', 'users.username', 'cabangs.nama_cabang')
+            ->latest()
+            ->paginate($perPage);
 
         $currentPage = $transaksis->currentPage();
         $offset = ($currentPage - 1) * $perPage;
 
-        return view('admin.daftarTransaksi', compact('transaksis', 'offset', 'columnTransaksis'));
+        return view('admin.daftarTransaksi', compact('transaksis', 'offset'));
     }
 
     // Cari transaksi
@@ -132,8 +118,10 @@ class TransaksiController extends Controller
     {
         $query = $request->keyword_transaksi;
         $transaksis = Transaksi::join('users', 'transaksis.id_user', '=', 'users.id_user')
-            ->select('transaksis.*', 'users.name')
+            ->join('cabangs', 'transaksis.id_cabang', '=', 'cabangs.id_cabang')
+            ->select('transaksis.*', 'users.username', 'cabangs.nama_cabang')
             ->where('tanggal', $query)
+            ->latest()
             ->get();
 
         $offset = -1;
@@ -153,31 +141,26 @@ class TransaksiController extends Controller
     // detail transaksi
     public function detailTransaksi($id_transaksi)
     {
-        $columns = Schema::getColumnListing('barang_transaksis');
-
-        $length = count($columns);
-        foreach ($columns as $index => $col) {
-
-            
-            if ($index == 0) continue;
-            $columnBarangTransaksis[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
-            if ($index == $length - 3) break;
-
-        }
-        $columnBarangTransaksis['id_barang'] = 'Nama Barang';
-        
         $detailTransaksi = BarangTransaksi::join('barangs', 'barang_transaksis.id_barang', '=', 'barangs.id_barang')
             ->join('transaksis', 'barang_transaksis.id_transaksi', '=', 'transaksis.id_transaksi')
             ->select('barang_transaksis.*', 'barangs.nama_barang')
             ->where('barang_transaksis.id_transaksi', $id_transaksi)
             ->get();
 
-        $totalHarga = Transaksi::where('id_transaksi', $id_transaksi)
-            ->select('total_harga')
-            ->first()
-            ->total_harga;
 
-        return view('admin.detailTransaksi', compact('detailTransaksi', 'totalHarga', 'columnBarangTransaksis'));
+        $detailTambahan = Transaksi::where('id_transaksi', $id_transaksi)
+        ->join('cabangs', 'transaksis.id_cabang', '=', 'cabangs.id_cabang')
+        ->select('transaksis.*', 'cabangs.nama_cabang')
+        ->first();
+
+        if( !empty($detailTambahan->id_ekspedisi) ){
+            $detailTambahan = Transaksi::where('id_transaksi', $id_transaksi)
+            ->join('ekspedisis', 'transaksis.id_ekspedisi', '=', 'ekspedisis.id_ekspedisi')
+            ->select('transaksis.*', 'ekspedisis.*')
+            ->first();
+        }
+
+        return view('admin.detailTransaksi', compact('detailTransaksi', 'detailTambahan'));
     }
 
     public function storeCustomer(Request $request)
@@ -232,13 +215,9 @@ class TransaksiController extends Controller
         }
     }
 
-
     // Mengosongkan keranjang
     Keranjang::where('id_user', session('customer')->id_user)->delete();
 
     // Redirect ke halaman pesanan customer
     return redirect()->route('customer.pesanan');
-}
-
-
 }

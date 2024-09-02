@@ -4,17 +4,13 @@
 
 @section('content')
 
-    <div x-data="{ isOpenDis: false, isOpenTar: false }" class="w-11/12 mx-auto mt-5 mb-12">
+    <div x-data="{ isOpenDis: false, isOpenTar: false }" class="w-full mx-auto mt-5 mb-12">
 
         {{-- tombol kembali dan tambah --}}
         <div class="flex items-start justify-between mb-2 mt-7">
 
-            <a href="{{ route('admin.dashboard') }}"
-                class="text-pink-400 p-2 bg-white border border-pink-400 rounded-md hover:text-white hover:bg-pink-400">
-                <i class="fas fa-arrow-left mr-1"></i>
-                Kembali
-            </a>
-
+            {{-- div kosong --}}
+            <div></div>
 
             <a href="{{ route('admin.tambahBarang') }}"
                 class="text-green-500 text-center p-2 bg-white border border-green-500 rounded-md hover:text-white hover:bg-green-600">
@@ -275,41 +271,55 @@
                 @endif
 
                 {{-- Filter barang menggunakan status distribusi --}}
-                <div>
-                    <form method="GET" action="{{ route('admin.daftarBarang') }}">
-                        <select name="filter_distribusi"
-                            class="bg-white text-gray-700 py-2 px-3 shadow border border-gray-200 rounded"
-                            onchange="this.form.submit()">
-                            <option value="">Semua barang</option>
-                            <option value="Siap kirim"
-                                {{ request('filter_distribusi') == 'Siap kirim' ? 'selected' : '' }}>
-                                Siap kirim</option>
-                            <option value="Dikirim" {{ request('filter_distribusi') == 'Dikirim' ? 'selected' : '' }}>
-                                Dikirim</option>
-                            <option value="Diterima" {{ request('filter_distribusi') == 'Diterima' ? 'selected' : '' }}>
-                                Diterima</option>
-                            <option value="Ditolak" {{ request('filter_distribusi') == 'Ditolak' ? 'selected' : '' }}>
-                                Ditolak</option>
-                        </select>
-                    </form>
-                </div>
+                @empty($search)
+                    <div>
+                        <form method="GET" action="{{ route('admin.daftarBarang') }}">
+                            <select name="filter_distribusi"
+                                class="bg-white text-gray-700 py-2 px-3 shadow border border-gray-200 rounded"
+                                onchange="this.form.submit()">
+                                <option value="">Semua barang</option>
+                                <option value="Siap kirim"
+                                    {{ request('filter_distribusi') == 'Siap kirim' ? 'selected' : '' }}>
+                                    Siap kirim</option>
+                                <option value="Dikirim" {{ request('filter_distribusi') == 'Dikirim' ? 'selected' : '' }}>
+                                    Dikirim</option>
+                                <option value="Ditarik" {{ request('filter_distribusi') == 'Ditarik' ? 'selected' : '' }}>
+                                    Ditarik</option>
+                                <option value="Diterima" {{ request('filter_distribusi') == 'Diterima' ? 'selected' : '' }}>
+                                    Diterima</option>
+                                <option value="Ditolak" {{ request('filter_distribusi') == 'Ditolak' ? 'selected' : '' }}>
+                                    Ditolak</option>
+                            </select>
+                        </form>
+                    </div>
+                @else
+                    <div>
+
+                    </div>
+                @endempty
 
             </div>
 
             <div class="container w-full bg-white p-3 shadow-xl mt-5 rounded-xl">
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto overflow-y-clip">
 
                     <h2 class="text-center font-bold text-2xl">
                         {{ request('filter_distribusi') ? request('filter_distribusi') : 'Semua barang' }}
                     </h2>
                     {{-- table daftar barang --}}
-                    <table class="min-w-full bg-white border border-gray-200 mt-3">
-                        <thead class="border border-b-black ">
+                    <table class="min-w-full bg-white border border-gray-200 mt-3 text-left">
+                        <thead class="border border-b-black">
                             <th class="p-2">No</th>
-                            @foreach ( $columnBarangs as $th )
-                            <th class="p-2">{{ $th }}</th>    
-                            @endforeach
-                            <th class="p-2 text-center">Aksi</th>
+                            <th class="p-2">Foto Barang</th>
+                            <th class="p-2">Nama Barang</th>
+                            <th class="p-2">Stok Barang</th>
+                            <th class="p-2">Kategori</th>
+                            <th class="p-2">Bahan</th>
+                            <th class="p-2">Harga</th>
+                            <th class="p-2">Deskripsi Barang</th>
+                            <th class="p-2">Cabang</th>
+                            <th class="text-center w-2/12">Status Distribusi</th>
+                            <th class="text-center w-1/12">Aksi</th>
                         </thead>
                         <tbody>
                             @foreach ($barangs as $index => $barang)
@@ -348,27 +358,54 @@
                                             👍{{ $barang->distribusi }}👍
                                         @endif
                                     </td>
-                                    <td class="flex justify-center items-center mt-4 mx-2 gap-2">
+                                    <td class="flex justify-center my-3">
 
-                                        {{-- Tombol edit --}}
-                                        <a href="{{ route('admin.editBarang', [$barang->id_barang]) }}"
-                                            class="text-blue-600 w-20 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600">
-                                            <i class="fas fa-pen mr-1"></i>
-                                            Edit
-                                        </a>
-
-                                        {{-- Tombol hapus --}}
-                                        <form action="{{ route('admin.hapusBarang', [$barang->id_barang]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('delete')
-                                            <button
-                                                class="text-red-600 w-20 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600"
-                                                onclick="confirmDelete(event)">
-                                                <i class="fas fa-trash mr-1"></i>
-                                                Hapus
+                                        <div x-data="{ dropdown: false, isActive: false }" @click.away="isActive = false"
+                                            class="relative inline-block">
+                                            <button @click="dropdown = !dropdown; isActive = !isActive"
+                                                :class="isActive ?
+                                                    'bg-gray-400 {{ $loop->last ? 'rounded-t' : 'rounded-b' }}' :
+                                                    ''"
+                                                class="hover:bg-gray-400 px-2 rounded-full p-1">
+                                                <i class="fas fa-bars text-xl"></i>
                                             </button>
-                                        </form>
+
+                                            <div x-show="dropdown" @click.away="dropdown = false"
+                                                x-transition:enter="transition ease-out duration-100"
+                                                x-transition:enter-start="transform opacity-0 scale-95"
+                                                x-transition:enter-end="transform opacity-100 scale-100"
+                                                x-transition:leave="transition ease-in duration-75"
+                                                x-transition:leave-start="transform opacity-100 scale-100"
+                                                x-transition:leave-end="transform opacity-0 scale-95"
+                                                class="origin-top-right p-1 absolute right-0 w-24 shadow-lg bg-gray-400 z-10 {{ $loop->first && $loop->last ? 'rounded-b rounded-tl top-0 w-48' : ($loop->last ? 'bottom-full rounded-t rounded-bl' : 'rounded-b rounded-tl') }}"
+                                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+
+                                                <div class="flex gap-1 {{ $loop->first && $loop->last ? '' : 'flex-col' }}"
+                                                    role="none">
+                                                    {{-- Tombol edit --}}
+                                                    <a href="{{ route('admin.editBarang', [$barang->id_barang]) }}"
+                                                        class="text-blue-600 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600 {{ $loop->first && $loop->last ? 'w-1/2' : 'w-full' }}">
+                                                        <i class="fas fa-pen mr-1"></i>
+                                                        Edit
+                                                    </a>
+
+                                                    {{-- Tombol hapus --}}
+                                                    <form action="{{ route('admin.hapusBarang', [$barang->id_barang]) }}"
+                                                        method="POST"
+                                                        class="{{ $loop->first && $loop->last ? 'w-1/2' : 'w-full' }}">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button
+                                                            class="text-red-600 w-full py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600"
+                                                            onclick="confirmDelete(event)">
+                                                            <i class="fas fa-trash mr-1"></i>
+                                                            Hapus
+                                                        </button>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
 
                                     </td>
                                 </tr>

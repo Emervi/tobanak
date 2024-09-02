@@ -11,11 +11,9 @@ use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Schema;
 
 class AdminController extends Controller
 {
-    // ADMIN
     // dashboard
     public function dashboardAdmin()
     {
@@ -66,19 +64,6 @@ class AdminController extends Controller
     // halaman daftar user
     public function daftarUser()
     {
-        $columns = Schema::getColumnListing('users');
-
-        $length = count($columns);
-        foreach ($columns as $index => $col) {
-
-            
-            if ($index == 0) continue;
-            $columnUsers[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
-            if ($index == $length - 8) break;
-
-        }
-        $columnUsers['id_cabang'] = 'Cabang';
-
         $perPage = 5;
 
         $users = User::leftJoin('cabangs', 'users.id_cabang', '=', 'cabangs.id_cabang')
@@ -89,53 +74,36 @@ class AdminController extends Controller
         $currentPage = $users->currentPage();
         $offset = ($currentPage - 1) * $perPage;
 
-        return view('admin.daftarUser', compact('users', 'offset', 'columnUsers'));
+        return view('admin.daftarUser', compact('users', 'offset'));
     }
 
     // cari barang
     public function cariUser(Request $request)
     {
-        $columns = Schema::getColumnListing('users');
-
-        $length = count($columns);
-        foreach ($columns as $index => $col) {
-
-            
-            if ($index == 0) continue;
-            $columnUsers[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
-            if ($index == $length - 8) break;
-
-        }
-        $columnUsers['id_cabang'] = 'Cabang';
-
         $query = $request->keyword_user;
-        $users = User::join('cabangs', 'users.id_cabang', '=', 'cabangs.id_cabang')
+        $users = User::leftJoin('cabangs', 'users.id_cabang', '=', 'cabangs.id_cabang')
             ->select('users.*', 'cabangs.nama_cabang')
             ->where('username', 'LIKE', "%$query%")
             ->get();
 
+        // if( !empty($users->id_cabang) ){
+        //     $users = User::join('cabangs', 'users.id_cabang', '=', 'cabangs.id_cabang')
+        //     ->select('users.*', 'cabangs.nama_cabang')
+        //     ->where('username', 'LIKE', "%$query%")
+        //     ->get();
+        // }
+
         $offset = -1;
 
-        return view('admin.daftarUser', compact('users', 'offset', 'columnUsers'));
+        return view('admin.daftarUser', compact('users', 'offset'));
     }
 
     // halaman tambah user
     public function tambahUser()
     {
-        $columns = Schema::getColumnListing('users');
-        $length = count($columns);
-        foreach ($columns as $index => $col) {
-            
-            if ($index == 0) continue;
-            $columnUsers[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
-            if ($index == $length - 7) break;
-
-        }
-        $columnUsers['id_cabang'] = 'Cabang';
-
         $cabangs = Cabang::get();
 
-        return view('admin.tambahUser', compact('cabangs', 'columnUsers'));
+        return view('admin.tambahUser', compact('cabangs'));
     }
 
     // store user
@@ -156,17 +124,6 @@ class AdminController extends Controller
     // edit user
     public function editUser($id_user)
     {
-        $columns = Schema::getColumnListing('users');
-        $length = count($columns);
-        foreach ($columns as $index => $col) {
-            
-            if ($index == 0) continue;
-            $columnUsers[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
-            if ($index == $length - 7) break;
-
-        }
-        $columnUsers['id_cabang'] = 'Cabang';
-
         $user = User::where('id_user', $id_user)
             ->get();
 
@@ -174,7 +131,7 @@ class AdminController extends Controller
 
         // dd(session(), session('errors'), session('attributes'));
 
-        return view('admin.tambahUser', compact('user', 'cabangs', 'columnUsers'));
+        return view('admin.tambahUser', compact('user', 'cabangs'));
     }
 
     // update user
@@ -298,5 +255,4 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'User berhasil dihapus!');
     }
-    // \ADMIN
 }

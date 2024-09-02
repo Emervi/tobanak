@@ -31,11 +31,11 @@
 
             </div>
 
-            <div class="container mx-auto w-2/3 bg-white p-3 shadow-xl rounded-xl">
+            <div class="container mx-auto w-full lg:w-2/3 bg-white p-3 shadow-xl rounded-xl">
 
                 <h1 class="text-2xl font-bold text-center">Pesanan Pelanggan</h1>
 
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto overflow-y-clip">
                     {{-- table daftar barang --}}
                     <table class="min-w-full bg-white border border-gray-200 mt-3 text-center">
                         <thead class="border border-b-gray-900">
@@ -54,49 +54,63 @@
                                     <td>{{ $tanggal[$index] }}</td>
                                     <td>Rp. {{ number_format($pesanan->total_harga, 0, ',', '.') }}</td>
                                     <td>{{ $jumlahBarang[$index] }}</td>
-                                    <td class="flex justify-evenly items-center my-3 flex-col gap-2">
+                                    <td class="flex justify-center my-3">
 
-                                        <div>
-                                            <button type="button" id="btnDropdown{{ $index }}"
-                                                onclick="dropdownPesanan('dropdownLink{{ $index }}', 'btnDropdown{{ $index }}')"
+                                        <div x-data="{ dropdown: false, isActive: false }" @click.away="isActive = false"
+                                            class="relative inline-block">
+                                            <button @click="dropdown = !dropdown; isActive = !isActive"
+                                                :class="isActive ?
+                                                    'bg-gray-400 rounded-b' :
+                                                    ''"
                                                 class="hover:bg-gray-400 px-2 rounded-full p-1">
                                                 <i class="fas fa-bars text-xl"></i>
                                             </button>
 
-                                            <div id="dropdownLink{{ $index }}" class="flex-col gap-1 hidden bg-gray-400 p-1 rounded-b rounded-tr absolute">
-                                                <a href="{{ route('kasir.detailPesanan', [$pesanan->id_transaksi]) }}"
-                                                    class="text-yellow-500 w-full py-1 px-2 bg-white border border-yellow-500 rounded-md text-center hover:text-white hover:bg-yellow-500">
-                                                    <i class="fas fa-eye mr-1"></i>
-                                                    Detail Pesanan
-                                                </a>
+                                            <div x-show="dropdown" @click.away="dropdown = false"
+                                                x-transition:enter="transition ease-out duration-100"
+                                                x-transition:enter-start="transform opacity-0 scale-95"
+                                                x-transition:enter-end="transform opacity-100 scale-100"
+                                                x-transition:leave="transition ease-in duration-75"
+                                                x-transition:leave-start="transform opacity-100 scale-100"
+                                                x-transition:leave-end="transform opacity-0 scale-95"
+                                                class="origin-top-right p-1 absolute right-0 w-44 shadow-lg bg-gray-400 z-10 {{ $loop->remaining == 1 || $loop->last ? 'rounded-b rounded-tl top-0 w-48' : 'rounded-b rounded-tl' }}"
+                                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
 
-                                                <form action="{{ route('kasir.kirimBarang', [$pesanan->id_transaksi]) }}"
-                                                    method="POST" class="w-full">
-                                                    @csrf
-                                                    @method('put')
-                                                    <button
-                                                        class="text-green-600 py-1 w-full bg-white border border-green-600 rounded-md hover:text-white hover:bg-green-600"
-                                                        id="btnKonfirmasi">
-                                                        <i class="fas fa-truck mr-1"></i>
-                                                        Konfirmasi
-                                                    </button>
-                                                </form>
-
-                                                <form action="{{ route('kasir.batalBarang', [$pesanan->id_transaksi]) }}"
-                                                    method="POST" class="w-full">
-                                                    @csrf
-                                                    @method('put')
-                                                    <button
-                                                        class="text-red-600 py-1 w-full bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600"
-                                                        id="btnBatal">
-                                                        <i class="fas fa-times mr-1"></i>
-                                                        Batalkan
-                                                    </button>
-                                                </form>
+                                                <div class="flex gap-1 {{ $loop->remaining == 1 || $loop->last ? 'justify-evenly' : 'flex-col' }}" role="none">
+                                                    <a href="{{ route('kasir.detailPesanan', [$pesanan->id_transaksi]) }}"
+                                                        class="text-yellow-500 w-full py-1 bg-white border border-yellow-500 rounded-md text-center hover:text-white hover:bg-yellow-500 {{ $loop->remaining == 1 || $loop->last ? '' : 'px-2' }}">
+                                                        <i class="fas fa-eye mr-1"></i>
+                                                        {{ $loop->remaining == 1 || $loop->last ? '' : 'Detail Pesanan' }}
+                                                    </a>
+    
+                                                    <form action="{{ route('kasir.kirimBarang', [$pesanan->id_transaksi]) }}"
+                                                        method="POST" class="w-full">
+                                                        @csrf
+                                                        @method('put')
+                                                        <button
+                                                            class="text-green-600 py-1 w-full bg-white border border-green-600 rounded-md hover:text-white hover:bg-green-600"
+                                                            id="btnKonfirmasi">
+                                                            <i class="fas fa-truck mr-1"></i>
+                                                            {{ $loop->remaining == 1 || $loop->last ? '' : 'Konfirmasi' }}
+                                                        </button>
+                                                    </form>
+    
+                                                    <form action="{{ route('kasir.batalBarang', [$pesanan->id_transaksi]) }}"
+                                                        method="POST" class="w-full">
+                                                        @csrf
+                                                        @method('put')
+                                                        <button
+                                                            class="text-red-600 py-1 w-full bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600"
+                                                            id="btnBatal">
+                                                            <i class="fas fa-times mr-1"></i>
+                                                            {{ $loop->remaining == 1 || $loop->last ? '' : 'Batalkan' }}
+                                                        </button>
+                                                    </form>
+                                                </div>
 
                                             </div>
-
                                         </div>
+
                                     </td>
                                 </tr>
                             @endforeach

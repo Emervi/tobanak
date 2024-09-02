@@ -15,22 +15,6 @@ class BarangController extends Controller
     {
         $cabangs = Cabang::all();
 
-        $columns = Schema::getColumnListing('barangs');
-
-        $length = count($columns);
-        foreach ($columns as $index => $col) {
-
-            
-            if ($index == 0) continue;
-            $columnBarangs[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
-            if ($index == $length - 5) break;
-
-        }
-        $columnBarangs['kategori_barang'] = 'Kategori';
-        $columnBarangs['deskripsi_barang'] = 'Deskripsi';
-        $columnBarangs['id_cabang'] = 'Cabang';
-        $columnBarangs['distribusi'] = 'Status Distribusi';
-
         $barangs = Barang::leftJoin('cabangs', 'cabangs.id_cabang', '=', 'barangs.id_cabang')
         ->select('barangs.*', 'cabangs.nama_cabang')
         ->latest('barangs.updated_at')
@@ -68,6 +52,8 @@ class BarangController extends Controller
         $offset = -1;
 
         $totalStok = Barang::sum('stok_barang');
+
+        $search = null;
         
         return view('admin.daftarBarang', compact(
             'barangs', 
@@ -76,7 +62,7 @@ class BarangController extends Controller
             'cabangs', 
             'barangSiap', 
             'barangTerproses',
-            'columnBarangs',
+            'search',
         ));
     }
 
@@ -91,6 +77,15 @@ class BarangController extends Controller
 
         $cabangs = Cabang::all();
 
+        $barangSiap = Barang::whereIn('distribusi', ['Siap kirim', 'Ditarik'])
+        ->latest()
+        ->get();
+
+        $barangTerproses = Barang::join('cabangs', 'cabangs.id_cabang', '=', 'barangs.id_cabang')
+        ->whereNotIn('distribusi', ['Siap kirim', 'Ditarik'])
+        ->latest('barangs.created_at')
+        ->get();
+
         $query = $request->keyword_barang;
         $barangs = Barang::leftJoin('cabangs', 'cabangs.id_cabang', '=', 'barangs.id_cabang')
         ->select('barangs.*', 'cabangs.nama_cabang')
@@ -101,31 +96,25 @@ class BarangController extends Controller
 
         $totalStok = Barang::sum('stok_barang');
 
-        return view('admin.daftarBarang', compact('barangs', 'offset', 'totalStok', 'cabangs'));
+        $search = 1;
+
+        return view('admin.daftarBarang', compact(
+            'barangs', 
+            'offset', 
+            'totalStok', 
+            'cabangs',
+            'barangSiap', 
+            'barangTerproses',
+            'search',
+        ));
     }
 
     // halaman tambah barang
     public function tambahBarang()
     {
-        $columns = Schema::getColumnListing('barangs');
-
-        $length = count($columns);
-        foreach ($columns as $index => $col) {
-
-            
-            if ($index == 0) continue;
-            $columnBarangs[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
-            if ($index == $length - 3) break;
-
-        }
-        $columnBarangs['kategori_barang'] = 'Kategori';
-        $columnBarangs['deskripsi_barang'] = 'Deskripsi';
-        $columnBarangs['id_cabang'] = 'Cabang';
-        $columnBarangs['distribusi'] = 'Status Distribusi';
-
         $cabangs = Cabang::get();
 
-        return view('admin.tambahBarang', compact('cabangs', 'columnBarangs'));
+        return view('admin.tambahBarang', compact('cabangs'));
     }
 
     // untuk mengabil lalu menampilkan harga dengan json
@@ -224,28 +213,12 @@ class BarangController extends Controller
     // edit barang
     public function editBarang($id_barang)
     {
-        $columns = Schema::getColumnListing('barangs');
-
-        $length = count($columns);
-        foreach ($columns as $index => $col) {
-
-            
-            if ($index == 0) continue;
-            $columnBarangs[$columns[$index]] = ucwords(str_replace('_', ' ', $col));
-            if ($index == $length - 3) break;
-
-        }
-        $columnBarangs['kategori_barang'] = 'Kategori';
-        $columnBarangs['deskripsi_barang'] = 'Deskripsi';
-        $columnBarangs['id_cabang'] = 'Cabang';
-        $columnBarangs['distribusi'] = 'Status Distribusi';
-
         $barang = Barang::where('id_barang', $id_barang)
         ->get();
 
         $cabangs = Cabang::get();
 
-        return view('admin.tambahBarang', compact('barang', 'cabangs', 'columnBarangs'));
+        return view('admin.tambahBarang', compact('barang', 'cabangs'));
     }
 
     // update barang

@@ -10,40 +10,30 @@
     @endphp
 
     {{-- tombol kembali --}}
-    <div class="w-11/12 mx-auto mt-10 mb-12">
+    <div class="w-full mx-auto mt-10 mb-12">
 
-        <div class="flex items-center">
-
-            <a href="{{ route('admin.dashboard') }}"
-                class="text-pink-400 p-2 bg-white border border-pink-400 rounded-md hover:text-white hover:bg-pink-400">
-                <i class="fas fa-arrow-left mr-1"></i>
-                Kembali
-            </a>
-
-        </div>
-
-        <div class="mt-7 w-full mx-auto flex flex-col">
+        <div class="mt-7 w-11/12 mx-auto flex flex-col">
             {{-- notifikasi CRUD barang dan fitur pencarian barang --}}
             <div class="flex justify-between items-center">
 
-                <form action="{{ route('admin.daftarTransaksi') }}" method="POST" class="flex gap-3 w-2/3 md:w-1/3">
+                <form action="{{ route('admin.daftarTransaksi') }}" method="POST" class="flex w-2/3 md:w-1/3">
                     @csrf
 
                     {{-- form pencarian barang --}}
-                    <div class=" w-2/3 gap-1">
+                    <div class="w-full">
                         <button type="submit"
                             class="text-orange-400 py-2 px-2 bg-white border border-orange-400 rounded-md hover:text-white hover:bg-orange-400">
                             <i class="fas fa-search"></i>
                         </button>
                         <input type="date" name="keyword_transaksi" placeholder="Masukan tanggal transaksi"
-                            class="bg-white p-1 w-5/6 shadow rounded-sm focus:outline-none">
-                    </div>
+                            class="bg-white p-1 w-4/6 shadow rounded-sm focus:outline-none">
 
-                    {{-- tombol untuk mengembalikan pencarian seperti semula --}}
-                    <a href="{{ route('admin.daftarTransaksi') }}"
-                        class="text-blue-400 py-2 px-2 bg-white border border-blue-400 rounded-md hover:text-white hover:bg-blue-400">
-                        <i class="fas fa-sync"></i>
-                    </a>
+                        {{-- tombol untuk mengembalikan pencarian seperti semula --}}
+                        <a href="{{ route('admin.daftarTransaksi') }}"
+                            class="text-blue-400 py-2 px-2 bg-white border border-blue-400 rounded-md hover:text-white hover:bg-blue-400">
+                            <i class="fas fa-sync"></i>
+                        </a>
+                    </div>
 
                 </form>
 
@@ -71,15 +61,20 @@
 
                 <h1 class="text-2xl font-bold text-center">Daftar Transaksi</h1>
 
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto overflow-y-clip">
                     {{-- table daftar barang --}}
                     <table class="w-full bg-white border border-gray-200 mt-3 text-center">
                         <thead class="border border-b-black">
                             <th class="p-2">No</th>
-                            @foreach ($columnTransaksis as $th)
-                                <th class="py-1">{{ $th }}</th>
-                            @endforeach
-                            <th class="text-center">Aksi</th>
+                            <th class="p-2">Tanggal</th>
+                            <th class="p-2">Username</th>
+                            <th class="p-2">Uang Pembayaran</th>
+                            <th class="p-2">Total Harga</th>
+                            <th class="p-2">Kembalian</th>
+                            <th class="p-2">Cabang</th>
+                            <th class="p-2">Metode Pembayaran</th>
+                            <th class="p-2">Status</th>
+                            <th class="text-center w-1/12">Aksi</th>
                         </thead>
                         <tbody>
                             @foreach ($transaksis as $index => $transaksi)
@@ -89,29 +84,65 @@
                                     @else
                                         <td>{{ $index + 1 }}</td>
                                     @endif
-                                    <td>{{ Carbon::parse($transaksi->tanggal)->translatedFormat('l m F Y') }}</td>
+                                    <td>{{ Carbon::parse($transaksi->tanggal)->translatedFormat('l d F Y') }}</td>
                                     <td>{{ $transaksi->username }}</td>
                                     <td>Rp. {{ number_format($transaksi->uang_pembayaran, 0, ',', '.') }}</td>
                                     <td>Rp. {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
                                     <td>Rp. {{ number_format($transaksi->kembalian, 0, ',', '.') }}</td>
-                                    <td>{{ $transaksi->nama_cabang }}</td>
-                                    <td class="flex justify-center items-center my-2 gap-2">
-                                        <a href="{{ route('admin.detailTransaksi', [$transaksi->id_transaksi]) }}"
-                                            class="text-yellow-500 w-36 py-1 bg-white border border-yellow-500 rounded-md text-center hover:text-white hover:bg-yellow-500">
-                                            <i class="fas fa-eye mr-1"></i>
-                                            Detail Transaksi
-                                        </a>
-                                        <form action="{{ route('admin.hapusTransaksi', [$transaksi->id_transaksi]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('delete')
-                                            <button
-                                                class="text-red-600 w-20 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600"
-                                                onclick="confirmDelete(event)">
-                                                <i class="fas fa-trash mr-1"></i>
-                                                Hapus
+                                    <td>
+                                        @empty( $transaksi->nama_cabang )
+                                            Online
+                                        @else
+                                            {{ $transaksi->nama_cabang }}
+                                        @endempty
+                                    </td>
+                                    <td>{{ $transaksi->metode_pembayaran }}</td>
+                                    <td>{{ $transaksi->status }}</td>
+                                    <td class="flex justify-center my-3">
+
+                                        <div x-data="{ dropdown: false, isActive: false }" @click.away="isActive = false"
+                                            class="relative inline-block">
+                                            <button @click="dropdown = !dropdown; isActive = !isActive"
+                                                :class="isActive ?
+                                                    'bg-gray-400 {{ $loop->last ? 'rounded-t' : 'rounded-b' }}' :
+                                                    ''"
+                                                class="hover:bg-gray-400 px-2 rounded-full p-1">
+                                                <i class="fas fa-bars text-xl"></i>
                                             </button>
-                                        </form>
+
+                                            <div x-show="dropdown" @click.away="dropdown = false"
+                                                x-transition:enter="transition ease-out duration-100"
+                                                x-transition:enter-start="transform opacity-0 scale-95"
+                                                x-transition:enter-end="transform opacity-100 scale-100"
+                                                x-transition:leave="transition ease-in duration-75"
+                                                x-transition:leave-start="transform opacity-100 scale-100"
+                                                x-transition:leave-end="transform opacity-0 scale-95"
+                                                class="origin-top-right p-1 absolute right-0 w-44 shadow-lg bg-gray-400 z-10 {{ $loop->first && $loop->last ? 'rounded-b rounded-tl top-0 w-64' : ($loop->last ? 'bottom-full rounded-t rounded-bl' : 'rounded-b rounded-tl') }}"
+                                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+
+                                                <div class="flex gap-1 {{ $loop->first && $loop->last ? '' : 'flex-col' }}" role="none">
+                                                    <a href="{{ route('admin.detailTransaksi', [$transaksi->id_transaksi]) }}"
+                                                        class="text-yellow-500 py-1 px-2 bg-white border border-yellow-500 rounded-md text-center hover:text-white hover:bg-yellow-500 {{ $loop->first && $loop->last ? 'w-2/3' : 'w-full' }}">
+                                                        <i class="fas fa-eye mr-1"></i>
+                                                        Detail Transaksi
+                                                    </a>
+                                                    <form
+                                                        action="{{ route('admin.hapusTransaksi', [$transaksi->id_transaksi]) }}"
+                                                        method="POST" class="{{ $loop->first && $loop->last ? 'w-1/3' : 'w-full' }}">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button
+                                                            class="text-red-600 w-full py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600"
+                                                            onclick="confirmDelete(event)">
+                                                            <i class="fas fa-trash mr-1"></i>
+                                                            Hapus
+                                                        </button>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
                                     </td>
                                 </tr>
                             @endforeach
@@ -130,6 +161,7 @@
                         </tbody>
                     </table>
                 </div>
+
             </div>
 
         </div>

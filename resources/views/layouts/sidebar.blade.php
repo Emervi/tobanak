@@ -17,6 +17,13 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
+        /* Chrome, Safari, Edge, Opera */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
         /* Custom animations and styles */
         @keyframes fadeIn {
           from { opacity: 0; }
@@ -262,6 +269,83 @@
             hiddenInputElement.value = formattedInputElement.value.replace(/\D/g, '');
         });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.2.6/dist/cdn.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.0/dist/alpine.min.js" defer></script>
+
+    {{-- Script Dropdown --}}
+    <script>
+        function dropdownPesanan(idDropdownLink, idBtnDropdown) {
+
+            // Toggle dropdown yang diklik
+            const dropdown = document.getElementById(idDropdownLink);
+            dropdown.classList.toggle('hidden');
+            dropdown.classList.toggle('flex');
+
+            const btnDropdown = document.getElementById(idBtnDropdown);
+            btnDropdown.classList.toggle('rounded-b');
+            btnDropdown.classList.toggle('bg-gray-400');
+            btnDropdown.classList.toggle('px-4');
+
+            // Tutup semua dropdown yang lain
+            const allDropdowns = document.querySelectorAll('[id^="dropdownLink"]');
+            allDropdowns.forEach(function(dropdown) {
+                if (dropdown.id !== idDropdownLink) {
+                    dropdown.classList.add('hidden');
+                    dropdown.classList.remove('flex');
+                }
+            });
+
+            const allButtons = document.querySelectorAll('[id^="btnDropdown"]');
+            allButtons.forEach(function(button) {
+                if (button.id !== idBtnDropdown) {
+                    button.classList.remove('rounded-b');
+                    button.classList.remove('bg-gray-400');
+                    button.classList.remove('px-4');
+                }
+            });
+
+            // Close dropdown if clicked outside
+            document.addEventListener('click', function(e) {
+                // const button = document.getElementById(idBtnDropdown);
+                if (!btnDropdown.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.classList.add('hidden');
+                    dropdown.classList.remove('flex');
+                    btnDropdown.classList.remove('rounded-b');
+                    btnDropdown.classList.remove('bg-gray-400');
+                    btnDropdown.classList.remove('px-4');
+                }
+            });
+
+        }
+    </script>
+    
+    {{-- Animasi Dropdown --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggle = document.getElementById('dropdownToggle');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+
+            dropdownToggle.addEventListener('click', function() {
+                if (dropdownMenu.classList.contains('opacity-0')) {
+                    dropdownMenu.classList.remove('opacity-0', 'scale-y-0');
+                    dropdownMenu.classList.add('opacity-100', 'scale-y-100');
+                } else {
+                    dropdownMenu.classList.remove('opacity-100', 'scale-y-100');
+                    dropdownMenu.classList.add('opacity-0', 'scale-y-0');
+                }
+            });
+
+            // Menutup dropdown jika user mengklik di luar dropdown
+            document.addEventListener('click', function(e) {
+                if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                    dropdownMenu.classList.remove('opacity-100', 'scale-y-100');
+                    dropdownMenu.classList.add('opacity-0', 'scale-y-0');
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>
