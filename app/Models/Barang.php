@@ -33,4 +33,15 @@ class Barang extends Model
     {
         return $this->hasMany(Transaksi::class, 'id_barang', 'id_barang');
     }
+
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    public function averageRating()
+    {
+        return $this->ratings->avg('rating');
+    }
+
 }

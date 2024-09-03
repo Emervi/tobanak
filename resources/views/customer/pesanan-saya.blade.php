@@ -1,5 +1,3 @@
-<!-- resources/views/customer/pesanan-saya.blade.php -->
-
 @extends('layouts.app')
 
 @section('body')
@@ -8,7 +6,6 @@
     use Carbon\Carbon;
     Carbon::setLocale('id');
     @endphp
-
 
 <div class="container mx-auto px-4 py-6">
     <h1 class="text-3xl font-bold text-gray-800 mb-8">Pesanan Saya</h1>
@@ -49,11 +46,9 @@
         </ul>
     </div>
 
-    {{-- @dd($barangs) --}}
-    {{-- barang --}}
     <div class="flex flex-col gap-4 items-center">
         @foreach($barangs as $barang)
-            <div class="bg-white shadow-sm rounded-lg p-4 w-full md:w-3/4">
+            <div x-data='{ openModals: false, isRated: {{ $barang->rated_barang ? 'true' : 'false' }} }' class="bg-white shadow-sm rounded-lg p-4 w-full md:w-3/4">
                 <div class="w-full flex justify-between mr-4 text-gray-700 text-center">
                     <div class="text-sm bg-rose-500 text-white p-1 rounded">
                         <i class="fa-solid fa-store mx-1"></i> {{ $barang->nama_cabang }}
@@ -102,34 +97,84 @@
                 </div>
                 <hr class="my-3">
                 <div class="w-full items-end text-end">
-                    <p class="text-gray-800 my-3">total harga : <span class="text-lg text-rose-500 font-semibold">Rp. {{ number_format($barang->harga * $barang->kuantitas + $barang->harga_ekspedisi, 0, ',', '.') }}</span></p>
-                    @if ($barang->status_barang === 'Dikirim')
-                    <form action="{{ route('customer.konfirmasiPesanan') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="id_transaksi" value="{{ $barang->id_transaksi }}">
-                        <input type="hidden" name="id_barang" value="{{ $barang->id_barang }}">
-                        <input type="hidden" name="kuantitas" value="{{ $barang->kuantitas }}">
-                        <input type="hidden" name="total_harga_barang" value="{{ $barang->total_harga_barang }}">
-                        <button class="border border-pink-500 text-pink-500 hover:text-white hover:bg-pink-500 px-4 py-2 rounded">Terima</button>    
-                    </form>
-                @elseif ($barang->status_barang === 'Diproses')
-                    <form action="{{ route('customer.batalPesanan') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="id_transaksi" value="{{ $barang->id_transaksi }}">
-                        <input type="hidden" name="id_barang" value="{{ $barang->id_barang }}">
-                        <input type="hidden" name="kuantitas" value="{{ $barang->kuantitas }}">
-                        <input type="hidden" name="total_harga_barang" value="{{ $barang->total_harga_barang }}">
-                        <button class="bg-pink-400 text-white px-4 py-2 rounded">Batal</button>    
-                    </form>
-                @elseif ($barang->status_barang === 'Dibatalkan')
-                    <button class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" disabled>Dibatalkan</button>                        
-                @else
-                    <button class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" disabled>Selesai</button>                        
-                @endif
+                    <p class="text-gray-800 my-3">total harga : 
+                        <span class="text-lg text-rose-500 font-semibold">
+                            Rp. {{ number_format($barang->harga * $barang->kuantitas + $barang->harga_ekspedisi, 0, ',', '.') }}
+                        </span>
+                    </p>
+                    @if ($barang->status_barang === 'Dikirim')                            
+                            <form action="{{ route('customer.konfirmasiPesanan') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="id_transaksi" value="{{ $barang->id_transaksi }}">
+                                <input type="hidden" name="id_barang" value="{{ $barang->id_barang }}">
+                                <input type="hidden" name="kuantitas" value="{{ $barang->kuantitas }}">
+                                <input type="hidden" name="total_harga_barang" value="{{ $barang->total_harga_barang }}">
+                                <button class="bg-pink-500 text-white hover:bg-pink-700 px-4 py-2 rounded">Terima</button>    
+                            </form>
+                    @elseif ($barang->status_barang === 'Diproses')
+                        <form action="{{ route('customer.batalPesanan') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id_transaksi" value="{{ $barang->id_transaksi }}">
+                            <input type="hidden" name="id_barang" value="{{ $barang->id_barang }}">
+                            <input type="hidden" name="kuantitas" value="{{ $barang->kuantitas }}">
+                            <input type="hidden" name="total_harga_barang" value="{{ $barang->total_harga_barang }}">
+                            <button class="bg-pink-400 text-white px-4 py-2 rounded">Batal</button>    
+                        </form>
+                    @elseif ($barang->status_barang === 'Dibatalkan')
+                        <button class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" disabled>Dibatalkan</button>                        
+                    @else
+                        <div class="gap-1 flex justify-end">
+                            @if (!$barang->rated_barang)
+                                <button @click="openModals = true" class="border border-pink-500 text-pink-500 hover:text-white hover:bg-pink-500 px-4 py-2 rounded">Nilai</button>                            
+                            @elseif($barang->rated_barang)
+                                <p class="text-gray-700 px-4 py-2 font-semibold text-xl"><i class="fa-solid fa-star"></i>{{ $barang->rating }}</p>
+                            @endif
+
+                            <div x-show="openModals" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50" x-cloak>
+                                <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Nilai Barang</h2>
+                                    <form action="{{ route('customer.rating') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id_transaksi" value="{{ $barang->id_transaksi }}">
+                                        <input type="hidden" name="id_barang" value="{{ $barang->id_barang }}">
+                                        <div class="mb-4">
+                                            <label for="rating" class="block text-gray-700 font-semibold mb-2">Rating:</label>
+                                            <select name="rating" id="rating" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500">
+                                                <option value="5">5 - Sangat Baik</option>
+                                                <option value="4">4 - Baik</option>
+                                                <option value="3">3 - Cukup</option>
+                                                <option value="2">2 - Buruk</option>
+                                                <option value="1">1 - Sangat Buruk</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="review" class="block text-gray-00 font-semibold mb-2">Review:</label>
+                                            <textarea name="review" id="review" rows="4" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500"></textarea>
+                                        </div>
+                                        <div class="flex justify-end">
+                                            <button type="button" @click="openModals = false" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Batal</button>
+                                            <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded">Kirim</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <button class="bg-pink-500 text-white px-4 py-2 rounded cursor-not-allowed" disabled>Selesai</button>                        
+                        </div>
+                    @endif
                 
                 </div>
             </div>
+
+            <!-- Modal untuk Penilaian -->
+            
         @endforeach
     </div>
+
+    <!-- Pagination -->
+    {{-- <div class="mt-6">
+        {{ $barangs->links() }}
+    </div> --}}
 </div>
+
 @endsection

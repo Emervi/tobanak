@@ -14,6 +14,7 @@ use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DistribusiController;
 use App\Http\Controllers\EkspedisiController;
 use App\Http\Controllers\KasirController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\TestController;
 
 /*
@@ -210,8 +211,7 @@ Route::post('/batal-pesanan', [CustomerController::class, 'batalPesanan'])->name
     Route::post('/update-alamat', [CustomerCoController::class, 'updateAlamat'])->name('update.alamat');
     Route::post('/reset-address', [CustomerCoController::class, 'resetAlamat'])->name('reset.alamat');
 
-    
-    
+    Route::post('/rating', [RatingController::class, 'submitRating'])->name('customer.rating');
 });
 // \CUSTOMER
 

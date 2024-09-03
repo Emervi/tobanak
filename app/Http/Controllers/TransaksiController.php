@@ -225,11 +225,6 @@ class TransaksiController extends Controller
         ]);
 
         // Update stok barang
-        $barang = $keranjang->barang;
-        if ($barang) {
-            $barang->stok_barang -= $keranjang->kuantitas;
-            $barang->save();
-        }
     }
 
 
