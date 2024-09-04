@@ -2,6 +2,7 @@
 
 @section('title', isset($barang) ? 'Update Barang' : 'Tambah Barang')
 
+{{-- Style untuk sistem dropzone --}}
 @section('style')
     <style>
         .dropzone {
@@ -21,16 +22,13 @@
 
 @section('content')
 
-    {{-- tombol kembali dan tambah --}}
-    <div class="w-2/3 md:w-1/2 mx-auto mt-10">
+    <div class="w-2/3 md:w-3/5 mx-auto mt-10">
 
+        {{-- pengecekan apakah tombol edit dipencet / isset($barang) --}}
         @isset($barang)
             <div class="bg-white shadow-2xl font-medium p-2 mb-10 rounded-lg">
 
                 <h2 class="text-center font-bold text-xl mb-3">Update Barang</h2>
-
-                {{-- pengecekan apakah tombol edit dipencet / isset($barang) --}}
-
 
                 @foreach ($barang as $atribut)
                     {{-- form untuk pengisian edit barang --}}
@@ -81,12 +79,12 @@
                         </div>
 
                         {{-- input selain gambar --}}
-                        <div class="grid grid-cols-2 gap-1 md:gap-5 mt-3">
+                        <div class="grid grid-cols-2 gap-3 mt-3">
 
                             {{-- column 1 --}}
                             <div>
                                 <div class="mb-3">
-                                    <label for="nama_barang" class="block">{{ $columnBarangs['nama_barang'] }}</label>
+                                    <label for="nama_barang" class="block">Nama Barang</label>
                                     <input type="text" name="nama_barang" id="nama_barang"
                                         value="{{ old('nama_barang', $atribut->nama_barang) }}" placeholder="Masukan nama barang"
                                         class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
@@ -96,7 +94,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="block">{{ $columnBarangs['kategori_barang'] }}</label>
+                                    <label class="block">Kategori</label>
                                     <select name="kategori_barang"
                                         class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                         <option value="Kaos" {{ old('kategori_barang', $atribut->kategori_barang) == 'Kaos' ? 'selected' : '' }}>
@@ -127,7 +125,7 @@
                                 </div>
 
                                 <div>
-                                    <label for="deskripsi_barang" class="block">{{ $columnBarangs['deskripsi_barang'] }}</label>
+                                    <label for="deskripsi_barang" class="block">Deskripsi Barang</label>
                                     <textarea name="deskripsi_barang" id="deskripsi_barang" placeholder="Masukan deskripsi barang"
                                     class="p-1 shadow rounded-md w-full resize-none h-24 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">{{ old('deskripsi_barang', $atribut->deskripsi_barang) }}</textarea>
                                     @error('deskripsi_barang')
@@ -138,20 +136,20 @@
                             </div>
 
                             {{-- column 2 --}}
-                            <div>
+                            <div class="ml-5">
                                 <div class="mb-3">
-                                    <label for="stok_barang" class="block">{{ $columnBarangs['stok_barang'] }}</label>
+                                    <label for="stok_barang" class="block">Stok</label>
                                     <input type="number" name="stok_barang" id="stok_barang"
                                         value="{{ old('stok_barang', $atribut->stok_barang) }}" placeholder="Masukan stok barang"
-                                        class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
+                                        class="p-1 shadow rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     @error('stok_barang')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="block">{{ $columnBarangs['bahan'] }}</label>
-                                    <select name="bahan" id="bahan" class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
+                                    <label class="block">Bahan</label>
+                                    <select name="bahan" id="bahan" class="p-1 shadow rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                         <option value="Tebal" {{ old('bahan', $atribut->bahan) == 'Tebal' ? 'selected' : '' }}>Tebal
                                         </option>
                                         <option value="Street" {{ old('bahan', $atribut->bahan) == 'Street' ? 'selected' : '' }}>Street
@@ -167,20 +165,20 @@
                                 </div>
 
                                 <div class="mb-1.5">
-                                    <label for="diskon" class="block">{{ $columnBarangs['diskon'] }}(%)</label>
+                                    <label for="diskon" class="block">Diskon(%)</label>
                                     <input type="number" name="diskon" id="diskon" value="{{ old('diskon', $atribut->diskon) }}"
                                         placeholder="Masukan diskon barang"
-                                        class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
+                                        class="p-1 shadow rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     @error('diskon')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror
                                 </div>
 
-                                <div class="mb-2">
-                                    <label for="potongan" class="block">{{ $columnBarangs['potongan'] }}(Rp.)</label>
+                                <div class="mb-1.5">
+                                    <label for="potongan" class="block">Potongan(Rp.)</label>
                                     <input type="number" name="potongan" id="potongan" value="{{ old('potongan', $atribut->potongan) }}"
                                         placeholder="Masukan potongan barang"
-                                        class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
+                                        class="p-1 shadow rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                     @error('potongan')
                                         <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                     @enderror
@@ -248,12 +246,12 @@
                     </div>
 
                     {{-- input selain gambar --}}
-                    <div class="grid grid-cols-2 gap-5 mt-3">
+                    <div class="grid grid-cols-2 gap-3 mt-3">
 
                         {{-- column 1 --}}
                         <div>
                             <div class="mb-3">
-                                <label for="nama_barang" class="block">{{ $columnBarangs['nama_barang'] }}</label>
+                                <label for="nama_barang" class="block">Nama Barang</label>
                                 <input type="text" name="nama_barang" id="nama_barang" value="{{ old('nama_barang') }}"
                                     placeholder="Masukan nama barang"
                                     class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
@@ -263,10 +261,10 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="block">{{ $columnBarangs['kategori_barang'] }}</label>
+                                <label class="block">Kategori</label>
                                 <select name="kategori_barang"
                                     class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
-                                    <option value="" disabled selected>Pilih kategori</option>
+                                    <option value="" disabled selected>Pilih Kategori</option>
                                     <option value="Kaos" {{ old('kategori_barang') == 'Kaos' ? 'selected' : '' }}>Kaos
                                     </option>
                                     <option value="Kemeja" {{ old('kategori_barang') == 'Kemeja' ? 'selected' : '' }}>Kemeja
@@ -294,7 +292,7 @@
                             </div>
 
                             <div>
-                                <label for="deskripsi_barang" class="block">{{ $columnBarangs['deskripsi_barang'] }}</label>
+                                <label for="deskripsi_barang" class="block">Deskripsi Barang</label>
                                 <textarea name="deskripsi_barang" id="deskripsi_barang" placeholder="Masukan deskripsi barang"
                                 class="p-1 shadow rounded-md w-full resize-none h-24 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">{{ old('deskripsi_barang') }}</textarea>
                                 @error('deskripsi_barang')
@@ -305,23 +303,23 @@
                         </div>
 
                         {{-- column 2 --}}
-                        <div class="ml-6">
+                        <div class="ml-5">
 
                             <div class="mb-3">
-                                <label for="stok_barang" class="block">{{ $columnBarangs['stok_barang'] }}</label>
+                                <label for="stok_barang" class="block">Stok</label>
                                 <input type="number" name="stok_barang" id="stok_barang" value="{{ old('stok_barang') }}"
                                     placeholder="Masukan stok barang"
-                                    class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
+                                    class="p-1 shadow rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                 @error('stok_barang')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label class="block">{{ $columnBarangs['bahan'] }}</label>
+                                <label class="block">Bahan</label>
                                 <select name="bahan" id="bahan"
-                                    class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
-                                    <option value="" disabled selected>Pilih bahan</option>
+                                    class="p-1 shadow rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
+                                    <option value="" disabled selected>Pilih Bahan</option>
                                     <option value="Tebal" {{ old('bahan') == 'Tebal' ? 'selected' : '' }}>Tebal</option>
                                     <option value="Street" {{ old('bahan') == 'Street' ? 'selected' : '' }}>Street</option>
                                     <option value="Sedang" {{ old('bahan') == 'Sedang' ? 'selected' : '' }}>Sedang</option>
@@ -333,20 +331,20 @@
                             </div>
 
                             <div class="mb-1.5">
-                                <label for="diskon" class="block">{{ $columnBarangs['diskon'] }}(%)</label>
+                                <label for="diskon" class="block">Diskon(%)</label>
                                 <input type="number" name="diskon" id="diskon" value="{{ old('diskon') }}"
                                     placeholder="Masukan diskon barang"
-                                    class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
+                                    class="p-1 shadow rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                 @error('diskon')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label for="potongan" class="block">{{ $columnBarangs['potongan'] }}(Rp.)</label>
+                                <label for="potongan" class="block">Potongan(Rp.)</label>
                                 <input type="number" name="potongan" id="potongan" value="{{ old('potongan') }}"
                                     placeholder="Masukan potongan barang"
-                                    class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
+                                    class="p-1 shadow rounded-md w-full focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
                                 @error('potongan')
                                     <p class="text-red-500 font-medium text-sm">{{ $message }}</p>
                                 @enderror

@@ -16,7 +16,8 @@
         </div>
 
         <div class="mt-7">
-            <div class="container w-2/3 mx-auto bg-white p-3 shadow-xl mt-5 rounded-xl">
+
+            <div class="container w-10/12 mx-auto bg-white p-3 shadow-xl mt-5 rounded-xl">
 
                 <h1 class="text-2xl font-bold text-center">Detail Barang Transaksi</h1>
                 
@@ -25,9 +26,10 @@
                     <table class="min-w-full bg-white border border-gray-200 mt-3">
                         <thead class="border border-b-black text-center">
                             <th class="p-2 w-1/12">No</th>
-                            @foreach ( $columnBarangTransaksis as $th )
-                            <th class="px-1 w-2/12">{{ $th }}</th>                                
-                            @endforeach
+                            <th class="px-1">Nama Barang</th>
+                            <th class="px-1">Kuatitas</th>
+                            <th class="px-1">Status Barang</th>
+                            <th class="px-1">Total Harga</th>
                         </thead>
                         <tbody>
                             @foreach ($detailTransaksi as $index => $transaksi)
@@ -39,12 +41,28 @@
                                     <td>Rp. {{ number_format($transaksi->total_harga_barang, 0, ',', '.') }}</td>
                                 </tr>
                             @endforeach
-                            <tr class="text-center border border-t-gray-300">
-                                <td colspan="4"></td>
-                                <td class="font-bold p-2">Total : Rp. {{ number_format($totalHarga, 0, ',', '.') }}</td>
-                            </tr>
                         </tbody>
                     </table>
+
+                    {{-- @dd($detailTambahan) --}}
+                    <div class="p-1 text-sm font-semibold">
+                        <p>Total Harga Barang : {{ $detailTambahan->total_harga }}</p>
+                        <p>Ekspedisi : 
+                            @empty( $detailTambahan->id_ekspedisi )
+                                Tidak ada
+                            @else
+                                {{ $detailTambahan->nama_ekspedisi }} ({{ $detailTambahan->jenis_pengiriman }})
+                            @endempty
+                        </p>
+                        <p>Alamat : 
+                            @empty( $detailTambahan->id_ekspedisi )
+                                Cabang {{ $detailTambahan->nama_cabang }} (Bayar dikasir)
+                            @else
+                                {{ $detailTambahan->alamat }}
+                            @endempty
+                        </p>
+                    </div>
+
                 </div>
             </div>
         </div>

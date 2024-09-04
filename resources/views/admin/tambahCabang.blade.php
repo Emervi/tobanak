@@ -5,7 +5,7 @@
 @section('content')
 
     {{-- tombol kembali dan tambah --}}
-    <div class="w-2/3 md:w-1/2 mx-auto mt-10">
+    <div class="w-2/3 md:w-3/5 mx-auto mt-10">
 
         @isset($cabang)
             <div class="bg-white shadow-2xl font-medium p-2 mb-10 rounded-lg">
@@ -21,12 +21,12 @@
                         @csrf
                         @method('put')
 
-                        <div class="grid grid-cols-2 gap-5 mt-3">
+                        <div class="grid grid-cols-2 gap-3 mt-3">
 
                             {{-- column 1 --}}
                             <div>
                                 <div class="mb-3">
-                                    <label for="nama_cabang" class="block">{{ $columnCabangs['nama_cabang'] }}</label>
+                                    <label for="nama_cabang" class="block">Nama Cabang</label>
                                     <input type="text" name="nama_cabang" id="nama_cabang" value="{{ $atribut->nama_cabang }}"
                                         placeholder="Masukan nama cabang"
                                         class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
@@ -36,7 +36,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="email_cabang" class="block">{{ $columnCabangs['email_cabang'] }}</label>
+                                    <label for="email_cabang" class="block">Email Cabang</label>
                                     <input type="email" name="email_cabang" id="email_cabang"
                                         value="{{ $atribut->email_cabang }}" placeholder="Masukan email cabang"
                                         class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
@@ -50,7 +50,7 @@
                             {{-- column 2 --}}
                             <div>
                                 <div class="mb-3">
-                                    <label for="kota_cabang" class="block">{{ $columnCabangs['kota_cabang'] }}</label>
+                                    <label for="kota_cabang" class="block">Kota Cabang</label>
                                     <input type="text" name="kota_cabang" id="kota_cabang"
                                         value="{{ $atribut->kota_cabang }}" placeholder="Masukan kota cabang"
                                         class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
@@ -60,7 +60,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="lokasi_cabang" class="block">{{ $columnCabangs['lokasi_cabang'] }}</label>
+                                    <label for="lokasi_cabang" class="block">Lokasi Cabang</label>
                                     <textarea name="lokasi_cabang" id="lokasi_cabang" placeholder="Masukan lokasi cabang"
                                     class="p-1 shadow rounded-md w-full resize-none h-24 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">{{ $atribut->lokasi_cabang }}</textarea>
                                     @error('lokasi_cabang')
@@ -101,12 +101,12 @@
                     @csrf
 
                     {{-- input selain gambar --}}
-                    <div class="grid grid-cols-2 gap-5 mt-3">
+                    <div class="grid grid-cols-2 gap-3 mt-3">
 
                         {{-- column 1 --}}
                         <div>
                             <div class="mb-3">
-                                <label for="nama_cabang" class="block">{{ $columnCabangs['nama_cabang'] }}</label>
+                                <label for="nama_cabang" class="block">Nama Cabang</label>
                                 <input type="text" name="nama_cabang" id="nama_cabang" value="{{ old('nama_cabang') }}"
                                     placeholder="Masukan nama cabang"
                                     class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
@@ -116,7 +116,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="email_cabang" class="block">{{ $columnCabangs['email_cabang'] }}</label>
+                                <label for="email_cabang" class="block">Email Cabang</label>
                                 <input type="email" name="email_cabang" id="email_cabang" value="{{ old('email_cabang') }}"
                                     placeholder="Masukan email cabang"
                                     class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
@@ -130,7 +130,7 @@
                         {{-- column 2 --}}
                         <div>
                             <div class="mb-3">
-                                <label for="kota_cabang" class="block">{{ $columnCabangs['kota_cabang'] }}</label>
+                                <label for="kota_cabang" class="block">Kota Cabang</label>
                                 <input type="text" name="kota_cabang" id="kota_cabang" value="{{ old('kota_cabang') }}"
                                     placeholder="Masukan kota cabang"
                                     class="p-1 shadow rounded-md w-11/12 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">
@@ -140,7 +140,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="lokasi_cabang" class="block">{{ $columnCabangs['lokasi_cabang'] }}</label>
+                                <label for="lokasi_cabang" class="block">Lokasi Cabang</label>
                                 <textarea name="lokasi_cabang" id="lokasi_cabang" placeholder="Masukan lokasi cabang"
                                     class="p-1 shadow rounded-md w-full resize-none h-24 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-gray-300">{{ old('lokasi_cabang') }}</textarea>
                                 @error('lokasi_cabang')

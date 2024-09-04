@@ -7,24 +7,22 @@
     {{-- tombol kembali dan tambah --}}
     <div class="w-11/12 mx-auto mt-10 mb-12">
 
-        <div class="flex items-center justify-between">
+        <div class="mt-7 w-10/12 mx-auto flex flex-col">
 
-            <a href="{{ route('admin.dashboard') }}"
-                class="text-pink-400 p-2 bg-white border border-pink-400 rounded-md hover:text-white hover:bg-pink-400">
-                <i class="fas fa-arrow-left mr-1"></i>
-                Kembali
-            </a>
+            <div class="flex items-center justify-between">
 
-            <a href="{{ route('admin.tambahCabang') }}"
-                class="text-green-500 p-2 bg-white border border-green-500 rounded-md hover:text-white hover:bg-green-600">
-                <i class="fas fa-plus mr-1"></i>
-                Tambah Cabang
-            </a>
-        </div>
-
-        <div class="mt-7 w-2/3 mx-auto flex flex-col">
+                {{-- div kosong --}}
+                <div></div>
+    
+                <a href="{{ route('admin.tambahCabang') }}"
+                    class="text-green-500 p-2 bg-white border border-green-500 rounded-md hover:text-white hover:bg-green-600">
+                    <i class="fas fa-plus mr-1"></i>
+                    Tambah Cabang
+                </a>
+            </div>
+            
             {{-- fitur pencarian cabang --}}
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center mt-3">
 
                 <form action="{{ route('admin.daftarCabang') }}" method="POST" class="flex gap-3">
                     @csrf
@@ -67,19 +65,20 @@
 
             </div>
 
-            <div class="container w-full bg-white p-3 shadow-xl mt-5 rounded-xl">
+            <div class="container bg-white p-3 shadow-xl mt-5 rounded-xl">
 
                 <h1 class="text-2xl font-bold text-center">Daftar Cabang</h1>
 
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto overflow-y-clip">
                     {{-- table daftar barang --}}
                     <table class="min-w-full bg-white border text-center border-gray-200 mt-3">
                         <thead class="border border-b-black">
                             <th class="p-2">No</th>
-                            @foreach ( $columnCabangs as $th )
-                            <th class="py-1">{{ $th }}</th>    
-                            @endforeach
-                            <th class="text-center">Aksi</th>
+                            <th class="py-1">Nama Cabang</th>
+                            <th class="py-1">Lokasi Cabang</th>
+                            <th class="py-1">Kota Cabang</th>
+                            <th class="py-1">Email Cabang</th>
+                            <th class="text-center w-1/12">Aksi</th>
                         </thead>
                         <tbody>
                             @foreach ($cabangs as $index => $cabang)
@@ -93,23 +92,50 @@
                                     <td>{{ $cabang->lokasi_cabang }}</td>
                                     <td>{{ $cabang->kota_cabang }}</td>
                                     <td>{{ $cabang->email_cabang }}</td>
-                                    <td class="flex justify-center items-center my-2 gap-2">
-                                        <a href="{{ route('admin.editCabang', [$cabang->id_cabang]) }}"
-                                            class="text-blue-600 w-20 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600">
-                                            <i class="fas fa-pen mr-1"></i>
-                                            Edit
-                                        </a>
-                                        <form action="{{ route('admin.hapusCabang', [$cabang->id_cabang]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('delete')
-                                            <button
-                                                class="text-red-600 w-20 py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600"
-                                                onclick="confirmDelete(event)">
-                                                <i class="fas fa-trash mr-1"></i>
-                                                Hapus
+                                    <td class="flex justify-center my-3">
+
+                                        <div x-data="{ dropdown: false, isActive: false }" @click.away="isActive = false"
+                                            class="relative inline-block">
+                                            <button @click="dropdown = !dropdown; isActive = !isActive"
+                                                :class="isActive ?
+                                                    'bg-gray-400 {{ $loop->last ? 'rounded-t' : 'rounded-b' }}' :
+                                                    ''"
+                                                class="hover:bg-gray-400 px-2 rounded-full p-1">
+                                                <i class="fas fa-bars text-xl"></i>
                                             </button>
-                                        </form>
+
+                                            <div x-show="dropdown" @click.away="dropdown = false"
+                                                x-transition:enter="transition ease-out duration-100"
+                                                x-transition:enter-start="transform opacity-0 scale-95"
+                                                x-transition:enter-end="transform opacity-100 scale-100"
+                                                x-transition:leave="transition ease-in duration-75"
+                                                x-transition:leave-start="transform opacity-100 scale-100"
+                                                x-transition:leave-end="transform opacity-0 scale-95"
+                                                class="origin-top-right p-1 absolute right-0 w-24 shadow-lg bg-gray-400 z-10 {{ ($loop->first && $loop->last ? 'rounded-b rounded-tl top-0 w-48' : ($loop->last ? 'bottom-full rounded-t rounded-bl' : 'rounded-b rounded-tl')) }}"
+                                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+
+                                                <div class="flex gap-1 {{ $loop->first && $loop->last ? '' : 'flex-col' }}" role="none">
+                                                    <a href="{{ route('admin.editCabang', [$cabang->id_cabang]) }}"
+                                                        class="text-blue-600 py-1 bg-white border border-blue-600 rounded-md text-center hover:text-white hover:bg-blue-600 {{ $loop->first && $loop->last ? 'w-1/2' : 'w-full' }}">
+                                                        <i class="fas fa-pen mr-1"></i>
+                                                        Edit
+                                                    </a>
+                                                    <form action="{{ route('admin.hapusCabang', [$cabang->id_cabang]) }}"
+                                                        method="POST" class="{{ $loop->first && $loop->last ? 'w-1/2' : 'w-full' }}">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button
+                                                            class="text-red-600 w-full py-1 bg-white border border-red-600 rounded-md hover:text-white hover:bg-red-600"
+                                                            onclick="confirmDelete(event)">
+                                                            <i class="fas fa-trash mr-1"></i>
+                                                            Hapus
+                                                        </button>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
                                     </td>
                                 </tr>
                             @endforeach

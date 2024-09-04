@@ -30,7 +30,7 @@ class CustomerController extends Controller
             ->pluck('kategori_barang');
 
         $query = Barang::where('distribusi', 'Diterima')
-                ->orderByRaw("
+            ->orderByRaw("
                     CASE 
                         WHEN stok_barang >= 1 THEN 0
                         ELSE 1 
@@ -106,10 +106,10 @@ class CustomerController extends Controller
         
 
         $rekomendasiBarang = Barang::where('kategori_barang', $barang->kategori_barang)
-                            ->where('id_barang', '!=', $barang->id_barang)
-                            ->where('stok_barang', '>=', 1)
-                            ->limit(3)
-                            ->get();
+            ->where('id_barang', '!=', $barang->id_barang)
+            ->where('stok_barang', '>=', 1)
+            ->limit(3)
+            ->get();
 
         $bebanProduksi = (2 / 100) * $modal;
         $keuntungan = (25 / 100) * $modal;
@@ -132,11 +132,7 @@ class CustomerController extends Controller
     }
     // \notifikasi pesanan berhasil
 
-
-
-
-
-        public function pesananSaya(Request $request)
+    public function pesananSaya(Request $request)
     {
         // Ambil id_customer dari session
         $id_customer = session('customer')->id_user;
@@ -190,94 +186,115 @@ class CustomerController extends Controller
 
 
     public function konfirmasiPesanan(Request $request)
-{
-    $request->validate([
-        'id_transaksi' => 'required',
-        'id_barang' => 'required',
-        'kuantitas' => 'required|numeric',
-        'total_harga_barang' => 'required|numeric',
-    ]);
+    {
+        $request->validate([
+            'id_transaksi' => 'required',
+            'id_barang' => 'required',
+            'kuantitas' => 'required|numeric',
+            'total_harga_barang' => 'required|numeric',
+        ]);
 
-    $transaksi = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
-    ->where('id_barang', $request->id_barang)
-    ->update([
-        'status_barang' => 'diterima',
-        'kuantitas' => $request->kuantitas,
-        'total_harga_barang' => $request->total_harga_barang,
-    ]);
+        $transaksi = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
+            ->where('id_barang', $request->id_barang)
+            ->update([
+                'status_barang' => 'Diterima',
+                'kuantitas' => $request->kuantitas,
+                'total_harga_barang' => $request->total_harga_barang,
+            ]);
 
-    if($transaksi) {
+        // mengambil total barang yang dipesan
+        $totalBarangPesanan = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
+            ->count();
+
+        // mengambil total barang yang status_barang nya diterima
+        $totalBarangDiterima = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
+            ->where('status_barang', 'Diterima')
+            ->count();
+
+        $totalBarangDibatalkan = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
+            ->where('status_barang', 'Dibatalkan')
+            ->count();
+
+        // mengecek apakah total barang yang dipesan sama dengan total barang dengan status_barang diterima
+        if ($totalBarangDiterima > 0) {
+            if ($totalBarangDiterima + $totalBarangDibatalkan === $totalBarangPesanan) {
+
+                // jika kedua total sudah sama maka ubah status transaksi menjadi diterima
+                Transaksi::where('id_transaksi', $request->id_transaksi)
+                    ->update([
+                        'status' => 'Selesai',
+                    ]);
+            }
+        }
+
+        // if ($transaksi) {
+        //     $updated = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
+        //         ->where('status_barang', 'Diproses')
+        //         ->exists();
+
+        //     if (!$updated) {
+        //         Transaksi::where('id_transaksi', $request->id_transaksi)
+        //             ->update(['status' => 'Selesai']);
+        //     }
+
+        //     return redirect()->back()->with('success', 'Pesanan berhasil dikonfirmasi.');
+        // }
+
+        // return redirect()->back()->with('error', 'Transaksi tidak ditemukan');
+
+        // kembali ke halaman dengan pesan success
+        return redirect()->back()->with('success', 'Barang berhasil dikirim!');
+    }
+
+
+    public function batalPesanan(Request $request)
+    {
+        $request->validate([
+            'id_transaksi' => 'required',
+            'id_barang' => 'required',
+            'kuantitas' => 'required|numeric',
+            'total_harga_barang' => 'required|numeric',
+        ]);
+
+        $transaksi = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
+            ->where('id_barang', $request->id_barang)
+            ->update([
+                'status_barang' => 'Dibatalkan',
+                'kuantitas' => $request->kuantitas,
+                'total_harga_barang' => $request->total_harga_barang,
+            ]);
+
         $updated = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
-                    ->where('status_barang', 'Diproses')
-                    ->exists();
+            ->where('status_barang', 'Diproses')
+            ->exists();
 
-        if(!$updated){
+        if (!$updated) {
             Transaksi::where('id_transaksi', $request->id_transaksi)
-                        ->update(['status' => 'Selesai']);
+                ->update(['status' => 'Selesai']);
         }
 
-        return redirect()->back()->with('success', 'Pesanan berhasil dikonfirmasi.');
-    }
+        // $transaksi = BarangTransaksi::create([
+        //     'id_transaksi' => $request->id_transaksi,
+        //     'id_barang' => $request->id_barang,
+        //     'status' => 'Dikirim',
+        //     'kuantitas' => $request->kuantitas,
+        //     'total_harga_barang' => $request->total_harga_barang,
+        // ]);
 
-    return redirect()->back()->with('error', 'Transaksi tidak ditemukan');
-}
+        if ($transaksi) {
+            $barang = Barang::where('id_barang', $request->id_barang)->first();
+            if ($barang) {
+                $barang->stok_barang += intval($request->kuantitas);
+                $barang->save();
+            }
 
+            // dd($barang->stok_barang);
 
-public function batalPesanan(Request $request)
-{
-    $request->validate([
-        'id_transaksi' => 'required',
-        'id_barang' => 'required',
-        'kuantitas' => 'required|numeric',
-        'total_harga_barang' => 'required|numeric',
-    ]);
-
-    $transaksi = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
-    ->where('id_barang', $request->id_barang)
-    ->update([
-        'status_barang' => 'Dibatalkan',
-        'kuantitas' => $request->kuantitas,
-        'total_harga_barang' => $request->total_harga_barang,
-    ]);
-
-    $updated = BarangTransaksi::where('id_transaksi', $request->id_transaksi)
-                ->where('status_barang', 'Diproses')
-                ->exists();
-
-    if(!$updated){
-        Transaksi::where('id_transaksi', $request->id_transaksi)
-                    ->update(['status' => 'Selesai']);
-    }
-
-    // $transaksi = BarangTransaksi::create([
-    //     'id_transaksi' => $request->id_transaksi,
-    //     'id_barang' => $request->id_barang,
-    //     'status' => 'Dikirim',
-    //     'kuantitas' => $request->kuantitas,
-    //     'total_harga_barang' => $request->total_harga_barang,
-    // ]);
-
-    if($transaksi){
-        $barang = Barang::where('id_barang', $request->id_barang)->first();
-        if($barang){
-            $barang->stok_barang += intval($request->kuantitas);
-            $barang->save();
         }
 
-        // dd($barang->stok_barang);
+        // dd($transaksi);
 
+
+        return redirect()->back()->with('error', 'Transaksi tidak ditemukan');
     }
-
-    // dd($transaksi);
-
-
-    return redirect()->back()->with('error', 'Transaksi tidak ditemukan');
 }
-
-
-
-
-
-}
-
-
