@@ -6,6 +6,7 @@ use App\Models\Barang;
 use App\Models\BarangTransaksi;
 use App\Models\Cabang;
 use App\Models\Keranjang;
+use App\Models\Rating;
 use App\Models\Transaksi;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
@@ -102,17 +103,19 @@ class CustomerController extends Controller
                 break;
         }
 
-        $bebanProduksi = (2 / 100) * $modal;
-        $keuntungan = (25 / 100) * $modal;
-        $hargaJual = $modal + $bebanProduksi + $keuntungan;
-
-        $barang->harga_asli = $hargaJual;
+        
 
         $rekomendasiBarang = Barang::where('kategori_barang', $barang->kategori_barang)
             ->where('id_barang', '!=', $barang->id_barang)
             ->where('stok_barang', '>=', 1)
             ->limit(3)
             ->get();
+
+        $bebanProduksi = (2 / 100) * $modal;
+        $keuntungan = (25 / 100) * $modal;
+        $hargaJual = $modal + $bebanProduksi + $keuntungan;
+
+        $barang->harga_asli = $hargaJual;
 
         return view('customer.detail', compact('barang', 'totalJumlah', 'rekomendasiBarang'));
     }
@@ -129,10 +132,6 @@ class CustomerController extends Controller
     }
     // \notifikasi pesanan berhasil
 
-
-
-
-
     public function pesananSaya(Request $request)
     {
         // Ambil id_customer dari session
@@ -147,7 +146,7 @@ class CustomerController extends Controller
             ->latest()
             ->get();
 
-        $transaksiId = $transaksis->pluck('id_transaksi')->toArray();
+        $transaksiId = $transaksis->pluck('id_transaksi')->toArray(); 
 
         // Ambil barang berdasarkan transaksiId dan filter status
         $barangs = BarangTransaksi::whereIn('barang_transaksis.id_transaksi', $transaksiId)
@@ -155,26 +154,28 @@ class CustomerController extends Controller
             ->join('transaksis', 'barang_transaksis.id_transaksi', '=', 'transaksis.id_transaksi')
             ->join('ekspedisis', 'transaksis.id_ekspedisi', '=', 'ekspedisis.id_ekspedisi')
             ->join('cabangs', 'barangs.id_cabang', '=', 'cabangs.id_cabang')
-            ->select(
-                'barang_transaksis.*',
-                'barangs.*',
-                'transaksis.total_harga',
-                'transaksis.metode_pembayaran',
-                'ekspedisis.*',
-                'cabangs.*',
-                'barang_transaksis.created_at as barang_created_at'
-            )
+            ->leftJoin('ratings', function ($join) use ($id_customer) {
+                $join->on('barang_transaksis.id_barang', '=', 'ratings.id_barang')
+                    ->on('barang_transaksis.id_transaksi', '=', 'ratings.id_transaksi')
+                    ->where('ratings.id_user', $id_customer);
+            })
+            ->select('barang_transaksis.*', 'barangs.*', 'transaksis.total_harga', 
+                    'transaksis.metode_pembayaran', 'ekspedisis.*', 'cabangs.*',
+                    'barang_transaksis.created_at as barang_created_at',
+                    'ratings.id_barang as rated_barang',
+                    'ratings.id_transaksi as rated_transaksi',
+                    'ratings.rating') 
             ->when($status, function ($query, $status) {
                 return $query->where('barang_transaksis.status_barang', $status);
             })
             ->orderByRaw("
-            CASE 
-                WHEN barang_transaksis.status_barang = 'dikirim' THEN 0
-                WHEN barang_transaksis.status_barang = 'diproses' THEN 1
-                ELSE 2
-            END
-        ")
-            ->orderBy('transaksis.created_at', 'desc')
+                CASE 
+                    WHEN barang_transaksis.status_barang = 'dikirim' THEN 0
+                    WHEN barang_transaksis.status_barang = 'diproses' THEN 1
+                    ELSE 2
+                END
+            ")
+            ->orderBy('transaksis.updated_at', 'desc')
             ->get();
 
         // Kirim data ke view

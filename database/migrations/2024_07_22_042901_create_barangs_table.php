@@ -21,6 +21,7 @@ class CreateBarangsTable extends Migration
             $table->string('kategori_barang');
             $table->string('bahan');
             $table->double('harga');
+            $table->decimal('rating_barang',3 ,2)->nullable();
             $table->text('deskripsi_barang')->nullable();
             $table->unsignedBigInteger('id_cabang')->nullable();
             $table->enum('distribusi', ['Siap kirim', 'Dikirim', 'Diterima', 'Ditolak', 'Ditarik'])->default('Siap kirim');

@@ -51,6 +51,11 @@
             <h2 class="text-xl font-bold">{{ $barang->nama_barang }}</h2>
             <p class="text-gray-600 mt-2 stok-barang" data-id="{{ $barang->id_barang }}">Stok: {{ $barang->stok_barang }}</p>
             <p class="text-gray-600 stok-barang">cabang : {{ $barang->cabang->nama_cabang }}</p>
+            @if ($barang->rating_barang)
+                <p class="text-gray-600 stok-barang"><i class="fa-solid fa-star"></i> {{ $barang->rating_barang }}</p>
+            @else
+                <p class="text-gray-600 stok-barang"><i class="fa-solid fa-star"></i> 0.0</p>
+            @endif
             <div class="mt-2 flex justify-between w-full items-center">
                 @if($barang->diskon || $barang->potongan)
                     <div class="flex flex-col">
