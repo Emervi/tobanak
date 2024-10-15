@@ -9,6 +9,9 @@ use App\Models\Cabang;
 use App\Models\Ekspedisis;
 use App\Models\Transaksi;
 use App\Models\User;
+use Carbon\Carbon;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -42,8 +45,8 @@ class AdminController extends Controller
 
 
         $transaksi = Transaksi::selectRaw('DATE(created_at) as date, SUM(total_harga) as total')
-                    ->groupBy('date')
-                    ->get();
+            ->groupBy('date')
+            ->get();
 
         return view('admin.dashboard', [
             'jumlahBarang' => $jumlahBarang,
@@ -255,4 +258,185 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'User berhasil dihapus!');
     }
+
+    // public function generatePdf(Request $request)
+    // {
+    //     $request->validate([
+    //         'tanggalAwal' => ['required', function ($attribute, $value, $fail) use ($request) {
+    //             if ($value > $request->tanggalAkhir) {
+    //                 $fail('Tanggal awal tidak boleh lebih dari tanggal akhir!');
+    //             };
+    //         }],
+    //         'tanggalAkhir' => ['required']
+    //     ], [
+    //         'tanggalAwal.required' => 'Masukan tanggal awal',
+    //         'tanggalAkhir.required' => 'Masukan tanggal akhir',
+    //     ]);
+
+    //     $tanggalAwal = Carbon::parse($request->tanggalAwal);
+    //     $tanggalAkhir = Carbon::parse($request->tanggalAkhir);
+
+    //     if ($tanggalAwal->gt($tanggalAkhir)) {
+
+    //         dd($tanggalAwal->gt($tanggalAkhir));
+    //         return back()->with('fail', 'Data gagal dikirim!');
+
+    //     } else {
+
+    //         // $tanggalAwal = Carbon::create(2024, 10, 11);
+    //         // $tanggalAkhir = Carbon::create(2024, 10, 11);
+
+    //         // ambil data
+    //         // $data = Transaksi::all();
+    //         $query = Transaksi::whereBetween('tanggal', [$tanggalAwal, $tanggalAkhir]);
+
+    //         $totalPendapatan = $query->sum('total_harga');
+
+    //         $data = $query->orderBy('tanggal', 'asc')
+    //             ->get();
+
+    //         // mendapatkan tanggal dari database dan mengubah formatnya
+    //         foreach ($data as $row) {
+    //             $tanggalPendapatan[] = Carbon::parse($row->tanggal)->format('d-m-Y');
+    //         };
+
+    //         // setel opsi DomPDF
+    //         $options = new Options();
+    //         $options->set('defaultFont', 'Courier');
+    //         $dompdf = new Dompdf($options);
+
+    //         $showTglAwal = $tanggalAwal->format('d-m-Y');
+    //         $showTglAkhir = $tanggalAkhir->format('d-m-Y');
+
+    //         // buat HTML untuk PDF
+    //         $html = view(
+    //             'admin.pdf_template',
+    //             compact(
+    //                 'data',
+    //                 'tanggalPendapatan',
+    //                 'totalPendapatan',
+    //                 'showTglAwal',
+    //                 'showTglAkhir'
+    //             )
+    //         )->render();
+
+    //         // load html ke DomPDF
+    //         $dompdf->loadHtml($html);
+    //         $dompdf->setPaper('A4', 'portrait');
+
+    //         // render PDF
+    //         $dompdf->render();
+
+    //         // menambahkan nomor halaman
+    //         $canvas = $dompdf->getCanvas();
+    //         $fontMetrics = $dompdf->getFontMetrics();
+    //         $pageCount = $dompdf->getCanvas()->get_page_count();
+
+    //         for ($i = 1; $i <= $pageCount; $i++) {
+    //             $canvas->page_script(function ($pageNumber, $pageCount, $canvas, $fontMetrics) {
+    //                 $text = "$pageNumber";
+    //                 $width = $fontMetrics->getTextWidth($text, 'Courier', 12);
+    //                 $canvas->text(560 - $width, 810, $text, null, 12); // Ubah posisi x dan y sesuai kebutuhan
+    //             });
+    //         }
+
+    //         // simpan file PDF jika perlu
+    //         $output = $dompdf->output();
+    //         $pdfPath = public_path('pdf/Laporan Transaksi.pdf');
+    //         // file_put_contents('Laporan Transaksi.pdf', $output);
+    //         file_put_contents($pdfPath, $output);
+
+    //         // untuk membuka file di web edge
+    //         // exec('start output.pdf');
+
+    //         return response()->json(['url' => asset('pdf/Laporan Transaksi.pdf')]);
+
+    //     }
+    // }
+
+    public function generatePdf(Request $request)
+    {
+        $request->validate([
+            'tanggalAwal' => ['required', function ($attribute, $value, $fail) use ($request) {
+                if ($value > $request->tanggalAkhir) {
+                    $fail('Tanggal awal tidak boleh lebih dari tanggal akhir!');
+                };
+            }],
+            'tanggalAkhir' => ['required']
+        ], [
+            'tanggalAwal.required' => 'Masukan tanggal awal',
+            'tanggalAkhir.required' => 'Masukan tanggal akhir',
+        ]);
+
+        $tanggalAwal = Carbon::parse($request->tanggalAwal);
+        $tanggalAkhir = Carbon::parse($request->tanggalAkhir);
+
+        if ($tanggalAwal->gt($tanggalAkhir)) {
+            return back()->withErrors(['tanggalAwal' => 'Tanggal awal tidak boleh lebih besar dari tanggal akhir'])->withInput();
+        } else {
+            // Proses pembuatan PDF
+            $query = Transaksi::whereBetween('tanggal', [$tanggalAwal, $tanggalAkhir]);
+
+            $totalPendapatan = $query->sum('total_harga');
+            $data = $query->orderBy('tanggal', 'asc')->get();
+
+            // Format tanggal dari data transaksi
+            foreach ($data as $row) {
+                $tanggalPendapatan[] = Carbon::parse($row->tanggal)->format('d-m-Y');
+            }
+
+            // Set opsi DomPDF
+            $options = new Options();
+            $options->set('defaultFont', 'Courier');
+            $dompdf = new Dompdf($options);
+
+            // Data untuk PDF template
+            $showTglAwal = $tanggalAwal->format('d-m-Y');
+            $showTglAkhir = $tanggalAkhir->format('d-m-Y');
+
+            // Render HTML ke PDF
+            $html = view('admin.pdf_template', compact(
+                'data',
+                'tanggalPendapatan',
+                'totalPendapatan',
+                'showTglAwal',
+                'showTglAkhir'
+            ))->render();
+
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            // menambahkan nomor halaman
+            $canvas = $dompdf->getCanvas();
+            $fontMetrics = $dompdf->getFontMetrics();
+            $pageCount = $dompdf->getCanvas()->get_page_count();
+
+            for ($i = 1; $i <= $pageCount; $i++) {
+                $canvas->page_script(function ($pageNumber, $pageCount, $canvas, $fontMetrics) {
+                    $text = "$pageNumber";
+                    $width = $fontMetrics->getTextWidth($text, 'Courier', 12);
+                    $canvas->text(560 - $width, 815, $text, null, 12); // Ubah posisi x dan y sesuai kebutuhan
+                });
+            }
+
+            // Menyimpan PDF di public path
+            $output = $dompdf->output();
+            // $pdfPath = public_path('pdf/Laporan Transaksi.pdf');
+            // file_put_contents($pdfPath, $output);
+
+            // Mengarahkan ke halaman untuk membuka file PDF
+            return response()->stream(
+                function () use ($output) {
+                    echo $output;
+                },
+                200,
+                [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; filename="Laporan Transaksi.pdf"',
+                ]
+            );
+        }
+    }
+
 }

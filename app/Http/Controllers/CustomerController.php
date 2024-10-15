@@ -142,11 +142,12 @@ class CustomerController extends Controller
 
         // Ambil transaksi berdasarkan status
         $transaksis = Transaksi::where('id_user', $id_customer)
-            ->whereIn('status', ['diproses', 'dikirim', 'selesai'])
+            ->whereIn('status', ['diproses', 'dikonfirmasi', 'dikirim', 'selesai'])
             ->latest()
             ->get();
 
-        $transaksiId = $transaksis->pluck('id_transaksi')->toArray(); 
+        $transaksiId = $transaksis->pluck('id_transaksi')->toArray();
+
 
         // Ambil barang berdasarkan transaksiId dan filter status
         $barangs = BarangTransaksi::whereIn('barang_transaksis.id_transaksi', $transaksiId)
@@ -160,7 +161,7 @@ class CustomerController extends Controller
                     ->where('ratings.id_user', $id_customer);
             })
             ->select('barang_transaksis.*', 'barangs.*', 'transaksis.total_harga', 
-                    'transaksis.metode_pembayaran', 'ekspedisis.*', 'cabangs.*',
+                    'transaksis.metode_pembayaran', 'transaksis.status', 'ekspedisis.*', 'cabangs.*',
                     'barang_transaksis.created_at as barang_created_at',
                     'ratings.id_barang as rated_barang',
                     'ratings.id_transaksi as rated_transaksi',
@@ -171,7 +172,7 @@ class CustomerController extends Controller
             ->orderByRaw("
                 CASE 
                     WHEN barang_transaksis.status_barang = 'dikirim' THEN 0
-                    WHEN barang_transaksis.status_barang = 'diproses' THEN 1
+                    WHEN barang_transaksis.status_barang = 'diproses' || 'dikonfirmasi' THEN 1
                     ELSE 2
                 END
             ")

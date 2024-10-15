@@ -19,6 +19,12 @@ class TestController extends Controller
         return view('test', compact('barangs', 'cabangs'));
     }
 
+    public function index2() {
+
+        return view('test2');
+
+    }
+
     public function put(Request $request){
 
         $distribusi = $request->input('distribusi', []);
@@ -48,6 +54,31 @@ class TestController extends Controller
 
         return redirect()->back()->with('success', 'Berhasil!');
 
+    }
+
+    // Validasi dan proses tanggal
+    public function validateDates(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'date_a' => 'required|date',
+            'date_b' => 'required|date',
+        ], [
+            'date_a.required' => 'Tanggal A harus diisi.',
+            'date_b.required' => 'Tanggal B harus diisi.',
+        ]);
+
+        // Ambil nilai input
+        $dateA = $request->input('date_a');
+        $dateB = $request->input('date_b');
+
+        // Cek apakah Tanggal A lebih besar dari Tanggal B
+        if (strtotime($dateA) > strtotime($dateB)) {
+            return back()->withErrors(['error' => 'Tanggal A tidak boleh lebih besar dari Tanggal B.']);
+        }
+
+        // Jika validasi berhasil, buka halaman baru dengan data input
+        return view('test2', ['dateA' => $dateA, 'dateB' => $dateB]);
     }
     
 }
