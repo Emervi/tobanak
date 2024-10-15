@@ -26,6 +26,12 @@
                 </a>
             </li>
             <li class="cursor-pointer">
+                <a href="{{ route('customer.pesanan', ['status' => 'dikonfirmasi']) }}" 
+                    class="{{ request('status') == 'dikonfirmasi' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-600 hover:text-gray-800' }} pb-2">
+                    Dikonfirmasi
+                </a>
+            </li>
+            <li class="cursor-pointer">
                 <a href="{{ route('customer.pesanan', ['status' => 'dikirim']) }}" 
                     class="{{ request('status') == 'dikirim' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-600 hover:text-gray-800' }} pb-2">
                     Dikirim
@@ -47,7 +53,7 @@
     </div>
 
     <div class="flex flex-col gap-4 items-center">
-        @foreach($barangs as $barang)
+        @foreach($barangs as $index => $barang)
             <div x-data='{ openModals: false, isRated: {{ $barang->rated_barang ? 'true' : 'false' }} }' class="bg-white shadow-sm rounded-lg p-4 w-full md:w-3/4">
                 <div class="w-full flex justify-between mr-4 text-gray-700 text-center">
                     <div class="text-sm bg-rose-500 text-white p-1 rounded">
@@ -118,10 +124,16 @@
                             <input type="hidden" name="id_barang" value="{{ $barang->id_barang }}">
                             <input type="hidden" name="kuantitas" value="{{ $barang->kuantitas }}">
                             <input type="hidden" name="total_harga_barang" value="{{ $barang->total_harga_barang }}">
-                            <button class="bg-pink-400 text-white px-4 py-2 rounded">Batal</button>    
+                            @if ( $barang->status === 'Dikonfirmasi' )
+                            <button class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" disabled>Batal</button>
+                            @else
+                            <button class="bg-pink-400 text-white px-4 py-2 rounded">Batal</button>                                    
+                            @endif
                         </form>
+                    @elseif ($barang->status_barang === 'Dikonfirmasi')
+                        
                     @elseif ($barang->status_barang === 'Dibatalkan')
-                        <button class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" disabled>Dibatalkan</button>                        
+                        <button class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" disabled>Dibatalkan</button>
                     @else
                         <div class="gap-1 flex justify-end">
                             @if (!$barang->rated_barang)

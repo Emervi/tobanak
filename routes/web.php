@@ -30,6 +30,8 @@ use App\Http\Controllers\TestController;
 
 // TEST AREA
 Route::get('/test', [TestController::class, 'index'])->name('TEST');
+Route::post('/test2', [TestController::class, 'validateDates'])->name('TEST2');
+
 Route::put('/test/put', [TestController::class, 'put'])->name('TEST.PUT');
 // \TEST AREA
 
@@ -38,6 +40,9 @@ Route::middleware('admin')->group(function () {
 
     // dashboard
     Route::get('/admin/dashboard', [AdminController::class, 'dashboardAdmin'])->name('admin.dashboard');
+
+    //generate PDF
+    Route::post('/generate-pdf-url', [AdminController::class, 'generatePDF'])->name('printPDF');
 
 
 
@@ -176,6 +181,7 @@ Route::middleware('kasir')->group(function () {
     Route::get('/kasir/pesanan/{id_transaksi}/detail', [KasirController::class, 'detailPesanan'])->name('kasir.detailPesanan');
     Route::put('/kasir/pesanan/kirimkanBarang/{id_transaksi}', [KasirController::class, 'kirimBarang'])->name('kasir.kirimBarang');
     Route::put('/kasir/pesanan/batalkanBarang/{id_transaksi}', [KasirController::class, 'batalBarang'])->name('kasir.batalBarang');
+    Route::put('/kasir/pesanan/konfirmasiBarang/{id_transaksi}', [KasirController::class, 'konfirmasiBarang'])->name('kasir.konfirmasiBarang');
 });
 // Penutup Halaman Kasir
 

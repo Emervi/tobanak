@@ -119,13 +119,13 @@
                 x: {
                     title: {
                         display: true,
-                        text: 'tanggal',
+                        text: 'Tanggal',
                     }
                 },
                 y: {
                     title: {
                         display: true,
-                        text: 'total_penjualan',
+                        text: 'Total Penjualan',
                     }
                 }
             }

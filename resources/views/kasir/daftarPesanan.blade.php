@@ -31,7 +31,7 @@
 
             </div>
 
-            <div class="container mx-auto w-full lg:w-2/3 bg-white p-3 shadow-xl rounded-xl">
+            <div class="container mx-auto w-full lg:w-3/4 bg-white p-3 shadow-xl rounded-xl">
 
                 <h1 class="text-2xl font-bold text-center">Pesanan Pelanggan</h1>
 
@@ -41,9 +41,10 @@
                         <thead class="border border-b-gray-900">
                             <th class="p-2 w-1/12">No</th>
                             <th class="p-2 w-2/12">Nama pelanggan</th>
-                            <th class="p-2 w-1/12">Tanggal</th>
+                            <th class="p-2 w-2/12">Tanggal</th>
                             <th class="p-2 w-2/12">Total harga</th>
-                            <th class="p-2 w-2/12">Jumlah barang</th>
+                            <th class="p-2 w-1/12">Jumlah barang</th>
+                            <th class="p-2 w-1/12">Konfirmasi</th>
                             <th class="p-2 w-1/12">Aksi</th>
                         </thead>
                         <tbody>
@@ -54,7 +55,14 @@
                                     <td>{{ $tanggal[$index] }}</td>
                                     <td>Rp. {{ number_format($pesanan->total_harga, 0, ',', '.') }}</td>
                                     <td>{{ $jumlahBarang[$index] }}</td>
-                                    <td class="flex justify-center my-3">
+                                    <td>
+                                        @if ( $pesanan->status === 'Dikonfirmasi' )
+                                        ✔Sudah✔
+                                        @else
+                                        ❌Belum❌
+                                        @endif
+                                    </td>
+                                    <td class="flex justify-center items-center my-4">
 
                                         <div x-data="{ dropdown: false, isActive: false }" @click.away="isActive = false"
                                             class="relative inline-block">

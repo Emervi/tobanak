@@ -9,8 +9,57 @@
         Carbon::setLocale('id');
     @endphp
 
-    {{-- tombol kembali --}}
-    <div class="w-full mx-auto mt-10 mb-12">
+    <div x-data="{ isOpenLaporan: false }" class="w-full mx-auto mt-10 mb-12">
+
+        <!-- Modal laporan transaksi -->
+        <div x-show="isOpenLaporan" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+
+                {{-- form laporan transaksi --}}
+                <form action="{{ route('printPDF') }}" method="POST" id="pdfForm" target="_blank">
+                    @csrf
+
+                    <div class="flex justify-end align-middle">
+                        <button type="button" @click="isOpenLaporan = false">
+                            <i class="fas fa-times text-2xl cursor-pointer"></i>
+                        </button>
+                    </div>
+
+                    <h2 class="text-center text-2xl font-bold mb-5">Buat Laporan</h2>
+
+                    <div class="mb-5">
+                        <label class="font-semibold">Masukan Tanggal Transaksi: </label>
+
+                        <div class="grid grid-cols-3 mt-3">
+
+                            <div>
+                                <input type="date" name="tanggalAwal" id="tanggalAwal" value="{{ old('tanggalAwal') }}" oninput="handleInputTanggal()"
+                                    class="bg-gray-200 p-2 rounded mb-1">
+                            </div>
+
+                            <div class="flex justify-center">
+                                <p class="mt-2">-</p>
+                            </div>
+
+                            <div>
+                                <input type="date" name="tanggalAkhir" id="tanggalAkhir" oninput="handleInputTanggal()"
+                                    value="{{ old('tanggalAkhir') }}" class="bg-gray-200 p-2 rounded mb-1">
+                            </div>
+
+                        </div>
+
+                        <p class="text-red-500 text-sm font-bold mt-2" id="pesanError"></p>
+
+                    </div>
+
+                    <div class="flex justify-end space-x-4">
+                        <button id="btnsub" type="submit"
+                            disabled class="bg-green-500 text-white hover:bg-green-600 px-4 py-2 rounded-lg disabled:bg-gray-400">Buat Laporan</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
 
         <div class="mt-7 w-11/12 mx-auto flex flex-col">
             {{-- notifikasi CRUD barang dan fitur pencarian barang --}}
@@ -55,13 +104,37 @@
                     </div>
                 @endif
 
+                @if (session('fail'))
+                    <div class="fixed top-4 right-4 bg-green-700 border border-green-800 text-white px-4 py-3 rounded shadow-lg transition-transform transform-gpu duration-300 ease-in-out"
+                        role="alert">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm">{{ session('fail') }}</span>
+                            <button
+                                onclick="this.parentElement.parentElement.style.transform='translateX(100%)'; setTimeout(() => this.parentElement.parentElement.remove(), 300);"
+                                class="ml-4 text-green-500 hover:text-green-700">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                @endif
+
+                <button @click="isOpenLaporan = true"
+                    class="text-green-500 text-center p-2 bg-white border border-green-500 rounded-md hover:text-white hover:bg-green-600">
+                    <i class="fas fa-file-pdf mr-1 transform -scale-x-100"></i>
+                    Buat Laporan
+                </button>
+
             </div>
 
             <div class="container w-full bg-white p-3 shadow-xl mt-5 rounded-xl">
 
                 <h1 class="text-2xl font-bold text-center">Daftar Transaksi</h1>
 
-                <div class="overflow-x-auto overflow-y-clip">
+                <div class="overflow-x-auto overflow-y-clip mt-2">
                     {{-- table daftar barang --}}
                     <table class="w-full bg-white border border-gray-200 mt-3 text-center">
                         <thead class="border border-b-black">
@@ -72,7 +145,7 @@
                             <th class="p-2">Total Harga</th>
                             <th class="p-2">Kembalian</th>
                             <th class="p-2">Cabang</th>
-                            <th class="p-2">Metode Pembayaran</th>
+                            <th class="w-1/12">Metode Pembayaran</th>
                             <th class="p-2">Status</th>
                             <th class="text-center w-1/12">Aksi</th>
                         </thead>
@@ -90,7 +163,7 @@
                                     <td>Rp. {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
                                     <td>Rp. {{ number_format($transaksi->kembalian, 0, ',', '.') }}</td>
                                     <td>
-                                        @empty( $transaksi->nama_cabang )
+                                        @empty($transaksi->nama_cabang)
                                             Online
                                         @else
                                             {{ $transaksi->nama_cabang }}
@@ -120,7 +193,8 @@
                                                 class="origin-top-right p-1 absolute right-0 w-44 shadow-lg bg-gray-400 z-10 {{ $loop->first && $loop->last ? 'rounded-b rounded-tl top-0 w-64' : ($loop->last ? 'bottom-full rounded-t rounded-bl' : 'rounded-b rounded-tl') }}"
                                                 role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
 
-                                                <div class="flex gap-1 {{ $loop->first && $loop->last ? '' : 'flex-col' }}" role="none">
+                                                <div class="flex gap-1 {{ $loop->first && $loop->last ? '' : 'flex-col' }}"
+                                                    role="none">
                                                     <a href="{{ route('admin.detailTransaksi', [$transaksi->id_transaksi]) }}"
                                                         class="text-yellow-500 py-1 px-2 bg-white border border-yellow-500 rounded-md text-center hover:text-white hover:bg-yellow-500 {{ $loop->first && $loop->last ? 'w-2/3' : 'w-full' }}">
                                                         <i class="fas fa-eye mr-1"></i>
@@ -128,7 +202,8 @@
                                                     </a>
                                                     <form
                                                         action="{{ route('admin.hapusTransaksi', [$transaksi->id_transaksi]) }}"
-                                                        method="POST" class="{{ $loop->first && $loop->last ? 'w-1/3' : 'w-full' }}">
+                                                        method="POST"
+                                                        class="{{ $loop->first && $loop->last ? 'w-1/3' : 'w-full' }}">
                                                         @csrf
                                                         @method('delete')
                                                         <button
@@ -167,5 +242,31 @@
         </div>
 
     </div>
+
+    <script>
+        let tanggalAwal = "";
+        let tanggalAkhir = "";
+
+        function handleInputTanggal() {
+            // Ambil nilai tanggal dari inputan
+            tanggalAwal = document.getElementById('tanggalAwal').value;
+            tanggalAkhir = document.getElementById('tanggalAkhir').value;
+
+            // Jika kedua tanggal sudah diisi, lakukan perbandingan
+            if (tanggalAwal && tanggalAkhir) {
+                // Bandingkan tanggal
+                if (new Date(tanggalAwal) > new Date(tanggalAkhir)) {
+                    document.getElementById('btnsub').disabled = true;
+                    document.getElementById('pesanError').textContent = "Tanggal awal tidak boleh lebih besar dari tanggal akhir!";
+                } else {
+                    document.getElementById('btnsub').disabled = false;
+                    document.getElementById('pesanError').textContent = "";
+                }
+            } else {
+                document.getElementById('btnsub').disabled = true;
+                document.getElementById('pesanError').textContent = "Seluruh kolom tanggal harus diisi!"; // Reset jika input kosong
+            }
+        }
+    </script>
 
 @endsection

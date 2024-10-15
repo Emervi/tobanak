@@ -149,7 +149,7 @@ class TransaksiController extends Controller
 
 
         $detailTambahan = Transaksi::where('id_transaksi', $id_transaksi)
-            ->join('cabangs', 'transaksis.id_cabang', '=', 'cabangs.id_cabang')
+            ->leftJoin('cabangs', 'transaksis.id_cabang', '=', 'cabangs.id_cabang')
             ->select('transaksis.*', 'cabangs.nama_cabang')
             ->first();
 

@@ -128,6 +128,8 @@ class KasirController extends Controller
     {
         $id_cabang = session('kasir')->id_cabang;
 
+        Carbon::setLocale('id');
+
         if (session()->has('batasKirim')) {
             $stringWaktu = session('batasKirim')['waktu'];
             $batasKirim = Carbon::createFromFormat('H:i:s', $stringWaktu);
@@ -144,7 +146,9 @@ class KasirController extends Controller
             ->leftJoin('barangs', 'barang_transaksis.id_barang', '=', 'barangs.id_barang')
             ->where('barangs.id_cabang', $id_cabang)
             ->where('transaksis.status', 'Diproses')
+            ->orWhere('transaksis.status', 'Dikonfirmasi')
             ->where('barang_transaksis.status_barang', 'Diproses')
+            ->orWhere('barang_transaksis.status_barang', 'Dikonfirmasi')
             ->select('transaksis.*', 'users.username')
             ->distinct()
             ->get();
@@ -157,12 +161,13 @@ class KasirController extends Controller
                     ->where('id_transaksi', $pesanan->id_transaksi)
                     ->where('id_cabang', $id_cabang)
                     ->where('status_barang', 'Diproses')
+                    ->orWhere('status_barang', 'Dikonfirmasi')
                     ->count();
             }
 
             // mengambil tanggal dibuatnya pesanan
             foreach ($pesanans as $pesanan) {
-                $tanggal[] = $pesanan->created_at->toDateTimeString();
+                $tanggal[] = Carbon::parse($pesanan->created_at)->translatedFormat('l d F Y');
             }
         } else {
             // jika tidak ada maka semua akan menjadi 0
@@ -190,6 +195,8 @@ class KasirController extends Controller
             ->select('barang_transaksis.*', 'barangs.*', 'transaksis.*')
             ->where('barang_transaksis.id_transaksi', $id_pesanan)
             ->where('barangs.id_cabang', $id_cabang)
+            ->where('barang_transaksis.status_barang', 'Diproses')
+            ->orWhere('barang_transaksis.status_barang', 'Dikonfirmasi')
             ->get();
 
         // mengambil informasi tambahan, seperti username, metode pembayaran, dan alamat
@@ -319,4 +326,20 @@ class KasirController extends Controller
 
         return redirect()->back()->with('success', 'Barang berhasil dibatalkan!');
     }
+
+    public function konfirmasiBarang($id_pesanan)
+    {
+        Transaksi::where('id_transaksi', $id_pesanan)
+        ->update([
+            'status' => 'Dikonfirmasi',
+        ]);
+
+        BarangTransaksi::where('id_transaksi', $id_pesanan)
+        ->update([
+            'status_barang' => 'Dikonfirmasi',
+        ]);
+
+        return redirect()->back()->with('success', 'Barang berhasil dikonfirmasi!');
+    }
+
 }

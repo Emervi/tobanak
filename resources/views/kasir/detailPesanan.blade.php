@@ -6,6 +6,24 @@
 
     <div class="mt-8">
 
+        @if (session('success'))
+            <div class="fixed top-4 right-4 bg-green-700 border border-green-800 text-white px-4 py-3 rounded shadow-lg transition-transform transform-gpu duration-300 ease-in-out"
+                role="alert">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm">{{ session('success') }}</span>
+                    <button
+                        onclick="this.parentElement.parentElement.style.transform='translateX(100%)'; setTimeout(() => this.parentElement.parentElement.remove(), 300);"
+                        class="ml-4 text-green-500 hover:text-green-700">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        @endif
+
         {{-- container --}}
         <div class="bg-white w-2/3 p-3 mx-auto rounded">
 
@@ -25,15 +43,35 @@
             {{-- bagian tengah container --}}
             <div class=" grid grid-cols-3 gap-3 h-min">
 
-                <div class="p-3 font-medium text-sm bg-gray-100 rounded-md shadow-lg h-min min-h-24 overflow-clip">
-                    <p>Username pelanggan : {{ $dataTambahan->username }}</p>
-                    <p>Metode pembayaran : {{ $dataTambahan->metode_pembayaran }}</p>
-                    <p>Alamat tujuan : {{ $dataTambahan->alamat }}</p>
+                <div>
+                    <div class="p-3 font-medium text-sm bg-gray-100 rounded-md shadow-lg h-min min-h-24 overflow-clip">
+                        <p>Username pelanggan : {{ $dataTambahan->username }}</p>
+                        <p>Metode pembayaran : {{ $dataTambahan->metode_pembayaran }}</p>
+                        <p>Alamat tujuan : {{ $dataTambahan->alamat }}</p>
 
-                    <div class="mt-3 border-t border-gray-400">
-                        <p class="text-sm text-gray-500">{{ $batasKirim }}</p>
+                        @if ($dataTambahan->status !== 'Dikonfirmasi')
+                            <div class="mt-3 border-t border-gray-400">
+                                <p class="text-sm text-gray-500">{{ $batasKirim }}</p>
+                            </div>
+                        @else
+                            <div></div>
+                        @endif
+
                     </div>
 
+                    <form action="{{ route('kasir.konfirmasiBarang', [$dataTambahan->id_transaksi]) }}" method="POST"
+                        class="w-full flex justify-end">
+                        @csrf
+                        @method('put')
+
+                        @if ($dataTambahan->status === 'Dikonfirmasi')
+                            <button type="submit" class="bg-gray-400 text-gray-900 px-4 py-2 shadow-md rounded mt-3"
+                                disabled>Konfirmasi</button>
+                        @else
+                            <button type="submit"
+                                class="bg-green-400 text-gray-900 px-4 py-2 shadow-md rounded mt-3">Konfirmasi</button>
+                        @endif
+                    </form>
                 </div>
 
                 <div class="overflow-y-auto min-h-52 max-h-96 col-span-2">
